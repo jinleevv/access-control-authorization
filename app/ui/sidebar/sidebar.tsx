@@ -1,6 +1,8 @@
 import { Label } from "@/components/ui/label";
 import { IoBarChart, IoCreate, IoLibrary } from "react-icons/io5";
 import { MenuLink } from "./menuLink/menuLink";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const menuItems = [
   {
@@ -36,7 +38,11 @@ export default function Sidebar() {
           })}
         </div>
       </nav>
-      <div className="flex justify-end">hi</div>
+      <div className="flex justify-end">
+        <Link href="/login">
+          <Button>Login</Button>
+        </Link>
+      </div>
     </section>
   );
 }

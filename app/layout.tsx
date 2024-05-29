@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./ui/globals.css";
 import Sidebar from "./ui/sidebar/sidebar";
+import { Toaster } from "@/components/ui/sonner"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,6 +25,7 @@ export default function RootLayout({
           </div>
           <div className="w-full p-4">{children}</div>
         </div>
+        <Toaster />
       </body>
     </html>
   );
