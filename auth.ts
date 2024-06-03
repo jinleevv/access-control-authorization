@@ -3,17 +3,26 @@ import Credentials from "next-auth/providers/credentials";
 import prisma from "./lib/prisma";
 import { compare } from "bcryptjs";
 
+// const convertUTCToLocal = (utcDateString: string) => {
+//   const localDate = new Date(utcDateString);
+//   return localDate.toString(); // Local time string
+// };
+
+// const calculateExpiry = (maxAge: number) => {
+//   const now = new Date();
+//   now.setSeconds(now.getSeconds() + maxAge);
+//   console.log("NOWW: ", now.toISOString());
+//   console.log("Local Expiry Time:", convertUTCToLocal(now.toISOString()));
+//   return now.toISOString();
+// };
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  session: {
-    strategy: "jwt",
-  },
   pages: {
     signIn: "/login",
   },
+  secret: process.env.AUTH_SECRET,
   providers: [
     Credentials({
-      // You can specify which fields should be submitted, by adding keys to the `credentials` object.
-      // e.g. domain, username, password, 2FA token, etc.
       credentials: {
         email: {},
         password: {},
@@ -47,4 +56,25 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
+  session: {
+    strategy: "jwt",
+    maxAge: 60 * 60, // 1 hour in seconds
+  },
+  jwt: {
+    maxAge: 60 * 60, // 1 hour in seconds
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      // First time JWT callback is run, `user` object will be available
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      // Add token properties to the session
+      session.user.id = token.id;
+      return session;
+    },
+  },
 });

@@ -75,7 +75,6 @@ export default function RegisterPage() {
           name: user_name,
         }),
       });
-      console.log({ response });
 
       if (!response) {
         throw new Error("Network response was not ok");
