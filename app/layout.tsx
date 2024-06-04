@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./ui/globals.css";
 import Sidebar from "./ui/sidebar/sidebar";
-import { Toaster } from "@/components/ui/sonner"
+import { Toaster } from "@/components/ui/sonner";
+import Template from "./template";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,6 +25,7 @@ export default function RootLayout({
             <Sidebar />
           </div>
           <div className="w-full p-4">{children}</div>
+          <Template></Template>
         </div>
         <Toaster />
       </body>
