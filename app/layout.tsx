@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./ui/globals.css";
 import Sidebar from "./ui/sidebar/sidebar";
 import { Toaster } from "@/components/ui/sonner";
+import { NextUIProvider } from "@nextui-org/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +24,9 @@ export default function RootLayout({
           <div className="w-3/12">
             <Sidebar />
           </div>
-          <div className="w-full p-4">{children}</div>
+          <NextUIProvider className="w-full h-full">
+            <div className="w-full p-4">{children}</div>
+          </NextUIProvider>
         </div>
         <Toaster />
       </body>

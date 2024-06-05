@@ -25,6 +25,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { toast } from "sonner";
+import { DatePicker, DateRangePicker } from "@nextui-org/date-picker";
 
 interface RequestFormProps {
   requester: any;
@@ -32,7 +33,7 @@ interface RequestFormProps {
 
 const createCompanionSchema = (index: number) => ({
   [`companion_${index}_full_name`]: z.string().optional(),
-  [`companion_${index}_birth_date`]: z.date().optional(),
+  [`companion_${index}_birth_date`]: z.any().optional(),
   [`companion_${index}_nationality`]: z.string().optional(),
   [`companion_${index}_phone_number`]: z.string().optional(),
   [`companion_${index}_company`]: z.string().optional(),
@@ -41,9 +42,7 @@ const createCompanionSchema = (index: number) => ({
 
 let formSchema = z.object({
   visitor_full_name: z.string().min(1).max(50),
-  visitor_birth_date: z.date({
-    required_error: "A date of birth is required.",
-  }),
+  visitor_birth_date: z.any(),
   visitor_nationality: z.string().min(1).max(50),
   visitor_phone_number: z.string().min(1).max(50),
   visitor_company: z.string().min(1).max(50),
@@ -52,7 +51,7 @@ let formSchema = z.object({
   visitor_vehical_number: z.string().optional(),
   visitor_vehical_type: z.string().optional(),
   visitor_vehical_model: z.string().optional(),
-  duration_of_visit: z.string().min(1).max(50),
+  duration_of_visit: z.any(),
   purpose_of_visit: z.string().min(1).max(50),
   info_person_visit_name: z.string().min(1).max(50),
   info_person_phone_number: z.string().min(1).max(50),
@@ -114,6 +113,7 @@ export function RequestForm({ requester }: RequestFormProps) {
       phoneNumber: requester.phoneNumber,
       company: requester.company,
     };
+    console.log(requesterInfo);
     console.log(values);
   }
 
@@ -206,38 +206,17 @@ export function RequestForm({ requester }: RequestFormProps) {
                   name="visitor_birth_date"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Date of birth</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant={"outline"}
-                              className={cn(
-                                "w-full text-left font-normal",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              {field.value ? (
-                                format(field.value, "PPP")
-                              ) : (
-                                <span>Pick a date</span>
-                              )}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            disabled={(date) =>
-                              date > new Date() || date < new Date("1900-01-01")
-                            }
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
+                      <div>
+                        <DatePicker
+                          label="Date of birth"
+                          labelPlacement="outside"
+                          variant="bordered"
+                          className="max-w-full h-12 font-medium mt-1.5"
+                          radius="sm"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </div>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -418,39 +397,17 @@ export function RequestForm({ requester }: RequestFormProps) {
                     name={date_of_birth}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Date of birth</FormLabel>
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <FormControl>
-                              <Button
-                                variant={"outline"}
-                                className={cn(
-                                  "w-full text-left font-normal",
-                                  !field.value && "text-muted-foreground"
-                                )}
-                              >
-                                {field.value ? (
-                                  format(field.value, "PPP")
-                                ) : (
-                                  <span>Pick a date</span>
-                                )}
-                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                              </Button>
-                            </FormControl>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-auto p-0" align="start">
-                            <Calendar
-                              mode="single"
-                              selected={field.value}
-                              onSelect={field.onChange}
-                              disabled={(date) =>
-                                date > new Date() ||
-                                date < new Date("1900-01-01")
-                              }
-                              initialFocus
-                            />
-                          </PopoverContent>
-                        </Popover>
+                        <div>
+                          <DatePicker
+                            label="Date of birth"
+                            labelPlacement="outside"
+                            variant="bordered"
+                            className="max-w-full h-12 font-medium mt-1.5"
+                            radius="sm"
+                            value={field.value}
+                            onChange={field.onChange}
+                          />
+                        </div>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -537,9 +494,16 @@ export function RequestForm({ requester }: RequestFormProps) {
                 name="duration_of_visit"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Duration of Visit</FormLabel>
                     <FormControl>
-                      <Input placeholder="Companion Position" {...field} />
+                      <DateRangePicker
+                        label="Duration of visit"
+                        labelPlacement="outside"
+                        variant="bordered"
+                        radius="sm"
+                        value={field.value}
+                        onChange={field.onChange}
+                        className="font-medium mt-1.5"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -554,7 +518,7 @@ export function RequestForm({ requester }: RequestFormProps) {
                   <FormItem>
                     <FormLabel>Purpose of Visit</FormLabel>
                     <FormControl>
-                      <Input placeholder="Companion Position" {...field} />
+                      <Input placeholder="Purpose of visit" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
