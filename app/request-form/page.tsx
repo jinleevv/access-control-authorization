@@ -17,7 +17,7 @@ export default async function RequestFormPage() {
         <Label className="ml-1">Fill out the access request form</Label>
       </div>
       <div className="mt-3 ml-10 mr-10">
-        <RequestForm />
+        <RequestForm requester={session.user}/>
       </div>
     </section>
   );

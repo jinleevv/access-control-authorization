@@ -26,9 +26,13 @@ import {
 } from "@/components/ui/popover";
 import { toast } from "sonner";
 
+interface RequestFormProps {
+  requester: any;
+}
+
 const createCompanionSchema = (index: number) => ({
-  [`companion_${index}_full_name`]: z.string().min(1, "Full Name is required"),
-  [`companion_${index}_birth_date`]: z.date(),
+  [`companion_${index}_full_name`]: z.string().optional(),
+  [`companion_${index}_birth_date`]: z.date().optional(),
   [`companion_${index}_nationality`]: z.string().optional(),
   [`companion_${index}_phone_number`]: z.string().optional(),
   [`companion_${index}_company`]: z.string().optional(),
@@ -36,13 +40,6 @@ const createCompanionSchema = (index: number) => ({
 });
 
 let formSchema = z.object({
-  requester_first_name: z.string().min(1).max(50),
-  requester_last_name: z.string().min(1).max(50),
-  requester_birth_date: z.date({
-    required_error: "A date of birth is required.",
-  }),
-  requester_phone_number: z.string().min(1).max(50),
-  requester_company: z.string().min(1).max(50),
   visitor_full_name: z.string().min(1).max(50),
   visitor_birth_date: z.date({
     required_error: "A date of birth is required.",
@@ -51,10 +48,10 @@ let formSchema = z.object({
   visitor_phone_number: z.string().min(1).max(50),
   visitor_company: z.string().min(1).max(50),
   visitor_position: z.string().min(1).max(50),
-  visitor_vehical_province: z.string().min(1).max(50),
-  visitor_vehical_number: z.string().min(1).max(50),
-  visitor_vehical_type: z.string().min(1).max(50),
-  visitor_vehical_model: z.string().min(1).max(50),
+  visitor_vehical_province: z.string().optional(),
+  visitor_vehical_number: z.string().optional(),
+  visitor_vehical_type: z.string().optional(),
+  visitor_vehical_model: z.string().optional(),
   duration_of_visit: z.string().min(1).max(50),
   purpose_of_visit: z.string().min(1).max(50),
   info_person_visit_name: z.string().min(1).max(50),
@@ -70,12 +67,18 @@ let formSchema = z.object({
   companion_0_position: z.string().optional(),
 });
 
-export function RequestForm() {
+export function RequestForm({ requester }: RequestFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
   const [companions, setCompanions] = useState([createEmptyCompanion()]);
   const [companions_length, setCompanionsLength] = useState<number>(1);
+
+  const requesterDateOfBirth = `${requester.dateOfBirth}`;
+  const formattedDate = format(
+    new Date(requesterDateOfBirth.slice(0, 19)),
+    "MMMM do, yyyy"
+  );
 
   function createEmptyCompanion() {
     return {};
@@ -104,118 +107,77 @@ export function RequestForm() {
   };
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    const requesterInfo = {
+      firstName: requester.firstName,
+      lastNmae: requester.lastName,
+      dateOfBirth: requester.dateOfBirth,
+      phoneNumber: requester.phoneNumber,
+      company: requester.company,
+    };
     console.log(values);
-
   }
-  
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
         <div className="space-y-2 rounded-lg border p-4">
           <Label>Requester Information *</Label>
           <div className="flex w-full gap-3">
-            <div className="w-1/5">
-              <FormField
-                control={form.control}
-                name="requester_first_name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>First Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="First Name" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+            <div className="space-y-2 w-1/5">
+              <Label>First Name</Label>
+              <Input
+                placeholder="First Name"
+                value={requester.firstName}
+                disabled
               />
             </div>
-            <div className="w-1/5">
-              <FormField
-                control={form.control}
-                name="requester_last_name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Last Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Last Name" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+            <div className="space-y-2 w-1/5">
+              <Label>Last Name</Label>
+              <Input
+                placeholder="Last Name"
+                value={requester.lastName}
+                disabled
               />
             </div>
-            <div className="w-1/5">
-              <FormField
-                control={form.control}
-                name="requester_birth_date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Date of birth</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant={"outline"}
-                            className={cn(
-                              "w-full text-left font-normal",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value ? (
-                              format(field.value, "PPP")
-                            ) : (
-                              <span>Pick a date</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          disabled={(date) =>
-                            date > new Date() || date < new Date("1900-01-01")
-                          }
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )}
+            <div className="space-y-2 w-1/5">
+              <FormLabel>Date of birth</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-full text-left font-normal",
+                        !new Date(requesterDateOfBirth) &&
+                          "text-muted-foreground"
+                      )}
+                      disabled
+                    >
+                      <span>{formattedDate}</span>
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    selected={new Date(requester.dateOfBirth)}
+                    disabled
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+            <div className="space-y-2 w-1/5">
+              <Label>Phone Number</Label>
+              <Input
+                placeholder="Phone Number"
+                value={requester.phoneNumber}
+                disabled
               />
             </div>
-            <div className="w-1/5">
-              <FormField
-                control={form.control}
-                name="requester_phone_number"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Phone Number</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Phone Number" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="w-1/5">
-              <FormField
-                control={form.control}
-                name="requester_company"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Company</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Company" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            <div className="space-y-2 w-1/5">
+              <Label>Company</Label>
+              <Input placeholder="Company" value={requester.company} disabled />
             </div>
           </div>
         </div>
