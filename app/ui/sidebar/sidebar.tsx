@@ -11,13 +11,18 @@ const menuItems = [
     icon: <IoBarChart />,
   },
   {
-    title: "Request Form",
+    title: "Application Form",
     path: "/request-form",
     icon: <IoCreate />,
   },
   {
-    title: "Request Status",
+    title: "Application Form Status",
     path: "/request-status",
+    icon: <IoLibrary />,
+  },
+  {
+    title: "Pending Approvals",
+    path: "/pending-approvals",
     icon: <IoLibrary />,
   },
 ];
@@ -32,11 +37,12 @@ export default function Sidebar() {
             Access Control Authorization System
           </Label>
         </div>
-        <div className="w-full h-full p-3 space-y-2">
+        <div className="w-full p-3 space-y-2">
           {menuItems.map((item) => {
             return <MenuLink item={item} key={item.path} />;
           })}
         </div>
+        <div className="w-full border-t-1.5"></div>
       </nav>
       <div className="flex justify-end">
         <Link href="/login">

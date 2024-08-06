@@ -24,8 +24,8 @@ export default function RootLayout({
           <div className="w-3/12">
             <Sidebar />
           </div>
-          <NextUIProvider className="w-full h-full">
-            <div className="w-full p-4">{children}</div>
+          <NextUIProvider className="w-full h-screen">
+            <div className="w-full h-full p-4">{children}</div>
           </NextUIProvider>
         </div>
         <Toaster />
