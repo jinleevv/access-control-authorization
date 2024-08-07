@@ -1,26 +1,31 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import prisma from "@/lib/db";
 
 interface PendingApprovalsProps {
   requester: any;
 }
 
 export async function PendingApprovals({ requester }: PendingApprovalsProps) {
-  const myFullName = requester.firstName + " " + requester.lastName;
+  async function handleEmail() {
+    const response = await fetch("/api/send-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-  const matchingForms = await prisma.requestForm.findMany({
-    where: {
-      supervisor: myFullName,
-    },
-  });
+    if (response.ok) {
+      // const data = await response.json();
+    } else {
+      console.error("Failed to submit form:", response.statusText);
+    }
+  }
 
   return (
     <section className="h-full">
-      <div>
-        {/* {matchingForms.map((forms) => {
-          const data = forms.requesterFirstName;
-        })} */}
-      </div>
+      <div>{/* <Button onClick={handleEmail}>Send Email</Button> */}</div>
     </section>
   );
 }

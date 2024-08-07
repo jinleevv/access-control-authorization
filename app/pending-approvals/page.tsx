@@ -2,11 +2,20 @@ import { Label } from "@/components/ui/label";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { PendingApprovals } from "../ui/pending-approvals/PendingApprovals";
+import prisma from "@/lib/db";
 
 export default async function PendingApprovalsPage() {
   const session = await auth();
 
   if (!session?.user) redirect("/login");
+
+  const myFullName = session.user.firstName + " " + session.user.lastName;
+
+  const matchingForms = await prisma.requestForm.findMany({
+    where: {
+      supervisor: myFullName,
+    },
+  });
 
   return (
     <section className="w-full h-full">
