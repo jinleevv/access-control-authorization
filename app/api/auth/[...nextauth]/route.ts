@@ -1,7 +1,7 @@
 import { handlers } from "@/auth";
 import { NextResponse } from "next/server";
 import { hash, genSalt } from "bcrypt";
-import prisma from "@/lib/prisma";
+import prisma from "@/lib/db";
 
 export const { GET } = handlers;
 

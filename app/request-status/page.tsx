@@ -16,7 +16,7 @@ export default async function RequestStatusPage() {
         </Label>
         <Label className="pl-1">Review the status of your forms</Label>
       </div>
-      <div className="h-5/6 mt-7 ml-10 mr-10">
+      <div className="h-5/6 mt-3 2xl:mt-5 ml-10 mr-10">
         <RequestFormStatus requester={session.user} />
       </div>
     </section>

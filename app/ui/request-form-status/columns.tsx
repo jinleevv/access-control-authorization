@@ -4,20 +4,33 @@ import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
 export type RequestFormStatus = {
   id: string;
   status: string;
   visitorFullName: string;
   visitorCompany: string;
   visitorPhoneNumber: string;
-  durationStart: Date;
-  durationEnd: Date;
+  durationStart: string;
+  durationEnd: string;
   purpose: string;
+  createdAt: string;
 };
 
 export const columns: ColumnDef<RequestFormStatus>[] = [
+  {
+    accessorKey: "createdAt",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Requested Date
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
   {
     accessorKey: "status",
     header: ({ column }) => {

@@ -23,15 +23,25 @@ export async function RequestFormStatus({ requester }: RequestFormStatusProps) {
     },
   });
 
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+
   const data = matchingRequesters.map((form) => ({
     id: form.id,
     status: form.status,
     visitorFullName: form.visitorFullName,
     visitorCompany: form.visitorCompany,
     visitorPhoneNumber: form.visitorPhoneNumber,
-    durationStart: form.durationOfVisitStart,
-    durationEnd: form.durationOfVistitEnd,
+    durationStart: form.durationOfVisitStart.toLocaleDateString(
+      "en-US",
+      options
+    ),
+    durationEnd: form.durationOfVistitEnd.toLocaleDateString("en-US", options),
     purpose: form.purposeOfVisit,
+    createdAt: form.createdAt.toLocaleDateString("en-US", options),
   }));
 
   return (

@@ -3,7 +3,7 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { PendingApprovals } from "../ui/pending-approvals/PendingApprovals";
 
-export default async function ApprovalsPage() {
+export default async function PendingApprovalsPage() {
   const session = await auth();
 
   if (!session?.user) redirect("/login");

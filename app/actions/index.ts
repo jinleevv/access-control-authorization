@@ -15,6 +15,7 @@ export async function doCredentialLogin(email: string, password: string) {
     });
     return response;
   } catch (err) {
-    throw new Error("Something went wrong");
+    throw err;
+    // new Error("Something went wrong");
   }
 }
