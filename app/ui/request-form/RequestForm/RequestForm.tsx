@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -27,19 +27,11 @@ import {
 import { toast } from "sonner";
 import { DatePicker, DateRangePicker } from "@nextui-org/date-picker";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useRouter } from "next/navigation";
 
 interface RequestFormProps {
   requester: any;
 }
-
-const createCompanionSchema = (index: number) => ({
-  [`companion_${index}_full_name`]: z.string().optional(),
-  [`companion_${index}_birth_date`]: z.any().optional(),
-  [`companion_${index}_nationality`]: z.string().optional(),
-  [`companion_${index}_phone_number`]: z.string().optional(),
-  [`companion_${index}_company`]: z.string().optional(),
-  [`companion_${index}_position`]: z.string().optional(),
-});
 
 let formSchema = z.object({
   visitor_full_name: z.string().min(1).max(50),
@@ -117,6 +109,35 @@ let formSchema = z.object({
 });
 
 export function RequestForm({ requester }: RequestFormProps) {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!localStorage.getItem("hasCompletedAgreement")) {
+      router.push("/request-form/agreement-form");
+    }
+
+    const hasCompletedAgreement =
+      localStorage.getItem("hasCompletedAgreement") === "true";
+
+    if (!hasCompletedAgreement) {
+      router.push("/request-form/agreement-form");
+    }
+
+    const clearLocalStorage = () => {
+      localStorage.removeItem("hasCompletedAgreement");
+    };
+
+    // Clear localStorage on page refresh or navigation
+    window.addEventListener("beforeunload", clearLocalStorage);
+    window.addEventListener("popstate", clearLocalStorage);
+
+    // Clear localStorage on route change
+    return () => {
+      window.removeEventListener("beforeunload", clearLocalStorage);
+      window.removeEventListener("popstate", clearLocalStorage);
+    };
+  }, [router]);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });

@@ -14,6 +14,7 @@ export default async function PendingApprovalsPage() {
   const matchingForms = await prisma.requestForm.findMany({
     where: {
       supervisor: myFullName,
+      status: "In Progress",
     },
   });
 
@@ -26,7 +27,7 @@ export default async function PendingApprovalsPage() {
         </Label>
       </div>
       <div className="mt-3 ml-10 mr-10">
-        <PendingApprovals requester={session.user} />
+        <PendingApprovals requester={session.user} data={matchingForms} />
       </div>
     </section>
   );
