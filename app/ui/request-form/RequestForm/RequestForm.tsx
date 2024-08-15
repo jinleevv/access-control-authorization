@@ -24,6 +24,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toast } from "sonner";
 import { DatePicker, DateRangePicker } from "@nextui-org/date-picker";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -106,6 +113,8 @@ let formSchema = z.object({
   companion_7_phone_number: z.string().optional(),
   companion_7_company: z.string().optional(),
   companion_7_position: z.string().optional(),
+
+  approval_line: z.string().min(1).max(50),
 });
 
 export function RequestForm({ requester }: RequestFormProps) {
@@ -188,7 +197,7 @@ export function RequestForm({ requester }: RequestFormProps) {
       dateOfBirth: requesterDateOfBirth,
       phoneNumber: requester.phoneNumber,
       company: requester.company,
-      supervisor: requester.supervisor,
+      supervisor: values.approval_line,
     };
 
     const visitorInfo = {
@@ -842,6 +851,48 @@ export function RequestForm({ requester }: RequestFormProps) {
                 />
               </div>
             </div>
+          </div>
+          <div className="p-2">
+            {/* <FormField
+              control={form.control}
+              name="info_person_department"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Approval Line</FormLabel>
+                  <FormControl></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            /> */}
+            <FormField
+              control={form.control}
+              name="approval_line"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Approval Line</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Appoval Line" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="m@example.com">
+                        m@example.com
+                      </SelectItem>
+                      <SelectItem value="m@google.com">m@google.com</SelectItem>
+                      <SelectItem value="m@support.com">
+                        m@support.com
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
           <div className="flex w-full justify-end">
             <Button type="submit">Submit</Button>
