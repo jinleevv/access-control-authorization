@@ -32,8 +32,6 @@ export async function POST(request: Request) {
         company: company,
       },
     });
-
-    console.log(response);
   } catch (e) {
     console.log({ e });
   }

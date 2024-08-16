@@ -12,6 +12,8 @@ interface RequesterInfoType {
 
 interface VisitorInfoType {
   fullName: string;
+  visitLocation: string;
+  vehicleUsage: boolean;
   dateOfBirth: Date;
   nationality: string;
   phoneNumber: string;
@@ -111,6 +113,8 @@ export default async function handler(
 
       const visitorInfo: VisitorInfoType = {
         fullName: data.visitorInfo.fullName,
+        visitLocation: data.visitorInfo.visitLocation,
+        vehicleUsage: data.visitorInfo.vehicleUsage,
         dateOfBirth: data.visitorInfo.dateOfBirth,
         nationality: data.visitorInfo.nationality,
         phoneNumber: data.visitorInfo.phoneNumber,
@@ -201,6 +205,8 @@ export default async function handler(
           requesterCompany: requesterInfo.company,
 
           visitorFullName: visitorInfo.fullName,
+          visitorVisitLocation: visitorInfo.visitLocation,
+          visitorVehicleUsage: visitorInfo.vehicleUsage,
           visitorDateOfBirth: visitorInfo.dateOfBirth,
           visitorPhoneNumber: visitorInfo.phoneNumber,
           visitorCompany: visitorInfo.company,
@@ -273,8 +279,9 @@ export default async function handler(
           infoPersonVisitPhoneNumber: visitInfo.visitPersonPhoneNumber,
           infoPersonVisitCompany: visitInfo.visitPersonCompany,
           infoPersonVisitDepartment: visitInfo.visitPersonDepartment,
-          
+
           supervisor: requesterInfo.supervisor,
+          pledgeSigned: data.pledgeSigned,
           status: status,
         },
       });

@@ -31,13 +31,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 import { DatePicker, DateRangePicker } from "@nextui-org/date-picker";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useRouter } from "next/navigation";
 
 interface RequestFormProps {
   requester: any;
+  signed: boolean;
 }
 
 let formSchema = z.object({
@@ -47,10 +48,14 @@ let formSchema = z.object({
   visitor_phone_number: z.string().min(1).max(50),
   visitor_company: z.string().min(1).max(50),
   visitor_position: z.string().min(1).max(50),
+
+  visitor_visit_location: z.string(),
+  vehicle_usage: z.enum(["True", "False"]),
   visitor_vehical_province: z.string().optional(),
   visitor_vehical_number: z.string().optional(),
   visitor_vehical_type: z.string().optional(),
   visitor_vehical_model: z.string().optional(),
+
   duration_of_visit: z.any(),
   purpose_of_visit: z.string().min(1).max(50),
   info_person_visit_name: z.string().min(1).max(50),
@@ -117,41 +122,19 @@ let formSchema = z.object({
   approval_line: z.string().min(1).max(50),
 });
 
-export function RequestForm({ requester }: RequestFormProps) {
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!localStorage.getItem("hasCompletedAgreement")) {
-      router.push("/request-form/agreement-form");
-    }
-
-    const hasCompletedAgreement =
-      localStorage.getItem("hasCompletedAgreement") === "true";
-
-    if (!hasCompletedAgreement) {
-      router.push("/request-form/agreement-form");
-    }
-
-    const clearLocalStorage = () => {
-      localStorage.removeItem("hasCompletedAgreement");
-    };
-
-    // Clear localStorage on page refresh or navigation
-    window.addEventListener("beforeunload", clearLocalStorage);
-    window.addEventListener("popstate", clearLocalStorage);
-
-    // Clear localStorage on route change
-    return () => {
-      window.removeEventListener("beforeunload", clearLocalStorage);
-      window.removeEventListener("popstate", clearLocalStorage);
-    };
-  }, [router]);
-
+export function RequestForm({ requester, signed }: RequestFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      vehicle_usage: "False",
+    },
   });
   const [companions, setCompanions] = useState([createEmptyCompanion()]);
   const [companions_length, setCompanionsLength] = useState<number>(1);
+  const { control, watch } = form;
+
+  // Watch the vehical_status field
+  const vehicalStatus = watch("vehicle_usage");
 
   const requesterDateOfBirth = `${requester.dateOfBirth}`;
   const formattedDate = format(
@@ -200,8 +183,18 @@ export function RequestForm({ requester }: RequestFormProps) {
       supervisor: values.approval_line,
     };
 
+    let usage = true;
+
+    if (values.vehicle_usage === "True") {
+      usage = true;
+    } else {
+      usage = false;
+    }
+
     const visitorInfo = {
       fullName: values.visitor_full_name,
+      visitLocation: values.visitor_visit_location,
+      vehicalUsage: usage,
       dateOfBirth: new Date(
         values.visitor_birth_date.year,
         values.visitor_birth_date.month - 1,
@@ -351,6 +344,7 @@ export function RequestForm({ requester }: RequestFormProps) {
         visitorInfo: visitorInfo,
         companionInfo: companionInfo,
         visitInfo: visitInfo,
+        pledgeSigned: signed,
       }),
     });
 
@@ -362,10 +356,10 @@ export function RequestForm({ requester }: RequestFormProps) {
   }
 
   return (
-    <ScrollArea className="border rounded-lg p-4 w-full h-[700px] mt-10 2xl:h-[820px]">
+    <ScrollArea className="border p-3 w-full h-[700px] mt-2 2xl:h-[870px] rounded-lg">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-          <div className="space-y-2 rounded-lg">
+          <div className="border p-4 space-y-2 rounded-lg">
             <Label>Requester Information *</Label>
             <div className="flex w-full gap-3">
               <div className="space-y-2 w-1/5">
@@ -535,71 +529,108 @@ export function RequestForm({ requester }: RequestFormProps) {
                   />
                 </div>
               </div>
-              <div className="mt-3">
-                <Label>Vehical Information</Label>
-                <div className="flex mt-2 w-full gap-3">
-                  <div className="w-1/4">
-                    <FormField
-                      control={form.control}
-                      name="visitor_vehical_province"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Province</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Province" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="w-1/4">
-                    <FormField
-                      control={form.control}
-                      name="visitor_vehical_number"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Vehicle Number</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Vehicle Number" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="w-1/4">
-                    <FormField
-                      control={form.control}
-                      name="visitor_vehical_type"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Type of Vehical</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Type of Vehical" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="w-1/4">
-                    <FormField
-                      control={form.control}
-                      name="visitor_vehical_model"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Vehical Model</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Vehical Model" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
+
+              <div className="flex w-full mt-3">
+                <div className="flex w-full space-x-3">
+                  <Label className="w-28">Use of Vehicle</Label>
+                  <FormField
+                    control={control}
+                    name="vehicle_usage"
+                    render={({ field }) => (
+                      <FormItem className="w-full flex">
+                        <FormControl>
+                          <RadioGroup
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                            className="flex"
+                          >
+                            <FormItem className="flex items-center space-x-1.5 space-y-0">
+                              <FormControl>
+                                <RadioGroupItem value="True" />
+                              </FormControl>
+                              <FormLabel className="font-normal">Yes</FormLabel>
+                            </FormItem>
+                            <FormItem className="flex items-center space-x-1.5 space-y-0">
+                              <FormControl>
+                                <RadioGroupItem value="False" />
+                              </FormControl>
+                              <FormLabel className="font-normal">No</FormLabel>
+                            </FormItem>
+                          </RadioGroup>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
               </div>
+              {vehicalStatus === "True" && (
+                <div className="mt-3">
+                  <Label>Vehical Information</Label>
+                  <div className="flex mt-2 w-full gap-3">
+                    <div className="w-1/4">
+                      <FormField
+                        control={control}
+                        name="visitor_vehical_province"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Province</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Province" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="w-1/4">
+                      <FormField
+                        control={control}
+                        name="visitor_vehical_number"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Vehicle Number</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Vehicle Number" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="w-1/4">
+                      <FormField
+                        control={control}
+                        name="visitor_vehical_type"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Type of Vehical</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Type of Vehical" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="w-1/4">
+                      <FormField
+                        control={control}
+                        name="visitor_vehical_model"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Vehical Model</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Vehical Model" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
           <div className="space-y-2 rounded-lg border p-4">
@@ -852,18 +883,51 @@ export function RequestForm({ requester }: RequestFormProps) {
               </div>
             </div>
           </div>
+          <div className="rounded-lg border p-4">
+            <div className="flex w-full">
+              <Label className="w-40">Visiting Location *</Label>
+              <FormField
+                control={form.control}
+                name="visitor_visit_location"
+                render={({ field }) => (
+                  <FormItem className="w-full flex ml-3">
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="flex"
+                      >
+                        <FormItem className="flex items-center space-x-1 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="CAM1 Factory" />
+                          </FormControl>
+                          <FormLabel className="font-normal">
+                            CAM1 Factory
+                          </FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-1 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="Office Building" />
+                          </FormControl>
+                          <FormLabel className="font-normal">
+                            Office Building
+                          </FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-1 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="Other" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Other</FormLabel>
+                        </FormItem>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
           <div className="p-2">
-            {/* <FormField
-              control={form.control}
-              name="info_person_department"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Approval Line</FormLabel>
-                  <FormControl></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            /> */}
             <FormField
               control={form.control}
               name="approval_line"
