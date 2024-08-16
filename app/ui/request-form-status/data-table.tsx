@@ -41,7 +41,22 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  const [tableData, setTableData] = useState(data);
+  // Get the current month and year
+  const now = new Date();
+
+  const monthAgo = new Date();
+  monthAgo.setMonth(now.getMonth() - 1);
+  monthAgo.setDate(now.getDate() - 1);
+
+  // Filter records based on createdAt month and year
+  const filteredData = data.filter((record) => {
+    const createdAtDate = new Date(record.createdAt);
+    return (
+      monthAgo <= createdAtDate && createdAtDate <= now
+    );
+  });
+  
+  const [tableData, setTableData] = useState(filteredData);
 
   const today = new Date();
   const startDate = new Date(today);
