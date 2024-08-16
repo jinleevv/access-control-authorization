@@ -131,6 +131,7 @@ export function RequestForm({ requester, signed }: RequestFormProps) {
   });
   const [companions, setCompanions] = useState([createEmptyCompanion()]);
   const [companions_length, setCompanionsLength] = useState<number>(1);
+  const [selectedLocation, setSelectedLocation] = useState<string>("");
   const { control, watch } = form;
 
   // Watch the vehical_status field
@@ -893,7 +894,12 @@ export function RequestForm({ requester, signed }: RequestFormProps) {
                   <FormItem className="w-full flex ml-3">
                     <FormControl>
                       <RadioGroup
-                        onValueChange={field.onChange}
+                        // onValueChange={field.onChange}
+                        // defaultValue={field.value}
+                        onValueChange={(value) => {
+                          field.onChange(value); // Update the form value
+                          setSelectedLocation(value); // Update the state
+                        }}
                         defaultValue={field.value}
                         className="flex"
                       >
@@ -925,6 +931,30 @@ export function RequestForm({ requester, signed }: RequestFormProps) {
                   </FormItem>
                 )}
               />
+            </div>
+            <div>
+              {selectedLocation === "Other" && (
+                <FormField
+                  control={form.control}
+                  name="visitor_visit_location"
+                  render={({ field }) => (
+                    <FormItem className="mt-4 w-full flex">
+                      <FormLabel className="w-40 mt-5">
+                        Please specify *
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          {...field}
+                          placeholder="Enter location"
+                          className="border rounded-md w-full"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
             </div>
           </div>
           <div className="p-2">
