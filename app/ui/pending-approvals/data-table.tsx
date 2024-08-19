@@ -102,7 +102,7 @@ export function DataTable<TData, TValue>({
                         Details
                       </Button>
                     </DialogTrigger>
-                    <DialogContent>
+                    <DialogContent className="max-w-[900px]">
                       <DialogHeader>
                         <DialogTitle>Requester Details</DialogTitle>
                         <DialogDescription>
