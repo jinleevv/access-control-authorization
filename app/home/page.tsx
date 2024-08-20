@@ -3,6 +3,9 @@ import { Label } from "@/components/ui/label";
 import { redirect } from "next/navigation";
 import { RequestFormStatus } from "../ui/request-form-status/RequestFormStatus";
 import Sidebar from "../ui/sidebar/sidebar";
+import { HomeTopStatus } from "../ui/home/HomeTopStatus/HomeTopStatus";
+import { HomeMainContents } from "../ui/home/HomeMainContents/HomeMainContents";
+import { HomeFullStats } from "../ui/home/HomeFullStats/HomeFullStats";
 
 export default async function RequestStatusPage() {
   const session = await auth();
@@ -15,15 +18,9 @@ export default async function RequestStatusPage() {
         <Sidebar />
       </div>
       <div className="w-full p-4">
-        <div className="pl-10 pr-10">
-          <Label className="grid text-2xl font-bold">
-            My Request Form Status
-          </Label>
-          <Label className="pl-1">Review the status of your forms</Label>
-        </div>
-        <div className="h-5/6 mt-3 2xl:mt-5 ml-10 mr-10">
-          <RequestFormStatus requester={session.user} />
-        </div>
+        <HomeTopStatus />
+        <HomeMainContents />
+        <HomeFullStats />
       </div>
     </section>
   );

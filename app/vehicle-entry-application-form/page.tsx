@@ -1,10 +1,10 @@
-import { auth } from "@/auth";
 import { Label } from "@/components/ui/label";
+import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { RequestFormStatus } from "../ui/request-form-status/RequestFormStatus";
+import { ApplicationForm } from "../ui/request-form/ApplicationForm";
 import Sidebar from "../ui/sidebar/sidebar";
 
-export default async function RequestStatusPage() {
+export default async function VehicleEntryApplicationPage() {
   const session = await auth();
 
   if (!session?.user) redirect("/login");
@@ -15,14 +15,16 @@ export default async function RequestStatusPage() {
         <Sidebar />
       </div>
       <div className="w-full p-4">
-        <div className="pl-10 pr-10">
+        <div className="ml-10 mr-10">
           <Label className="grid text-2xl font-bold">
-            My Request Form Status
+            Vehicle Entry Application Form
           </Label>
-          <Label className="pl-1">Review the status of your forms</Label>
+          <Label className="ml-1">
+            Fill out the vehicle access request form
+          </Label>
         </div>
-        <div className="h-5/6 mt-3 2xl:mt-5 ml-10 mr-10">
-          <RequestFormStatus requester={session.user} />
+        <div className="mt-3 ml-10 mr-10">
+          
         </div>
       </div>
     </section>

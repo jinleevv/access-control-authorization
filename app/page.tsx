@@ -1,32 +1,34 @@
-import { doLogout } from "./actions";
-import { HomeFullStats } from "./ui/home/HomeFullStats/HomeFullStats";
-import { HomeMainContents } from "./ui/home/HomeMainContents/HomeMainContents";
-import { HomeTopStatus } from "./ui/home/HomeTopStatus/HomeTopStatus";
-import { auth } from "@/auth";
-import { redirect } from "next/navigation";
+"use client";
+
+import AppThree from "./ui/landing-page/App";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default async function Home() {
-  const session = await auth();
+  const router = useRouter();
 
-  // if (session) {
-  //   console.log(session);
-  //   console.log("hi");
-  // }
-  // if (!session?.user) redirect("/login");
+  function handleStart() {
+    router.push("/login");
+    router.refresh();
+  }
+
+  function Overlay() {
+    return (
+      <div className="flex w-full justify-center">
+        <Button
+          className="-translate-y-80 2xl:-translate-y-[430px] w-1/6"
+          onClick={handleStart}
+        >
+          start
+        </Button>
+      </div>
+    );
+  }
 
   return (
-    <section className="w-full h-full">
-      <form action={doLogout}>
-        <button
-          className="bg-blue-400 my-2 text-white p-1 rounded"
-          type="submit"
-        >
-          Logout
-        </button>
-      </form>
-      <HomeTopStatus />
-      <HomeMainContents />
-      <HomeFullStats />
+    <section className="grid w-full h-full">
+      <AppThree />
+      <Overlay />
     </section>
   );
 }

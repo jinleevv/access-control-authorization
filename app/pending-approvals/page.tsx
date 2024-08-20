@@ -3,6 +3,7 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { PendingApprovals } from "../ui/pending-approvals/PendingApprovals";
 import prisma from "@/lib/db";
+import Sidebar from "../ui/sidebar/sidebar";
 
 export default async function PendingApprovalsPage() {
   const session = await auth();
@@ -19,15 +20,20 @@ export default async function PendingApprovalsPage() {
   });
 
   return (
-    <section className="w-full h-full">
-      <div className="ml-10 mr-10">
-        <Label className="grid text-2xl font-bold">Pending Approvals</Label>
-        <Label className="ml-1">
-          Review the requested forms and either approve or reject
-        </Label>
+    <section className="flex w-full h-full">
+      <div className="w-3/12">
+        <Sidebar />
       </div>
-      <div className="mt-3 ml-10 mr-10">
-        <PendingApprovals requester={session.user} data={matchingForms} />
+      <div className="w-full p-4">
+        <div className="ml-10 mr-10">
+          <Label className="grid text-2xl font-bold">Pending Approvals</Label>
+          <Label className="ml-1">
+            Review the requested forms and either approve or reject
+          </Label>
+        </div>
+        <div className="mt-3 ml-10 mr-10">
+          <PendingApprovals requester={session.user} data={matchingForms} />
+        </div>
       </div>
     </section>
   );

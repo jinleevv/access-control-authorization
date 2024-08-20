@@ -21,11 +21,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <div className="flex w-full">
-          <div className="w-3/12">
+          {/* <div className="w-3/12">
             <Sidebar />
-          </div>
+          </div> */}
           <NextUIProvider className="w-full h-screen">
-            <div className="w-full h-full p-4">{children}</div>
+            <div className="w-full h-full">{children}</div>
           </NextUIProvider>
         </div>
         <Toaster />

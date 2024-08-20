@@ -6,7 +6,7 @@ interface ApplicationFormProps {
 
 export function ApplicationForm({ requester }: ApplicationFormProps) {
   return (
-    <div className="h-full w-full">
+    <div className="grid h-full w-full">
       <PledgeForm requester={requester} />
     </div>
   );

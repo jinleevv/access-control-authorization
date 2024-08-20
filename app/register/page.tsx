@@ -104,6 +104,7 @@ export default function RegisterPage() {
 
   return (
     <section className="w-full h-full">
+      
       <div className="ml-10 mr-10">
         <Label className="grid text-2xl font-bold">Create Account</Label>
         <Label className="ml-1">Create an account to access the pages</Label>
