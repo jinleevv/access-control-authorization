@@ -1,12 +1,9 @@
 import { Label } from "@/components/ui/label";
 import {
-  IoAccessibility,
-  IoBarChart,
   IoCar,
-  IoCreate,
+  IoHome,
   IoIdCardSharp,
   IoLibrary,
-  IoRefresh,
   IoReload,
 } from "react-icons/io5";
 import { MenuLink } from "./menuLink/menuLink";
@@ -18,7 +15,7 @@ const menuItems = [
   {
     title: "Home",
     path: "/home",
-    icon: <IoBarChart />,
+    icon: <IoHome />,
   },
   {
     title: "Personnel Entry Application Form",

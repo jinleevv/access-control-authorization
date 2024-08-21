@@ -1,8 +1,8 @@
 import { Label } from "@/components/ui/label";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { ApplicationForm } from "../ui/request-form/ApplicationForm";
 import Sidebar from "../ui/sidebar/sidebar";
+import { ApplicationForm } from "../ui/vehicle-entry-application-form/ApplicationForm";
 
 export default async function VehicleEntryApplicationPage() {
   const session = await auth();
@@ -24,7 +24,7 @@ export default async function VehicleEntryApplicationPage() {
           </Label>
         </div>
         <div className="mt-3 ml-10 mr-10">
-          
+          <ApplicationForm requester={session.user} />
         </div>
       </div>
     </section>
