@@ -196,7 +196,7 @@ export default async function handler(
 
       const status: string = "In Progress";
 
-      const response = await prisma.requestForm.create({
+      const response = await prisma.personnelEntryApplicationForm.create({
         data: {
           requesterFirstName: requesterInfo.firstName,
           requesterLastName: requesterInfo.lastName,
@@ -206,15 +206,10 @@ export default async function handler(
 
           visitorFullName: visitorInfo.fullName,
           visitorVisitLocation: visitorInfo.visitLocation,
-          visitorVehicleUsage: visitorInfo.vehicleUsage,
           visitorDateOfBirth: visitorInfo.dateOfBirth,
           visitorPhoneNumber: visitorInfo.phoneNumber,
           visitorCompany: visitorInfo.company,
           visitorPosition: visitorInfo.position,
-          visitorVehicalProvince: visitorInfo.vehicalProvince,
-          visitorVehicalNumber: visitorInfo.vehicalNumber,
-          visitorVehicalType: visitorInfo.vehicalType,
-          visitorVehicalModel: visitorInfo.vehicalType,
 
           companionFullName1: companionInfo.fullName0,
           companionDateOfBirth1: companionInfo.birthDate0,

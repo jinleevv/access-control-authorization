@@ -20,14 +20,15 @@ async function getData(): Promise<RequestFormStatus[]> {
     company: requester.company,
   };
 
-  const matchingRequesters = await prisma.requestForm.findMany({
-    where: {
-      requesterFirstName: requesterInfo.firstName,
-      requesterLastName: requesterInfo.lastName,
-      requesterPhoneNumber: requesterInfo.phoneNumber,
-      requesterCompany: requesterInfo.company,
-    },
-  });
+  const matchingRequesters =
+    await prisma.personnelEntryApplicationForm.findMany({
+      where: {
+        requesterFirstName: requesterInfo.firstName,
+        requesterLastName: requesterInfo.lastName,
+        requesterPhoneNumber: requesterInfo.phoneNumber,
+        requesterCompany: requesterInfo.company,
+      },
+    });
 
   const options: Intl.DateTimeFormatOptions = {
     year: "numeric",
@@ -50,7 +51,9 @@ async function getData(): Promise<RequestFormStatus[]> {
     createdAt: form.createdAt.toLocaleDateString("en-US", options),
   }));
 
-  return data.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+  return data
+    .sort((a, b) => a.createdAt.localeCompare(b.createdAt))
+    .slice(0, 5);
 }
 
 export async function RecentRequestForms() {

@@ -12,7 +12,7 @@ export default async function PendingApprovalsPage() {
 
   const myFullName = session.user.firstName + " " + session.user.lastName;
 
-  const matchingForms = await prisma.requestForm.findMany({
+  const matchingForms = await prisma.personnelEntryApplicationForm.findMany({
     where: {
       supervisor: myFullName,
       status: "In Progress",

@@ -50,11 +50,6 @@ let formSchema = z.object({
   visitor_position: z.string().min(1).max(50),
 
   visitor_visit_location: z.string(),
-  vehicle_usage: z.enum(["True", "False"]),
-  visitor_vehical_province: z.string().optional(),
-  visitor_vehical_number: z.string().optional(),
-  visitor_vehical_type: z.string().optional(),
-  visitor_vehical_model: z.string().optional(),
 
   duration_of_visit: z.any(),
   purpose_of_visit: z.string().min(1).max(50),
@@ -125,17 +120,10 @@ let formSchema = z.object({
 export function RequestForm({ requester, signed }: RequestFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      vehicle_usage: "False",
-    },
   });
   const [companions, setCompanions] = useState([createEmptyCompanion()]);
   const [companions_length, setCompanionsLength] = useState<number>(1);
   const [selectedLocation, setSelectedLocation] = useState<string>("");
-  const { control, watch } = form;
-
-  // Watch the vehical_status field
-  const vehicalStatus = watch("vehicle_usage");
 
   const requesterDateOfBirth = `${requester.dateOfBirth}`;
   const formattedDate = format(
@@ -186,12 +174,6 @@ export function RequestForm({ requester, signed }: RequestFormProps) {
 
     let usage = true;
 
-    if (values.vehicle_usage === "True") {
-      usage = true;
-    } else {
-      usage = false;
-    }
-
     const visitorInfo = {
       fullName: values.visitor_full_name,
       visitLocation: values.visitor_visit_location,
@@ -205,10 +187,6 @@ export function RequestForm({ requester, signed }: RequestFormProps) {
       phoneNumber: values.visitor_phone_number,
       company: values.visitor_company,
       position: values.visitor_position,
-      vehicalProvince: values.visitor_vehical_province,
-      vehicalNumber: values.visitor_vehical_number,
-      vehicalType: values.visitor_vehical_type,
-      vehicalModel: values.visitor_vehical_model,
     };
 
     const companionInfo = {
@@ -530,108 +508,6 @@ export function RequestForm({ requester, signed }: RequestFormProps) {
                   />
                 </div>
               </div>
-
-              <div className="flex w-full mt-3">
-                <div className="flex w-full space-x-3">
-                  <Label className="w-28">Use of Vehicle</Label>
-                  <FormField
-                    control={control}
-                    name="vehicle_usage"
-                    render={({ field }) => (
-                      <FormItem className="w-full flex">
-                        <FormControl>
-                          <RadioGroup
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                            className="flex"
-                          >
-                            <FormItem className="flex items-center space-x-1.5 space-y-0">
-                              <FormControl>
-                                <RadioGroupItem value="True" />
-                              </FormControl>
-                              <FormLabel className="font-normal">Yes</FormLabel>
-                            </FormItem>
-                            <FormItem className="flex items-center space-x-1.5 space-y-0">
-                              <FormControl>
-                                <RadioGroupItem value="False" />
-                              </FormControl>
-                              <FormLabel className="font-normal">No</FormLabel>
-                            </FormItem>
-                          </RadioGroup>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
-              {vehicalStatus === "True" && (
-                <div className="mt-3">
-                  <Label>Vehical Information</Label>
-                  <div className="flex mt-2 w-full gap-3">
-                    <div className="w-1/4">
-                      <FormField
-                        control={control}
-                        name="visitor_vehical_province"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Province</FormLabel>
-                            <FormControl>
-                              <Input placeholder="Province" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                    <div className="w-1/4">
-                      <FormField
-                        control={control}
-                        name="visitor_vehical_number"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Vehicle Number</FormLabel>
-                            <FormControl>
-                              <Input placeholder="Vehicle Number" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                    <div className="w-1/4">
-                      <FormField
-                        control={control}
-                        name="visitor_vehical_type"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Type of Vehical</FormLabel>
-                            <FormControl>
-                              <Input placeholder="Type of Vehical" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                    <div className="w-1/4">
-                      <FormField
-                        control={control}
-                        name="visitor_vehical_model"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Vehical Model</FormLabel>
-                            <FormControl>
-                              <Input placeholder="Vehical Model" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
           <div className="space-y-2 rounded-lg border p-4">

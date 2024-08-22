@@ -1,7 +1,7 @@
 import { Label } from "@/components/ui/label";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { ApplicationForm } from "../ui/request-form/ApplicationForm";
+import { PersonnelEntryApplicationForm } from "../ui/personnel-entry-application-form/ApplicationForm";
 import Sidebar from "../ui/sidebar/sidebar";
 
 export default async function RequestFormPage() {
@@ -22,7 +22,7 @@ export default async function RequestFormPage() {
           <Label className="ml-1">Fill out the access request form</Label>
         </div>
         <div className="mt-3 ml-10 mr-10">
-          <ApplicationForm requester={session.user} />
+          <PersonnelEntryApplicationForm requester={session.user} />
         </div>
       </div>
     </section>

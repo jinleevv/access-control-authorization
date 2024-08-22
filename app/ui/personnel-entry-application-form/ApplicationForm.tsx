@@ -4,7 +4,9 @@ interface ApplicationFormProps {
   requester: any;
 }
 
-export function ApplicationForm({ requester }: ApplicationFormProps) {
+export function PersonnelEntryApplicationForm({
+  requester,
+}: ApplicationFormProps) {
   return (
     <div className="grid h-full w-full">
       <PledgeForm requester={requester} />

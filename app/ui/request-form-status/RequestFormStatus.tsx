@@ -14,7 +14,7 @@ export async function RequestFormStatus({ requester }: RequestFormStatusProps) {
     company: requester.company,
   };
 
-  const matchingRequesters = await prisma.requestForm.findMany({
+  const matchingRequesters = await prisma.personnelEntryApplicationForm.findMany({
     where: {
       requesterFirstName: requesterInfo.firstName,
       requesterLastName: requesterInfo.lastName,
