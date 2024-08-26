@@ -19,6 +19,7 @@ import {
 
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -27,6 +28,8 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { PendingApprovals } from "./columns";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -37,6 +40,7 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
   const [selectedRowData, setSelectedRowData] =
     useState<PendingApprovals | null>(null);
@@ -60,6 +64,48 @@ export function DataTable<TData, TValue>({
       .replace(/([A-Z])/g, " $1") // Add space before capital letters
       .replace(/([0-9]+)/g, " $1") // Add space before numbers
       .replace(/^./, (str) => str.toUpperCase()); // Capitalize the first letter
+  }
+
+  async function handleApprove() {
+    const applicationID = selectedRowData!.id;
+
+    try {
+      const response = await fetch("/api/application-approval", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status: "approved", id: applicationID }),
+      });
+
+      if (response.ok) {
+        toast("Approved successfully");
+        router.refresh();
+      }
+    } catch (e) {
+      toast("Failed to approve the application, please contact IT department");
+    }
+  }
+
+  async function handleReject() {
+    const applicationID = selectedRowData!.id;
+
+    try {
+      const response = await fetch("/api/application-approval", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status: "rejected", id: applicationID }),
+      });
+
+      if (response.ok) {
+        toast("Rejected successfully");
+        router.refresh();
+      }
+    } catch (e) {
+      toast("Failed to approve the application, please contact IT department");
+    }
   }
 
   return (
@@ -135,8 +181,15 @@ export function DataTable<TData, TValue>({
                             )}
                           </div>
                           <div className="flex gap-2">
-                            <Button>Approve</Button>
-                            <Button variant="destructive">Reject</Button>
+                            <DialogClose>
+                              <Button onClick={handleApprove}>Approve</Button>
+                              <Button
+                                onClick={handleReject}
+                                variant="destructive"
+                              >
+                                Reject
+                              </Button>
+                            </DialogClose>
                           </div>
                         </DialogDescription>
                       </DialogHeader>

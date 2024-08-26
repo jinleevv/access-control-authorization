@@ -91,7 +91,7 @@ const chartData = [
   { date: "2024-06-02", desktop: 470, mobile: 410 },
   { date: "2024-06-03", desktop: 103, mobile: 160 },
   { date: "2024-06-04", desktop: 439, mobile: 380 },
-  { date: "2024-06-05", desktop: 88, mobile: 140 },
+  { date: "2024-06-05", desktop: 100, mobile: 140 },
   { date: "2024-06-06", desktop: 294, mobile: 250 },
   { date: "2024-06-07", desktop: 323, mobile: 370 },
   { date: "2024-06-08", desktop: 385, mobile: 320 },
@@ -124,13 +124,13 @@ const chartConfig = {
     label: "Visitors",
   },
   desktop: {
-    label: "Desktop",
+    label: "Visitors",
     color: "hsl(var(--chart-1))",
   },
-  mobile: {
-    label: "Mobile",
-    color: "hsl(var(--chart-2))",
-  },
+  // mobile: {
+  //   label: "Mobile",
+  //   color: "hsl(var(--chart-2))",
+  // },
 } satisfies ChartConfig;
 
 export function HomeFullStats() {

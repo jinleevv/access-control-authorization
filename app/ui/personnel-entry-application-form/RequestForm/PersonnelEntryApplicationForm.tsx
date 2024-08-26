@@ -35,6 +35,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 import { DatePicker, DateRangePicker } from "@nextui-org/date-picker";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { IoWarning } from "react-icons/io5";
 
 interface RequestFormProps {
   requester: any;
@@ -335,219 +336,109 @@ export function RequestForm({ requester, signed }: RequestFormProps) {
   }
 
   return (
-    <ScrollArea className="border p-3 w-full h-[700px] mt-2 2xl:h-[870px] rounded-lg">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-          <div className="border p-4 space-y-2 rounded-lg">
-            <Label>Requester Information *</Label>
-            <div className="flex w-full gap-3">
-              <div className="space-y-2 w-1/5">
-                <Label>First Name</Label>
-                <Input
-                  placeholder="First Name"
-                  value={requester.firstName}
-                  disabled
-                />
-              </div>
-              <div className="space-y-2 w-1/5">
-                <Label>Last Name</Label>
-                <Input
-                  placeholder="Last Name"
-                  value={requester.lastName}
-                  disabled
-                />
-              </div>
-              <div className="space-y-2 w-1/5">
-                <FormLabel>Date of birth</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant={"outline"}
-                        className={cn(
-                          "w-full text-left font-normal",
-                          !new Date(requesterDateOfBirth) &&
-                            "text-muted-foreground"
-                        )}
+    <div>
+      <div className="border w-full h-full p-2 rounded-lg mb-4">
+        <div className="grid">
+          <Label className="flex text-md font-bold">
+            <IoWarning className="mr-1 mt-1" />
+            사내 출입 시 주의사항
+          </Label>
+          <div className="grid space-y-1">
+            <Label>
+              - 사업장 진입 전 휴대폰 카메라 봉인지 부착해 주시기 바랍니다.
+            </Label>
+            <Label>
+              - 각종 저장/촬영매체/IT기기는 사업장 내 반입이
+              제한됩니다.(안내센테 보관 또는 보안봉투에 담아 진입)
+            </Label>
+            <Label>
+              - 출입신청지역 외 출입시도 및 사내 배회를 자제해 주시기 바랍니다.
+            </Label>
+            <Label>- 발급받은 방문카드는 당일 반납해주시기 바랍니다.</Label>
+          </div>
+        </div>
+      </div>
+      <ScrollArea className="border p-3 w-full h-[595px] mt-2 2xl:h-[780px] rounded-lg">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+            <div className="border p-4 space-y-2 rounded-lg">
+              <Label>Requester Information *</Label>
+              <div className="flex w-full gap-3">
+                <div className="space-y-2 w-1/5">
+                  <Label>First Name</Label>
+                  <Input
+                    placeholder="First Name"
+                    value={requester.firstName}
+                    disabled
+                  />
+                </div>
+                <div className="space-y-2 w-1/5">
+                  <Label>Last Name</Label>
+                  <Input
+                    placeholder="Last Name"
+                    value={requester.lastName}
+                    disabled
+                  />
+                </div>
+                <div className="space-y-2 w-1/5">
+                  <FormLabel>Date of birth</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "w-full text-left font-normal",
+                            !new Date(requesterDateOfBirth) &&
+                              "text-muted-foreground"
+                          )}
+                          disabled
+                        >
+                          <span>{formattedDate}</span>
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        selected={new Date(requester.dateOfBirth)}
                         disabled
-                      >
-                        <span>{formattedDate}</span>
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      selected={new Date(requester.dateOfBirth)}
-                      disabled
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-              </div>
-              <div className="space-y-2 w-1/5">
-                <Label>Phone Number</Label>
-                <Input
-                  placeholder="Phone Number"
-                  value={requester.phoneNumber}
-                  disabled
-                />
-              </div>
-              <div className="space-y-2 w-1/5">
-                <Label>Company</Label>
-                <Input
-                  placeholder="Company"
-                  value={requester.company}
-                  disabled
-                />
-              </div>
-            </div>
-          </div>
-          <div className="space-y-2 rounded-lg border p-4">
-            <div>
-              <Label>Visitor Information *</Label>
-              <div className="flex w-full mt-3 gap-3">
-                <div className="w-1/6">
-                  <FormField
-                    control={form.control}
-                    name="visitor_full_name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Full Name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Visitor Full Name" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+                <div className="space-y-2 w-1/5">
+                  <Label>Phone Number</Label>
+                  <Input
+                    placeholder="Phone Number"
+                    value={requester.phoneNumber}
+                    disabled
                   />
                 </div>
-                <div className="w-1/6">
-                  <FormField
-                    control={form.control}
-                    name="visitor_birth_date"
-                    render={({ field }) => (
-                      <FormItem>
-                        <div>
-                          <DatePicker
-                            label="Date of birth"
-                            labelPlacement="outside"
-                            variant="bordered"
-                            className="max-w-full h-12 font-medium mt-1.5"
-                            radius="sm"
-                            value={field.value}
-                            onChange={field.onChange}
-                          />
-                        </div>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="w-1/6">
-                  <FormField
-                    control={form.control}
-                    name="visitor_nationality"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Nationality</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Visitor Nationality" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="w-1/6">
-                  <FormField
-                    control={form.control}
-                    name="visitor_phone_number"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Phone Number</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="Visitor Phone Number"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="w-1/6">
-                  <FormField
-                    control={form.control}
-                    name="visitor_company"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Company</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Visitor Company" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="w-1/6">
-                  <FormField
-                    control={form.control}
-                    name="visitor_position"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Position</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Visitor Position" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                <div className="space-y-2 w-1/5">
+                  <Label>Company</Label>
+                  <Input
+                    placeholder="Company"
+                    value={requester.company}
+                    disabled
                   />
                 </div>
               </div>
             </div>
-          </div>
-          <div className="space-y-2 rounded-lg border p-4">
-            <div className="flex w-full justify-between">
-              <Label>Companion Information</Label>
-              <div className="flex gap-1">
-                <Button size="sm" type="button" onClick={handleAddCompanion}>
-                  Add
-                </Button>
-                <Button
-                  size="sm"
-                  type="button"
-                  onClick={() => handleDeleteCompanion(companions.length - 1)}
-                >
-                  Delete
-                </Button>
-              </div>
-            </div>
-            {companions.map((companion, index) => {
-              const full_name = `companion_${index}_full_name`;
-              const date_of_birth = `companion_${index}_birth_date`;
-              const nationality = `companion_${index}_nationality`;
-              const phone_number = `companion_${index}_phone_number`;
-              const company = `companion_${index}_company`;
-              const position = `companion_${index}_position`;
-
-              return (
-                <div className="flex w-full gap-3" key={index}>
+            <div className="space-y-2 rounded-lg border p-4">
+              <div>
+                <Label>Visitor Information *</Label>
+                <div className="flex w-full mt-3 gap-3">
                   <div className="w-1/6">
                     <FormField
                       control={form.control}
-                      name={full_name}
+                      name="visitor_full_name"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Full Name</FormLabel>
                           <FormControl>
-                            <Input
-                              placeholder="Companion Full Name"
-                              {...field}
-                            />
+                            <Input placeholder="Visitor Full Name" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -557,7 +448,7 @@ export function RequestForm({ requester, signed }: RequestFormProps) {
                   <div className="w-1/6">
                     <FormField
                       control={form.control}
-                      name={date_of_birth}
+                      name="visitor_birth_date"
                       render={({ field }) => (
                         <FormItem>
                           <div>
@@ -579,13 +470,13 @@ export function RequestForm({ requester, signed }: RequestFormProps) {
                   <div className="w-1/6">
                     <FormField
                       control={form.control}
-                      name={nationality}
+                      name="visitor_nationality"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Nationality</FormLabel>
                           <FormControl>
                             <Input
-                              placeholder="Companion Nationality"
+                              placeholder="Visitor Nationality"
                               {...field}
                             />
                           </FormControl>
@@ -597,13 +488,13 @@ export function RequestForm({ requester, signed }: RequestFormProps) {
                   <div className="w-1/6">
                     <FormField
                       control={form.control}
-                      name={phone_number}
+                      name="visitor_phone_number"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Phone Number</FormLabel>
                           <FormControl>
                             <Input
-                              placeholder="Companion Phone Number"
+                              placeholder="Visitor Phone Number"
                               {...field}
                             />
                           </FormControl>
@@ -615,12 +506,12 @@ export function RequestForm({ requester, signed }: RequestFormProps) {
                   <div className="w-1/6">
                     <FormField
                       control={form.control}
-                      name={company}
+                      name="visitor_company"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Company</FormLabel>
                           <FormControl>
-                            <Input placeholder="Companion Company" {...field} />
+                            <Input placeholder="Visitor Company" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -630,15 +521,12 @@ export function RequestForm({ requester, signed }: RequestFormProps) {
                   <div className="w-1/6">
                     <FormField
                       control={form.control}
-                      name={position}
+                      name="visitor_position"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Position</FormLabel>
                           <FormControl>
-                            <Input
-                              placeholder="Companion Position"
-                              {...field}
-                            />
+                            <Input placeholder="Visitor Position" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -646,229 +534,373 @@ export function RequestForm({ requester, signed }: RequestFormProps) {
                     />
                   </div>
                 </div>
-              );
-            })}
-          </div>
-          <div className="space-y-2 rounded-lg border p-4">
-            <div>
-              <Label>Duration/Purpose of Visit *</Label>
-            </div>
-            <div className="flex w-full gap-3">
-              <div className="w-1/2">
-                <FormField
-                  control={form.control}
-                  name="duration_of_visit"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <DateRangePicker
-                          label="Duration of visit"
-                          labelPlacement="outside"
-                          variant="bordered"
-                          radius="sm"
-                          value={field.value}
-                          onChange={field.onChange}
-                          className="font-medium mt-1.5"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="w-1/2">
-                <FormField
-                  control={form.control}
-                  name="purpose_of_visit"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Purpose of Visit</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Purpose of visit" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
               </div>
             </div>
-          </div>
-          <div className="rounded-lg border p-4">
-            <div>
-              <Label>Information of the Person to Visit *</Label>
+            <div className="space-y-2 rounded-lg border p-4">
+              <div className="flex w-full justify-between">
+                <Label>Companion Information</Label>
+                <div className="flex gap-1">
+                  <Button size="sm" type="button" onClick={handleAddCompanion}>
+                    Add
+                  </Button>
+                  <Button
+                    size="sm"
+                    type="button"
+                    onClick={() => handleDeleteCompanion(companions.length - 1)}
+                  >
+                    Delete
+                  </Button>
+                </div>
+              </div>
+              {companions.map((companion, index) => {
+                const full_name = `companion_${index}_full_name`;
+                const date_of_birth = `companion_${index}_birth_date`;
+                const nationality = `companion_${index}_nationality`;
+                const phone_number = `companion_${index}_phone_number`;
+                const company = `companion_${index}_company`;
+                const position = `companion_${index}_position`;
+
+                return (
+                  <div className="flex w-full gap-3" key={index}>
+                    <div className="w-1/6">
+                      <FormField
+                        control={form.control}
+                        name={full_name}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Full Name</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="Companion Full Name"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="w-1/6">
+                      <FormField
+                        control={form.control}
+                        name={date_of_birth}
+                        render={({ field }) => (
+                          <FormItem>
+                            <div>
+                              <DatePicker
+                                label="Date of birth"
+                                labelPlacement="outside"
+                                variant="bordered"
+                                className="max-w-full h-12 font-medium mt-1.5"
+                                radius="sm"
+                                value={field.value}
+                                onChange={field.onChange}
+                              />
+                            </div>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="w-1/6">
+                      <FormField
+                        control={form.control}
+                        name={nationality}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Nationality</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="Companion Nationality"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="w-1/6">
+                      <FormField
+                        control={form.control}
+                        name={phone_number}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Phone Number</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="Companion Phone Number"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="w-1/6">
+                      <FormField
+                        control={form.control}
+                        name={company}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Company</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="Companion Company"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="w-1/6">
+                      <FormField
+                        control={form.control}
+                        name={position}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Position</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="Companion Position"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-            <div className="flex w-full gap-3">
-              <div className="w-1/4">
-                <FormField
-                  control={form.control}
-                  name="info_person_visit_name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Full Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Full Name" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+            <div className="space-y-2 rounded-lg border p-4">
+              <div>
+                <Label>Duration/Purpose of Visit *</Label>
               </div>
-              <div className="w-1/4">
-                <FormField
-                  control={form.control}
-                  name="info_person_phone_number"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Phone Number</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Phone Number" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="w-1/4">
-                <FormField
-                  control={form.control}
-                  name="info_person_company"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Company</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Company" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="w-1/4">
-                <FormField
-                  control={form.control}
-                  name="info_person_department"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Department</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Department" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              <div className="flex w-full gap-3">
+                <div className="w-1/2">
+                  <FormField
+                    control={form.control}
+                    name="duration_of_visit"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <DateRangePicker
+                            label="Duration of visit"
+                            labelPlacement="outside"
+                            variant="bordered"
+                            radius="sm"
+                            value={field.value}
+                            onChange={field.onChange}
+                            className="font-medium mt-1.5"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="w-1/2">
+                  <FormField
+                    control={form.control}
+                    name="purpose_of_visit"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Purpose of Visit</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Purpose of visit" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          <div className="rounded-lg border p-4">
-            <div className="flex w-full">
-              <Label className="w-40">Visiting Location *</Label>
+            <div className="rounded-lg border p-4">
+              <div>
+                <Label>Information of the Person to Visit *</Label>
+              </div>
+              <div className="flex w-full gap-3">
+                <div className="w-1/4">
+                  <FormField
+                    control={form.control}
+                    name="info_person_visit_name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Full Name</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Full Name" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="w-1/4">
+                  <FormField
+                    control={form.control}
+                    name="info_person_phone_number"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Phone Number</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Phone Number" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="w-1/4">
+                  <FormField
+                    control={form.control}
+                    name="info_person_company"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Company</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Company" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="w-1/4">
+                  <FormField
+                    control={form.control}
+                    name="info_person_department"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Department</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Department" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="rounded-lg border p-4">
+              <div className="flex w-full">
+                <Label className="w-40">Visiting Location *</Label>
+                <FormField
+                  control={form.control}
+                  name="visitor_visit_location"
+                  render={({ field }) => (
+                    <FormItem className="w-full flex ml-3">
+                      <FormControl>
+                        <RadioGroup
+                          // onValueChange={field.onChange}
+                          // defaultValue={field.value}
+                          onValueChange={(value) => {
+                            field.onChange(value); // Update the form value
+                            setSelectedLocation(value); // Update the state
+                          }}
+                          defaultValue={field.value}
+                          className="flex"
+                        >
+                          <FormItem className="flex items-center space-x-1 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="CAM1 Factory" />
+                            </FormControl>
+                            <FormLabel className="font-normal">
+                              CAM1 Factory
+                            </FormLabel>
+                          </FormItem>
+                          <FormItem className="flex items-center space-x-1 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="Office Building" />
+                            </FormControl>
+                            <FormLabel className="font-normal">
+                              Office Building
+                            </FormLabel>
+                          </FormItem>
+                          <FormItem className="flex items-center space-x-1 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="Other" />
+                            </FormControl>
+                            <FormLabel className="font-normal">Other</FormLabel>
+                          </FormItem>
+                        </RadioGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div>
+                {selectedLocation === "Other" && (
+                  <FormField
+                    control={form.control}
+                    name="visitor_visit_location"
+                    render={({ field }) => (
+                      <FormItem className="mt-4 w-full flex">
+                        <FormLabel className="w-40 mt-5">
+                          Please specify *
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            type="text"
+                            {...field}
+                            placeholder="Enter location"
+                            className="border rounded-md w-full"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
+              </div>
+            </div>
+            <div className="p-2">
               <FormField
                 control={form.control}
-                name="visitor_visit_location"
+                name="approval_line"
                 render={({ field }) => (
-                  <FormItem className="w-full flex ml-3">
-                    <FormControl>
-                      <RadioGroup
-                        // onValueChange={field.onChange}
-                        // defaultValue={field.value}
-                        onValueChange={(value) => {
-                          field.onChange(value); // Update the form value
-                          setSelectedLocation(value); // Update the state
-                        }}
-                        defaultValue={field.value}
-                        className="flex"
-                      >
-                        <FormItem className="flex items-center space-x-1 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value="CAM1 Factory" />
-                          </FormControl>
-                          <FormLabel className="font-normal">
-                            CAM1 Factory
-                          </FormLabel>
-                        </FormItem>
-                        <FormItem className="flex items-center space-x-1 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value="Office Building" />
-                          </FormControl>
-                          <FormLabel className="font-normal">
-                            Office Building
-                          </FormLabel>
-                        </FormItem>
-                        <FormItem className="flex items-center space-x-1 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value="Other" />
-                          </FormControl>
-                          <FormLabel className="font-normal">Other</FormLabel>
-                        </FormItem>
-                      </RadioGroup>
-                    </FormControl>
+                  <FormItem>
+                    <FormLabel>Approval Line</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Appoval Line" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="m@example.com">
+                          m@example.com
+                        </SelectItem>
+                        <SelectItem value="m@google.com">
+                          m@google.com
+                        </SelectItem>
+                        <SelectItem value="m@support.com">
+                          m@support.com
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
-            <div>
-              {selectedLocation === "Other" && (
-                <FormField
-                  control={form.control}
-                  name="visitor_visit_location"
-                  render={({ field }) => (
-                    <FormItem className="mt-4 w-full flex">
-                      <FormLabel className="w-40 mt-5">
-                        Please specify *
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          {...field}
-                          placeholder="Enter location"
-                          className="border rounded-md w-full"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              )}
+            <div className="flex w-full justify-end">
+              <Button type="submit">Submit</Button>
             </div>
-          </div>
-          <div className="p-2">
-            <FormField
-              control={form.control}
-              name="approval_line"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Approval Line</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Appoval Line" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="m@example.com">
-                        m@example.com
-                      </SelectItem>
-                      <SelectItem value="m@google.com">m@google.com</SelectItem>
-                      <SelectItem value="m@support.com">
-                        m@support.com
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="flex w-full justify-end">
-            <Button type="submit">Submit</Button>
-          </div>
-        </form>
-      </Form>
-    </ScrollArea>
+          </form>
+        </Form>
+      </ScrollArea>
+    </div>
   );
 }

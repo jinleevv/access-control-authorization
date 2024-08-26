@@ -51,11 +51,9 @@ export function DataTable<TData, TValue>({
   // Filter records based on createdAt month and year
   const filteredData = data.filter((record) => {
     const createdAtDate = new Date(record.createdAt);
-    return (
-      monthAgo <= createdAtDate && createdAtDate <= now
-    );
+    return monthAgo <= createdAtDate && createdAtDate <= now;
   });
-  
+
   const [tableData, setTableData] = useState(filteredData);
 
   const today = new Date();
@@ -117,15 +115,15 @@ export function DataTable<TData, TValue>({
         <div className="w-full flex justify-between">
           <div className="w-1/2">
             <Input
-              placeholder="Filter by visitor"
+              placeholder="Filter by driver"
               value={
                 (table
-                  .getColumn("visitorFullName")
+                  .getColumn("driverFullName")
                   ?.getFilterValue() as string) ?? ""
               }
               onChange={(event) =>
                 table
-                  .getColumn("visitorFullName")
+                  .getColumn("driverFullName")
                   ?.setFilterValue(event.target.value)
               }
               className="max-w-sm"
@@ -176,7 +174,7 @@ export function DataTable<TData, TValue>({
           </div>
         </div>
       </div>
-      <div className="rounded-md border h-full">
+      <div className="rounded-md border h-5/6 overflow-auto">
         <Table className="h-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

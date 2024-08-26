@@ -12,14 +12,20 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
-import { format } from "date-fns";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
-import { DatePicker, DateRangePicker } from "@nextui-org/date-picker";
+import { DateRangePicker } from "@nextui-org/date-picker";
 import { IoWarning } from "react-icons/io5";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface RequestFormProps {
   requester: any;
@@ -41,6 +47,8 @@ const formSchema = z.object({
   driver_information_position: z.string(),
 
   duration_of_visit: z.any(),
+
+  approval_line: z.string(),
 });
 
 export function VehicleEntryApplication({
@@ -50,16 +58,67 @@ export function VehicleEntryApplication({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
-  const [selectedLocation, setSelectedLocation] = useState<string>("");
-
-  const requesterDateOfBirth = `${requester.dateOfBirth}`;
-  const formattedDate = format(
-    new Date(requesterDateOfBirth.slice(0, 19)),
-    "MMMM do, yyyy"
-  );
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    return 0;
+    const [datePart] = requester.dateOfBirth.split("T");
+    const [year, month, day] = datePart.split("-").map(Number);
+
+    // Create a new Date object (months are zero-based in the Date constructor)
+    const requesterDateOfBirth = new Date(year, month - 1, day);
+
+    const requesterInfo = {
+      firstName: requester.firstName,
+      lastName: requester.lastName,
+      dateOfBirth: requesterDateOfBirth,
+      phoneNumber: requester.phoneNumber,
+      company: requester.company,
+      supervisor: values.approval_line,
+    };
+
+    const formInformation = {
+      applicationType: values.application_type,
+
+      purpose: values.purpose,
+
+      vehicleInformationProvince: values.vehicle_information_province,
+      vehicleInformationNumber: values.vehicle_information_number,
+      vehicleInformationType: values.vehicle_information_type,
+      vehicleInformationModel: values.vehicle_information_model,
+
+      driverInformationCompany: values.driver_information_company,
+      driverInformationFullName: values.driver_information_name,
+      driverInformationPhoneNumber: values.driver_information_phone_number,
+      driverInformationPosition: values.driver_information_position,
+
+      durationStart: new Date(
+        values.duration_of_visit.start.year,
+        values.duration_of_visit.start.month - 1,
+        values.duration_of_visit.start.day
+      ),
+      durationEnd: new Date(
+        values.duration_of_visit.end.year,
+        values.duration_of_visit.end.month - 1,
+        values.duration_of_visit.end.day
+      ),
+    };
+
+    const response = await fetch("/api/save-vehicle-entry-application-form", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        requesterInfo: requesterInfo,
+        formInformation: formInformation,
+        pledgeSigned: signed,
+      }),
+    });
+
+    if (response.ok) {
+      toast("Successfully submitted the application");
+    } else {
+      console.error("Failed to submit form:", response.statusText);
+    }
   }
 
   return (
@@ -116,127 +175,64 @@ export function VehicleEntryApplication({
           </div>
         </div>
       </div>
-      <div className="border w-full h-full p-4 rounded-lg">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-            <div>
-              <FormField
-                control={form.control}
-                name="application_type"
-                render={({ field }) => (
-                  <FormItem className="w-full flex">
-                    <FormLabel>Application Type *</FormLabel>
-                    <FormControl>
-                      <RadioGroup
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        className="flex ml-3"
-                      >
-                        <FormItem className="flex -mt-2 items-center space-x-1.5 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value="Short-term Access" />
-                          </FormControl>
-                          <FormLabel className="font-normal">
-                            Short-term Access
-                          </FormLabel>
-                        </FormItem>
-                        <FormItem className="flex -mt-2 items-center space-x-1.5 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value="Long-term Access" />
-                          </FormControl>
-                          <FormLabel className="font-normal">
-                            Long-term Access
-                          </FormLabel>
-                        </FormItem>
-                        <FormItem className="flex -mt-2 items-center space-x-1.5 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value="Emergency Access" />
-                          </FormControl>
-                          <FormLabel className="font-normal">
-                            Emergency Access
-                          </FormLabel>
-                        </FormItem>
-                      </RadioGroup>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="border p-4 rounded-lg">
+      <ScrollArea className="h-[500px] 2xl:h-[660px]">
+        <div className="border w-full h-full p-4 rounded-lg">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
               <div>
                 <FormField
                   control={form.control}
-                  name="purpose"
+                  name="application_type"
                   render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Purpose of Visit</FormLabel>
+                    <FormItem className="w-full flex">
+                      <FormLabel>Application Type *</FormLabel>
                       <FormControl>
-                        <Input placeholder="Purpose of visit" {...field} />
+                        <RadioGroup
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          className="flex ml-3"
+                        >
+                          <FormItem className="flex -mt-2 items-center space-x-1.5 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="Short-term Access" />
+                            </FormControl>
+                            <FormLabel className="font-normal">
+                              Short-term Access
+                            </FormLabel>
+                          </FormItem>
+                          <FormItem className="flex -mt-2 items-center space-x-1.5 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="Long-term Access" />
+                            </FormControl>
+                            <FormLabel className="font-normal">
+                              Long-term Access
+                            </FormLabel>
+                          </FormItem>
+                          <FormItem className="flex -mt-2 items-center space-x-1.5 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="Emergency Access" />
+                            </FormControl>
+                            <FormLabel className="font-normal">
+                              Emergency Access
+                            </FormLabel>
+                          </FormItem>
+                        </RadioGroup>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
-            </div>
-            <div className="border p-4 space-y-2 rounded-lg">
-              <Label>Vehicle Information</Label>
-              <div className="flex mt-2 w-full gap-3">
-                <div className="w-1/4">
+              <div className="border p-4 rounded-lg">
+                <div>
                   <FormField
                     control={form.control}
-                    name="vehicle_information_province"
+                    name="purpose"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Province</FormLabel>
+                        <FormLabel>Purpose of Visit</FormLabel>
                         <FormControl>
-                          <Input placeholder="Province" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="w-1/4">
-                  <FormField
-                    control={form.control}
-                    name="vehicle_information_number"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Vehicle Number</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Vehicle Number" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="w-1/4">
-                  <FormField
-                    control={form.control}
-                    name="vehicle_information_type"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Type of Vehical</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Type of Vehical" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="w-1/4">
-                  <FormField
-                    control={form.control}
-                    name="vehicle_information_model"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Vehical Model</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Vehical Model" {...field} />
+                          <Input placeholder="Purpose of visit" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -244,100 +240,198 @@ export function VehicleEntryApplication({
                   />
                 </div>
               </div>
-            </div>
-            <div className="border p-4 space-y-2 rounded-lg">
-              <Label>Driver Information</Label>
-              <div className="flex mt-2 w-full gap-3">
-                <div className="w-1/4">
-                  <FormField
-                    control={form.control}
-                    name="driver_information_company"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Company</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Province" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="w-1/4">
-                  <FormField
-                    control={form.control}
-                    name="driver_information_name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Full Name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Vehicle Number" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="w-1/4">
-                  <FormField
-                    control={form.control}
-                    name="driver_information_phone_number"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Phone Number</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Type of Vehical" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="w-1/4">
-                  <FormField
-                    control={form.control}
-                    name="driver_information_position"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Position</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Vehical Model" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+              <div className="border p-4 space-y-2 rounded-lg">
+                <Label>Vehicle Information</Label>
+                <div className="flex mt-2 w-full gap-3">
+                  <div className="w-1/4">
+                    <FormField
+                      control={form.control}
+                      name="vehicle_information_province"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Province</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Province" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-1/4">
+                    <FormField
+                      control={form.control}
+                      name="vehicle_information_number"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Vehicle Number</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Vehicle Number" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-1/4">
+                    <FormField
+                      control={form.control}
+                      name="vehicle_information_type"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Type of Vehical</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Type of Vehical" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-1/4">
+                    <FormField
+                      control={form.control}
+                      name="vehicle_information_model"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Vehical Model</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Vehical Model" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="border p-4 w-full rounded-lg">
-              <FormField
-                control={form.control}
-                name="duration_of_visit"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <DateRangePicker
-                        label="Duration of visit"
-                        labelPlacement="outside"
-                        variant="bordered"
-                        radius="sm"
-                        value={field.value}
-                        onChange={field.onChange}
-                        className="font-medium mt-1.5"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="flex w-full h-full justify-end">
-              <Button>Submit</Button>
-            </div>
-          </form>
-        </Form>
-      </div>
+              <div className="border p-4 space-y-2 rounded-lg">
+                <Label>Driver Information</Label>
+                <div className="flex mt-2 w-full gap-3">
+                  <div className="w-1/4">
+                    <FormField
+                      control={form.control}
+                      name="driver_information_company"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Company</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Province" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-1/4">
+                    <FormField
+                      control={form.control}
+                      name="driver_information_name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Full Name</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Vehicle Number" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-1/4">
+                    <FormField
+                      control={form.control}
+                      name="driver_information_phone_number"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Phone Number</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Type of Vehical" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-1/4">
+                    <FormField
+                      control={form.control}
+                      name="driver_information_position"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Position</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Vehical Model" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="border p-4 w-full rounded-lg">
+                <FormField
+                  control={form.control}
+                  name="duration_of_visit"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <DateRangePicker
+                          label="Duration of visit"
+                          labelPlacement="outside"
+                          variant="bordered"
+                          radius="sm"
+                          value={field.value}
+                          onChange={field.onChange}
+                          className="font-medium mt-1.5"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div>
+                <FormField
+                  control={form.control}
+                  name="approval_line"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Approval Line</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Appoval Line" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="m@example.com">
+                            m@example.com
+                          </SelectItem>
+                          <SelectItem value="m@google.com">
+                            m@google.com
+                          </SelectItem>
+                          <SelectItem value="m@support.com">
+                            m@support.com
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="flex w-full h-full justify-end">
+                <Button>Submit</Button>
+              </div>
+            </form>
+          </Form>
+        </div>
+      </ScrollArea>
     </div>
   );
 }

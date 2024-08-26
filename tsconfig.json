@@ -26,7 +26,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "types/**/*.ts"
-, "app/ui/landing-page/ControlledInput.tsx"  ],
+    "types/**/*.ts",
+    "app/ui/landing-page/ControlledInput.tsx"
+  ],
   "exclude": ["node_modules"]
 }
