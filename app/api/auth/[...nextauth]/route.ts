@@ -33,7 +33,7 @@ export async function POST(request: Request) {
       },
     });
   } catch (e) {
-    console.log({ e });
+    // console.log({ e });
   }
 
   return NextResponse.json({ message: "success" });

@@ -62,7 +62,9 @@ export async function RecentRequestForms() {
   return (
     <>
       <div className="w-full h-full mt-2 space-y-3">
-        <Label className="text-lg font-bold">Recent Applications</Label>
+        <Label className="text-lg font-bold">
+          Recent Personnel Entry Application Forms
+        </Label>
         <DataTable columns={columns} data={data} />
       </div>
     </>

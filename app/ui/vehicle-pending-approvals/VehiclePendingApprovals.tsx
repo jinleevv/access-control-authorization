@@ -1,16 +1,13 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
 
-interface PendingApprovalsProps {
-  requester: any;
+interface VehiclePendingApprovalsProps {
   data: any;
 }
 
-export function PendingApprovals({ requester, data }: PendingApprovalsProps) {
+export function VehiclePendingApprovals({ data }: VehiclePendingApprovalsProps) {
   // async function handleEmail() {
   //   const response = await fetch("/api/send-email", {
   //     method: "POST",

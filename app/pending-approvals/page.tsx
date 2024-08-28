@@ -1,9 +1,10 @@
 import { Label } from "@/components/ui/label";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { PendingApprovals } from "../ui/pending-approvals/PendingApprovals";
+import { PersonnelPendingApprovals } from "../ui/personnel-pending-approvals/PersonnelPendingApprovals";
 import prisma from "@/lib/db";
 import Sidebar from "../ui/sidebar/sidebar";
+import { VehiclePendingApprovals } from "../ui/vehicle-pending-approvals/VehiclePendingApprovals";
 
 export default async function PendingApprovalsPage() {
   const session = await auth();
@@ -12,12 +13,21 @@ export default async function PendingApprovalsPage() {
 
   const myFullName = session.user.firstName + " " + session.user.lastName;
 
-  const matchingForms = await prisma.personnelEntryApplicationForm.findMany({
-    where: {
-      supervisor: myFullName,
-      status: "In Progress",
-    },
-  });
+  const matchingPersonnelForms =
+    await prisma.personnelEntryApplicationForm.findMany({
+      where: {
+        supervisor: myFullName,
+        status: "In Progress",
+      },
+    });
+
+  const matchingVehicleForms =
+    await prisma.vehicleEntryApplicationForm.findMany({
+      where: {
+        supervisor: myFullName,
+        status: "In Progress",
+      },
+    });
 
   return (
     <section className="flex w-full h-full">
@@ -31,8 +41,17 @@ export default async function PendingApprovalsPage() {
             Review the requested forms and either approve or reject
           </Label>
         </div>
-        <div className="mt-3 ml-10 mr-10">
-          <PendingApprovals requester={session.user} data={matchingForms} />
+        <div className="mt-10 ml-10 mr-10 space-y-5">
+          <Label className="text-lg font-bold">
+            Personnel Entry Approval Lists
+          </Label>
+          <PersonnelPendingApprovals data={matchingPersonnelForms} />
+        </div>
+        <div className="mt-10 ml-10 mr-10 space-y-5">
+          <Label className="text-lg font-bold">
+            Vehicle Entry Approval Lists
+          </Label>
+          <VehiclePendingApprovals data={matchingVehicleForms} />
         </div>
       </div>
     </section>
