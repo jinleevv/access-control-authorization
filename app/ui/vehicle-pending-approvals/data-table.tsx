@@ -17,15 +17,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { VehiclePendingApprovals } from "./columns";
 import { toast } from "sonner";
@@ -42,8 +33,6 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
-  const [selectedRowData, setSelectedRowData] =
-    useState<VehiclePendingApprovals | null>(null);
 
   useEffect(() => {
     setIsMounted(true);
@@ -56,25 +45,9 @@ export function DataTable<TData, TValue>({
   });
 
   const handleDetailsClick = (row: TData) => {
-    setSelectedRowData(row as VehiclePendingApprovals);
+    const selectedRow = row as VehiclePendingApprovals;
+    router.push(`/pending-approvals/${selectedRow.id}`);
   };
-
-  function formatKey(key: string): string {
-    return key
-      .replace(/([A-Z])/g, " $1") // Add space before capital letters
-      .replace(/([0-9]+)/g, " $1") // Add space before numbers
-      .replace(/^./, (str) => str.toUpperCase()); // Capitalize the first letter
-  }
-
-  async function handleApprove() {
-    const applicationID = selectedRowData!.id;
-
-  }
-
-  async function handleReject() {
-    const applicationID = selectedRowData!.id;
-
-  }
 
   return (
     <div className="rounded-md border">
@@ -110,59 +83,9 @@ export function DataTable<TData, TValue>({
                   </TableCell>
                 ))}
                 {isMounted && (
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button onClick={() => handleDetailsClick(row.original)}>
-                        Details
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-[900px]">
-                      <DialogHeader>
-                        <DialogTitle>Requester Details</DialogTitle>
-                        <DialogDescription>
-                          <div>
-                            {/* Display all row data in the dialog */}
-                            {selectedRowData && (
-                              <div className="w-full h-[400px] space-y-4 overflow-auto">
-                                <div>
-                                  <h3 className="text-lg font-semibold">
-                                    Requester Details
-                                  </h3>
-                                  <div className="grid grid-cols-2 gap-4 mt-2">
-                                    {Object.entries(selectedRowData).map(
-                                      ([key, value]) => (
-                                        <div key={key} className="flex">
-                                          <div className="font-medium text-gray-700 capitalize w-40">
-                                            {formatKey(key)}:
-                                          </div>
-                                          <div className="text-gray-900">
-                                            {value instanceof Date
-                                              ? value.toLocaleDateString()
-                                              : value.toString()}
-                                          </div>
-                                        </div>
-                                      )
-                                    )}
-                                  </div>
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                          <div className="flex gap-2">
-                            <DialogClose>
-                              <Button onClick={handleApprove}>Approve</Button>
-                              <Button
-                                onClick={handleReject}
-                                variant="destructive"
-                              >
-                                Reject
-                              </Button>
-                            </DialogClose>
-                          </div>
-                        </DialogDescription>
-                      </DialogHeader>
-                    </DialogContent>
-                  </Dialog>
+                  <Button onClick={() => handleDetailsClick(row.original)}>
+                    Details
+                  </Button>
                 )}
               </TableRow>
             ))
