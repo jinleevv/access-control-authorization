@@ -3,19 +3,6 @@ import Credentials from "next-auth/providers/credentials";
 import prisma from "./lib/db";
 import { compare } from "bcryptjs";
 
-// const convertUTCToLocal = (utcDateString: string) => {
-//   const localDate = new Date(utcDateString);
-//   return localDate.toString(); // Local time string
-// };
-
-// const calculateExpiry = (maxAge: number) => {
-//   const now = new Date();
-//   now.setSeconds(now.getSeconds() + maxAge);
-//   console.log("NOWW: ", now.toISOString());
-//   console.log("Local Expiry Time:", convertUTCToLocal(now.toISOString()));
-//   return now.toISOString();
-// };
-
 export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
     signIn: "/login",

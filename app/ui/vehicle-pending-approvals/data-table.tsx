@@ -46,7 +46,14 @@ export function DataTable<TData, TValue>({
 
   const handleDetailsClick = (row: TData) => {
     const selectedRow = row as VehiclePendingApprovals;
-    router.push(`/pending-approvals/${selectedRow.id}`);
+    const today = new Date();
+    const todayString = today.toISOString();
+
+    const ID = selectedRow.id.toString();
+
+    // Save ID to session storage
+    sessionStorage.setItem("vehicleId", ID);
+    router.push(`/pending-approvals/vehicle/${todayString}`);
   };
 
   return (
@@ -83,9 +90,11 @@ export function DataTable<TData, TValue>({
                   </TableCell>
                 ))}
                 {isMounted && (
-                  <Button onClick={() => handleDetailsClick(row.original)}>
-                    Details
-                  </Button>
+                  <div className="flex mt-1.5 justify-center">
+                    <Button onClick={() => handleDetailsClick(row.original)}>
+                      Details
+                    </Button>
+                  </div>
                 )}
               </TableRow>
             ))

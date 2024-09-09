@@ -4,7 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type PendingApprovals = {
+export type PersonnelPendingApprovals = {
   id: string;
   requesterFirstName: string;
   requesterLastName: string;
@@ -81,7 +81,7 @@ export type PendingApprovals = {
   updatedAt: string;
 };
 
-export const columns: ColumnDef<PendingApprovals>[] = [
+export const columns: ColumnDef<PersonnelPendingApprovals>[] = [
   {
     accessorKey: "requesterFirstName",
     header: "Requester First Name",

@@ -1,11 +1,10 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-
-interface VehicleApprovalDetailProps {
-  id: string;
-}
+import { toast } from "sonner";
 
 interface VehicleDetailInformation {
   id: string;
@@ -39,58 +38,67 @@ interface VehicleDetailInformation {
   supervisor: string;
 }
 
-const VehicleApprovalDetailPage = ({ id }: VehicleApprovalDetailProps) => {
-  const [data, setData] = useState<VehicleDetailInformation>({
-    id: "",
-    pledgeSigned: false,
-    purpose: "",
-    status: "In Progress",
-    createdAt: "",
-    updatedAt: "",
-
-    applicationType: "",
-
-    driverCompany: "",
-    driverName: "",
-    driverPhoneNumber: "",
-    driverPosition: "",
-
-    durationOfVisitStart: "",
-    durationOfVistitEnd: "",
-
-    requesterCompany: "",
-    requesterDateOfBirth: "",
-    requesterFirstName: "",
-    requesterLastName: "",
-    requesterPhoneNumber: "",
-
-    vehicleModel: "",
-    vehicleNumber: "",
-    vehicleProvince: "",
-    vehicleType: "",
-
-    supervisor: "",
-  });
+const VehicleApprovalDetailPage = () => {
+  const router = useRouter();
+  const [data, setData] = useState<VehicleDetailInformation | null>(null);
+  const id = sessionStorage.getItem("vehicleId");
 
   useEffect(() => {
     if (id) {
-      // Fetch the specific approval data using the `id`
-      fetch(`/api/vehicle-pending-approvals/${id}`)
-        .then((response) => response.json())
-        .then((data) => setData(data));
+      try {
+        // First, try fetching from the vehicle-pending-approvals API
+        fetch(`/api/vehicle-pending-approvals/${id}`)
+          .then((response) => response.json())
+          .then((data) => setData(data));
+      } catch (error) {
+        console.log("Vehicle API failed", error);
+      }
     }
   }, [id]);
 
-  function formatKey(key: string): string {
-    return key
-      .replace(/([A-Z])/g, " $1") // Add space before capital letters
-      .replace(/([0-9]+)/g, " $1") // Add space before numbers
-      .replace(/^./, (str) => str.toUpperCase()); // Capitalize the first letter
+  async function handleApprove() {
+    const applicationID = id;
+
+    try {
+      const response = await fetch("/api/vehicle-application-approval", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status: "approved", id: applicationID }),
+      });
+
+      if (response.ok) {
+        toast("Approved successfully");
+        router.refresh();
+      }
+    } catch (e) {
+      toast("Failed to approve the application, please contact IT department");
+    }
   }
 
-  if (data.id === "") return <div>Loading data...</div>;
+  async function handleReject() {
+    const applicationID = id;
 
-  console.log(data);
+    try {
+      const response = await fetch("/api/vehicle-application-approval", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status: "rejected", id: applicationID }),
+      });
+
+      if (response.ok) {
+        toast("Rejected successfully");
+        router.refresh();
+      }
+    } catch (e) {
+      toast("Failed to approve the application, please contact IT department");
+    }
+  }
+
+  if (data === null) return <div>Loading data...</div>;
 
   return (
     <div className="p-4 w-full h-full space-y-4">
@@ -121,7 +129,7 @@ const VehicleApprovalDetailPage = ({ id }: VehicleApprovalDetailProps) => {
             Document Number: <Label>{data.id}</Label>
           </Label>
         </div>
-        <div className="w-full border rounded-lg p-4">
+        <div className="w-full border rounded-lg p-4 space-y-3">
           <div className="flex p-3 justify-between border rounded-lg">
             <Label className="font-bold">
               Requester Name:{" "}
@@ -140,12 +148,12 @@ const VehicleApprovalDetailPage = ({ id }: VehicleApprovalDetailProps) => {
               Requester Company: <Label>{data.requesterCompany}</Label>
             </Label>
           </div>
-          <div className="flex p-3 justify-between">
+          <div className="flex p-3 justify-between border rounded-lg">
             <Label className="font-bold">
               Purpose: <Label>{data.purpose}</Label>
             </Label>
           </div>
-          <div className="flex p-3 justify-between">
+          <div className="flex p-3 justify-between border rounded-lg">
             <Label className="font-bold">
               Vehicle Number: <Label>{data.vehicleNumber}</Label>
             </Label>
@@ -159,7 +167,7 @@ const VehicleApprovalDetailPage = ({ id }: VehicleApprovalDetailProps) => {
               Vehicle Model: <Label>{data.vehicleModel}</Label>
             </Label>
           </div>
-          <div className="flex p-3 justify-between">
+          <div className="flex p-3 justify-between border rounded-lg">
             <Label className="font-bold">
               Driver Name: <Label>{data.driverName}</Label>
             </Label>
@@ -173,7 +181,7 @@ const VehicleApprovalDetailPage = ({ id }: VehicleApprovalDetailProps) => {
               Driver Company: <Label>{data.driverCompany}</Label>
             </Label>
           </div>
-          <div className="flex p-3 justify-between">
+          <div className="flex p-3 justify-between border rounded-lg">
             <Label className="font-bold">
               Duration:{" "}
               <Label>
@@ -182,6 +190,12 @@ const VehicleApprovalDetailPage = ({ id }: VehicleApprovalDetailProps) => {
               </Label>
             </Label>
           </div>
+        </div>
+        <div className="flex w-full justify-end space-x-2">
+          <Button onClick={handleApprove}>Approve</Button>
+          <Button variant={"destructive"} onClick={handleReject}>
+            Reject
+          </Button>
         </div>
       </div>
     </div>
