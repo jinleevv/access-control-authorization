@@ -52,7 +52,7 @@ async function getData(): Promise<RequestFormStatus[]> {
   }));
 
   return data
-    .sort((a, b) => a.createdAt.localeCompare(b.createdAt))
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
     .slice(0, 5);
 }
 

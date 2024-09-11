@@ -52,7 +52,7 @@ const formSchema = z.object({
   company: z.string(),
 });
 
-export default function RegisterPage() {
+export default function UserCreate() {
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -103,13 +103,11 @@ export default function RegisterPage() {
   }
 
   return (
-    <section className="w-full h-full">
-      
+    <div className="w-full h-full">
       <div className="ml-10 mr-10">
-        <Label className="grid text-2xl font-bold">Create Account</Label>
-        <Label className="ml-1">Create an account to access the pages</Label>
+        <Label className="grid text-lg font-bold">Create a User</Label>
       </div>
-      <div className="mt-7 ml-10 mr-10">
+      <div className="mt-2 ml-10 mr-10">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="flex w-full gap-3">
@@ -285,6 +283,6 @@ export default function RegisterPage() {
           </form>
         </Form>
       </div>
-    </section>
+    </div>
   );
 }

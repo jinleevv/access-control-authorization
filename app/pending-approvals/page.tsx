@@ -41,13 +41,13 @@ export default async function PendingApprovalsPage() {
             Review the requested forms and either approve or reject
           </Label>
         </div>
-        <div className="mt-10 ml-10 mr-10 space-y-5">
+        <div className="mt-4 ml-10 mr-10 space-y-5 h-[340px] 2xl:h-[400px]">
           <Label className="text-lg font-bold">
             Personnel Entry Approval Lists
           </Label>
           <PersonnelPendingApprovals data={matchingPersonnelForms} />
         </div>
-        <div className="mt-10 ml-10 mr-10 space-y-5">
+        <div className="mt-16 ml-10 mr-10 space-y-5 h-[340px] 2xl:h-[400px]">
           <Label className="text-lg font-bold">
             Vehicle Entry Approval Lists
           </Label>

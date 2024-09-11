@@ -41,6 +41,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             dateOfBirth: user.dateOfBirth,
             phoneNumber: user.phoneNumber,
             company: user.company,
+            admin: user.admin,
           };
         } else {
           return null;
@@ -65,6 +66,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.dateOfBirth = user.dateOfBirth;
         token.phoneNumber = user.phoneNumber;
         token.company = user.company;
+        token.admin = user.admin;
       }
       return token;
     },
@@ -77,6 +79,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       session.user.dateOfBirth = token.dateOfBirth;
       session.user.phoneNumber = token.phoneNumber;
       session.user.company = token.company;
+      session.user.admin = token.admin;
 
       return session;
     },

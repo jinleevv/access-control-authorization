@@ -70,6 +70,7 @@ const VehicleApprovalDetailPage = () => {
 
       if (response.ok) {
         toast("Approved successfully");
+        router.push("/pending-approvals");
         router.refresh();
       }
     } catch (e) {
@@ -91,6 +92,7 @@ const VehicleApprovalDetailPage = () => {
 
       if (response.ok) {
         toast("Rejected successfully");
+        router.push("/pending-approvals");
         router.refresh();
       }
     } catch (e) {

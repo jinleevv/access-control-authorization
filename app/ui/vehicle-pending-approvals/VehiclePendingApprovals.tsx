@@ -7,7 +7,9 @@ interface VehiclePendingApprovalsProps {
   data: any;
 }
 
-export function VehiclePendingApprovals({ data }: VehiclePendingApprovalsProps) {
+export function VehiclePendingApprovals({
+  data,
+}: VehiclePendingApprovalsProps) {
   // async function handleEmail() {
   //   const response = await fetch("/api/send-email", {
   //     method: "POST",
@@ -24,7 +26,7 @@ export function VehiclePendingApprovals({ data }: VehiclePendingApprovalsProps) 
   // }
 
   return (
-    <section className="h-full">
+    <section className="h-full p-2 border rounded-lg overflow-auto">
       {/* <div><Button onClick={handleEmail}>Send Email</Button></div> */}
       <DataTable columns={columns} data={data} />
     </section>

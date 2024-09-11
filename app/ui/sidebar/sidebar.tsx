@@ -1,12 +1,15 @@
 import { Label } from "@/components/ui/label";
 import {
+  IoArrowDownCircleSharp,
   IoCar,
+  IoHammer,
   IoHome,
   IoIdCardSharp,
   IoLibrary,
   IoLogOut,
   IoPersonCircle,
   IoReload,
+  IoServer,
 } from "react-icons/io5";
 import { MenuLink } from "./menuLink/menuLink";
 import { Button } from "@/components/ui/button";
@@ -42,10 +45,29 @@ const menuItems = [
   },
 ];
 
+const adminMenuItems = [
+  {
+    title: "Create / Delete Users",
+    path: "/user-control",
+    icon: <IoHammer />,
+  },
+  {
+    title: "Manage Approvals",
+    path: "/manage-approvals",
+    icon: <IoServer />,
+  },
+  {
+    title: "Export Data",
+    path: "/vehicle-entry-application-form",
+    icon: <IoArrowDownCircleSharp />,
+  },
+];
+
 interface userInfo {
   firstName: string;
   lastName: string;
   email: string;
+  admin: boolean;
 }
 
 export default async function Sidebar() {
@@ -73,8 +95,16 @@ export default async function Sidebar() {
           })}
         </div>
         <div className="w-full border-t-1.5"></div>
+        {userSession.admin ? (
+          <div className="w-full p-3 space-y-2">
+            {adminMenuItems.map((item) => {
+              return <MenuLink item={item} key={item.path} />;
+            })}
+          </div>
+        ) : (
+          <></>
+        )}
       </nav>
-
       <div className="flex w-full border-t-1">
         <div className="m-auto">
           <IoPersonCircle size={35} />

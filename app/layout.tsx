@@ -21,9 +21,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <div className="flex w-full">
-          {/* <div className="w-3/12">
-            <Sidebar />
-          </div> */}
           <NextUIProvider className="w-full h-screen">
             <div className="w-full h-full">{children}</div>
           </NextUIProvider>
