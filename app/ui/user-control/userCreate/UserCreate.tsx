@@ -25,8 +25,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const formSchema = z.object({
+  admin: z.boolean(),
   first_name: z
     .string({ required_error: "First name is required" })
     .min(1, "First name is required"),
@@ -81,6 +83,7 @@ export default function UserCreate() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          admin: values.admin,
           email: values.email,
           password: values.password,
           firstName: values.first_name.toUpperCase(),
@@ -95,6 +98,17 @@ export default function UserCreate() {
         throw new Error("Network response was not ok");
       }
       // Process response here
+      form.reset({
+        admin: false,
+        first_name: "",
+        last_name: "",
+        email: "",
+        password: "",
+        verify_password: "",
+        date_of_birth: new Date("2000-01-01"),
+        phone_number: "",
+        company: "",
+      });
       toast("Registration Successful");
     } catch (error: any) {
       console.error("Registration Failed:", error);
@@ -109,7 +123,25 @@ export default function UserCreate() {
       </div>
       <div className="mt-2 ml-10 mr-10">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+            <FormField
+              control={form.control}
+              name="admin"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormLabel className="w-full h-full ml-1 -mt-3">
+                    Admin
+                  </FormLabel>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <div className="flex w-full gap-3">
               <div className="w-1/3">
                 <FormField

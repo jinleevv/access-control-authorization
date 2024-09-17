@@ -10,9 +10,9 @@ export default async function handler(
 
     // Create a transporter object
     let transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com", // Replace with your SMTP server
-      port: 465, // Usually 587 for secure SMTP
-      secure: true, // true for 465, false for other ports
+      host: "antispam.posco.net", // Replace with your SMTP server
+      port: 25, // Usually 587 for secure SMTP
+      secure: false, // true for 465, false for other ports
       auth: {
         user: process.env.EMAIL_USER, // Your email
         pass: process.env.EMAIL_PASS, // Your email password
@@ -22,9 +22,9 @@ export default async function handler(
     try {
       // Send mail
       let info = await transporter.sendMail({
-        from: '"Ultium CAM" <ultium.cam2024@gmail.com>', // Sender address
-        to: "", // List of recipients
-        subject: "[NO REPLY] Visitor Information for the Company", // Subject line
+        from: '"Ultium CAM" <uc_visiting@ultiumcam.net>', // Sender address
+        to: "jinwon.lee@ultiumcam.net", // List of recipients
+        subject: "[NO REPLY] Visit Information for the Company", // Subject line
         text: "Dear visitor,\n\nI hope this message finds you well.\n\nWe are pleased to inform you that your visit to Ultium CAM has been approved. Kindly ensure that you adhere to the guidelines and regulations agreed upon during your visit.\n\nShould you have any questions or require further assistance, please do not hesitate to reach out.\n\nWe look forward to welcoming you.\n\nBest regards,\nUltium CAM", // Plain text body
       });
 

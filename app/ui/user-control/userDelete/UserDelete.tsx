@@ -70,6 +70,12 @@ export default function UserDelete() {
         throw new Error("Network response was not ok");
       }
       // Process response here
+      form.reset({
+        first_name: "",
+        last_name: "",
+        email: "",
+        company: "",
+      });
       toast("Deletion Successful");
     } catch (error: any) {
       console.error("Registration Failed:", error);
