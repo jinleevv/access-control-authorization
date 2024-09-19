@@ -52,13 +52,18 @@ const adminMenuItems = [
     icon: <IoHammer />,
   },
   {
+    title: "User Database",
+    path: "/user-database",
+    icon: <IoHammer />,
+  },
+  {
     title: "Manage Approvals",
     path: "/manage-approvals",
     icon: <IoServer />,
   },
   {
     title: "Export Data",
-    path: "/vehicle-entry-application-form",
+    path: "/export-data",
     icon: <IoArrowDownCircleSharp />,
   },
 ];

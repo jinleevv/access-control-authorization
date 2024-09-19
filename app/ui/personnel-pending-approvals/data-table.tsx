@@ -21,7 +21,6 @@ import { Button } from "@/components/ui/button";
 import { PersonnelPendingApprovals } from "./columns";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import CryptoJS from "crypto-js";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

@@ -15,6 +15,7 @@ export async function RequestFormStatus({ requester }: RequestFormStatusProps) {
     lastName: requester.lastName,
     phoneNumber: requester.phoneNumber,
     company: requester.company,
+    email: requester.email,
   };
 
   const matchingPersonnelRequesters =
@@ -24,6 +25,7 @@ export async function RequestFormStatus({ requester }: RequestFormStatusProps) {
         requesterLastName: requesterInfo.lastName,
         requesterPhoneNumber: requesterInfo.phoneNumber,
         requesterCompany: requesterInfo.company,
+        requesterEmail: requesterInfo.email,
       },
     });
 
@@ -34,6 +36,7 @@ export async function RequestFormStatus({ requester }: RequestFormStatusProps) {
         requesterLastName: requesterInfo.lastName,
         requesterPhoneNumber: requesterInfo.phoneNumber,
         requesterCompany: requesterInfo.company,
+        requesterEmail: requesterInfo.email,
       },
     });
 

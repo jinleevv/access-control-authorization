@@ -9,18 +9,27 @@ interface ManageApprovalsProps {
   vehicleData: any;
 }
 
-export default function ManageApprovals({
+export default function ManageApprovalsData({
   personnelData,
   vehicleData,
 }: ManageApprovalsProps) {
-
   return (
     <div className="w-full h-full">
-      <div className="ml-10 mr-10">
-        <DataTable columns={columns} data={personnelData} />
-      </div>
       <div className="mt-5 ml-10 mr-10">
-        <DataTable columns={columns} data={vehicleData} />
+        <Label className="font-bold text-lg">
+          Personnel Entry Application Forms
+        </Label>
+        <div className="h-[340px] 2xl:h-[400px] mt-2 border rounded-lg overflow-auto">
+          <DataTable columns={columns} data={personnelData} />
+        </div>
+      </div>
+      <div className="mt-6 ml-10 mr-10">
+        <Label className="font-bold text-lg">
+          Vehicle Entry Application Forms
+        </Label>
+        <div className="h-[340px] 2xl:h-[400px] mt-2 border rounded-lg overflow-auto">
+          <DataTable columns={columns} data={vehicleData} />
+        </div>
       </div>
     </div>
   );

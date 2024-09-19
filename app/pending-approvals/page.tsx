@@ -11,12 +11,12 @@ export default async function PendingApprovalsPage() {
 
   if (!session?.user) redirect("/login");
 
-  const myFullName = session.user.firstName + " " + session.user.lastName;
+  const myEmail : string = session.user.email;
 
   const matchingPersonnelForms =
     await prisma.personnelEntryApplicationForm.findMany({
       where: {
-        supervisor: myFullName,
+        supervisor: myEmail,
         status: "In Progress",
       },
     });
@@ -24,7 +24,7 @@ export default async function PendingApprovalsPage() {
   const matchingVehicleForms =
     await prisma.vehicleEntryApplicationForm.findMany({
       where: {
-        supervisor: myFullName,
+        supervisor: myEmail,
         status: "In Progress",
       },
     });

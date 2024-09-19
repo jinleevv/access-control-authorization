@@ -97,7 +97,6 @@ export default function UserCreate() {
           company: values.company,
         }),
       });
-      console.log(response);
       if (!response) {
         throw new Error("Network response was not ok");
       }

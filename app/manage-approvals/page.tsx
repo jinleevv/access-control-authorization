@@ -1,10 +1,9 @@
 import { auth } from "@/auth";
 import { Label } from "@/components/ui/label";
 import { redirect } from "next/navigation";
-import { ManageApprovals, columns } from "../ui/manage-approvals/columns";
-import { DataTable } from "../ui/manage-approvals/data-table";
 import Sidebar from "../ui/sidebar/sidebar";
 import prisma from "@/lib/db";
+import ManageApprovalsData from "../ui/manage-approvals/ManageApprovals";
 
 export default async function ManageApprovalsPage() {
   const session = await auth();
@@ -22,8 +21,18 @@ export default async function ManageApprovalsPage() {
     id: form.id,
     status: form.status,
     requesterName: form.requesterFirstName + " " + form.requesterLastName,
-    approvalName: form.supervisor,
+    requesterEmail: form.requesterEmail,
+    approvalEmail: form.supervisor,
   }));
+
+  const VehicleApprovalsData = VehicleApprovalForms.map((form) => ({
+    id: form.id,
+    status: form.status,
+    requesterName: form.requesterFirstName + " " + form.requesterLastName,
+    requesterEmail: form.requesterEmail,
+    approvalEmail: form.supervisor,
+  }));
+
   return (
     <section className="flex w-full h-full">
       <div className="w-3/12">
@@ -34,7 +43,12 @@ export default async function ManageApprovalsPage() {
           <Label className="grid text-2xl font-bold">Manage Approvals</Label>
           <Label className="pl-1">Review and manage the approvals</Label>
         </div>
-        <div>{/* <ManageApprovals /> */}</div>
+        <div>
+          <ManageApprovalsData
+            personnelData={PersonnelApprovalsData}
+            vehicleData={VehicleApprovalsData}
+          />
+        </div>
       </div>
     </section>
   );
