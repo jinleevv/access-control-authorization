@@ -1,3 +1,11 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "react/no-unescaped-entities": "off", // Disable unescaped entities rule
+    "@next/next/no-page-custom-font": "off", // Disable custom font rule in Next.js
+    "no-unused-vars": "off", // Disable unused variables rule
+    "@typescript-eslint/no-unused-vars": "off", // Disables unused variables error for TypeScript
+    "@typescript-eslint/no-explicit-any": "off", // Disables any type check
+    "@typescript-eslint/ban-ts-comment": "off" // Disables @ts-ignore related errors
+  }
 }

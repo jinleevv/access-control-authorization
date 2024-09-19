@@ -1,7 +1,7 @@
 "use client";
 
 import { Label } from "@/components/ui/label";
-import { z } from "zod";
+import { date, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -26,9 +26,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Checkbox } from "@/components/ui/checkbox";
+import { DatePicker } from "@nextui-org/date-picker";
 
 const formSchema = z.object({
-  admin: z.boolean(),
+  admin: z.boolean().optional(),
   first_name: z
     .string({ required_error: "First name is required" })
     .min(1, "First name is required"),
@@ -49,7 +50,7 @@ const formSchema = z.object({
     .min(1, "Password is required")
     .min(8, "Password must be more than 8 characters")
     .max(32, "Password must be less than 32 characters"),
-  date_of_birth: z.date(),
+  date_of_birth: z.any(),
   phone_number: z.string(),
   company: z.string(),
 });
@@ -64,7 +65,6 @@ export default function UserCreate() {
       email: "",
       password: "",
       verify_password: "",
-      date_of_birth: new Date("2000-01-01"),
     },
   });
 
@@ -74,7 +74,11 @@ export default function UserCreate() {
       return;
     }
 
-    const dateOfBirth = values.date_of_birth.toISOString().split("T")[0];
+    const dateOfBirth = new Date(
+      values.date_of_birth.year,
+      values.date_of_birth.month - 1,
+      values.date_of_birth.day
+    );
 
     try {
       const response = await fetch("/api/auth/register", {
@@ -93,7 +97,7 @@ export default function UserCreate() {
           company: values.company,
         }),
       });
-
+      console.log(response);
       if (!response) {
         throw new Error("Network response was not ok");
       }
@@ -105,7 +109,6 @@ export default function UserCreate() {
         email: "",
         password: "",
         verify_password: "",
-        date_of_birth: new Date("2000-01-01"),
         phone_number: "",
         company: "",
       });
@@ -240,40 +243,54 @@ export default function UserCreate() {
                   name="date_of_birth"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Date of birth</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant={"outline"}
-                              className={cn(
-                                "w-full text-left font-normal",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              {field.value ? (
-                                format(field.value, "PPP")
-                              ) : (
-                                <span>Pick a date</span>
-                              )}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            disabled={(date) =>
-                              date > new Date() || date < new Date("1900-01-01")
-                            }
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
+                      <div>
+                        <DatePicker
+                          label="Date of birth"
+                          labelPlacement="outside"
+                          variant="bordered"
+                          className="max-w-full h-12 font-medium mt-1.5"
+                          radius="sm"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </div>
                       <FormMessage />
                     </FormItem>
+                    // <FormItem>
+                    //   <FormLabel>Date of birth</FormLabel>
+                    //   <Popover>
+                    //     <PopoverTrigger asChild>
+                    //       <FormControl>
+                    //         <Button
+                    //           variant={"outline"}
+                    //           className={cn(
+                    //             "w-full text-left font-normal",
+                    //             !field.value && "text-muted-foreground"
+                    //           )}
+                    //         >
+                    //           {field.value ? (
+                    //             format(field.value, "PPP")
+                    //           ) : (
+                    //             <span>Pick a date</span>
+                    //           )}
+                    //           <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                    //         </Button>
+                    //       </FormControl>
+                    //     </PopoverTrigger>
+                    //     <PopoverContent className="w-auto p-0" align="start">
+                    //       <Calendar
+                    //         mode="single"
+                    //         selected={field.value}
+                    //         onSelect={field.onChange}
+                    //         disabled={(date) =>
+                    //           date > new Date() || date < new Date("1900-01-01")
+                    //         }
+                    //         initialFocus
+                    //       />
+                    //     </PopoverContent>
+                    //   </Popover>
+                    //   <FormMessage />
+                    // </FormItem>
                   )}
                 />
               </div>

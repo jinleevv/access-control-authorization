@@ -18,6 +18,8 @@ export async function POST(request: Request) {
       company,
     } = await request.json();
 
+    console.log(dateOfBirth);
+
     const saltRounds = 14;
     const salt = await genSalt(saltRounds);
     const hashedPassword = await hash(password, salt);
@@ -29,14 +31,15 @@ export async function POST(request: Request) {
         password: hashedPassword,
         firstName: firstName,
         lastName: lastName,
-        dateOfBirth: new Date(dateOfBirth),
+        dateOfBirth: dateOfBirth,
         phoneNumber: phoneNumber,
         company: company,
       },
     });
+
+    return NextResponse.json({ message: "success" });
   } catch (e) {
     // console.log({ e });
+    return NextResponse.json({ message: "fail" });
   }
-
-  return NextResponse.json({ message: "success" });
 }
