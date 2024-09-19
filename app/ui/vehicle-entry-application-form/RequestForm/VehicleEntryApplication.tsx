@@ -73,6 +73,7 @@ export function VehicleEntryApplication({
       phoneNumber: requester.phoneNumber,
       company: requester.company,
       supervisor: values.approval_line,
+      email: requester.email,
     };
 
     const formInformation = {

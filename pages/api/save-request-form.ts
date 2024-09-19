@@ -4,6 +4,7 @@ import prisma from "@/lib/db";
 interface RequesterInfoType {
   firstName: string;
   lastName: string;
+  email: string;
   dateOfBirth: Date;
   phoneNumber: string;
   company: string;
@@ -105,6 +106,7 @@ export default async function handler(
       const requesterInfo: RequesterInfoType = {
         firstName: data.requesterInfo.firstName,
         lastName: data.requesterInfo.lastName,
+        email: data.requesterInfo.email,
         dateOfBirth: data.requesterInfo.dateOfBirth,
         phoneNumber: data.requesterInfo.phoneNumber,
         company: data.requesterInfo.company,
@@ -203,6 +205,7 @@ export default async function handler(
           requesterDateOfBirth: requesterInfo.dateOfBirth,
           requesterPhoneNumber: requesterInfo.phoneNumber,
           requesterCompany: requesterInfo.company,
+          requesterEmail: requesterInfo.email,
 
           visitorFullName: visitorInfo.fullName,
           visitorVisitLocation: visitorInfo.visitLocation,

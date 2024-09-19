@@ -9,6 +9,7 @@ export default async function UserControlPage() {
   const session = await auth();
 
   if (!session?.user) redirect("/login");
+  if (session.user.admin === false) redirect("/home");
 
   return (
     <section className="flex w-full h-full">

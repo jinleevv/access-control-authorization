@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -171,6 +171,7 @@ export function RequestForm({ requester, signed }: RequestFormProps) {
       phoneNumber: requester.phoneNumber,
       company: requester.company,
       supervisor: values.approval_line,
+      email: requester.email,
     };
 
     let usage = true;
