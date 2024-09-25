@@ -43,6 +43,7 @@ const formSchema = z.object({
 
   driver_information_company: z.string(),
   driver_information_name: z.string(),
+  driver_information_email: z.string(),
   driver_information_phone_number: z.string(),
   driver_information_position: z.string(),
 
@@ -88,6 +89,7 @@ export function VehicleEntryApplication({
 
       driverInformationCompany: values.driver_information_company,
       driverInformationFullName: values.driver_information_name,
+      driverInformationEmail: values.driver_information_email,
       driverInformationPhoneNumber: values.driver_information_phone_number,
       driverInformationPosition: values.driver_information_position,
 
@@ -116,9 +118,44 @@ export function VehicleEntryApplication({
     });
 
     if (response.ok) {
+      form.reset({
+        application_type: "",
+        purpose: "",
+
+        vehicle_information_province: "",
+        vehicle_information_number: "",
+        vehicle_information_type: "",
+        vehicle_information_model: "",
+
+        driver_information_company: "",
+        driver_information_name: "",
+        driver_information_email: "",
+        driver_information_phone_number: "",
+        driver_information_position: "",
+
+        approval_line: "",
+      });
       toast("Successfully submitted the application");
+      const emailResponse = await fetch("/api/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          emailTo: requesterInfo.supervisor,
+          subject:
+            "[NO REPLY] [Access Control Authorization System] Approval Request for Vehicle Entry Application",
+          text: `Hello,\n\nYou received one pending vehicle entry approval request from ${requesterInfo.firstName} ${requesterInfo.lastName}\nPlease review the request as soon as possible.\n\nBest,\nUltium CAM`,
+        }),
+      });
+
+      if (emailResponse.ok) {
+      } else {
+        toast("Failed to send an email");
+      }
     } else {
-      console.error("Failed to submit form:", response.statusText);
+      // console.error("Failed to submit form:", response.statusText);
+      toast("Failed to submit the application");
     }
   }
 
@@ -310,7 +347,7 @@ export function VehicleEntryApplication({
               <div className="border p-4 space-y-2 rounded-lg">
                 <Label>Driver Information</Label>
                 <div className="flex mt-2 w-full gap-3">
-                  <div className="w-1/4">
+                  <div className="w-1/5">
                     <FormField
                       control={form.control}
                       name="driver_information_company"
@@ -325,7 +362,7 @@ export function VehicleEntryApplication({
                       )}
                     />
                   </div>
-                  <div className="w-1/4">
+                  <div className="w-1/5">
                     <FormField
                       control={form.control}
                       name="driver_information_name"
@@ -333,14 +370,33 @@ export function VehicleEntryApplication({
                         <FormItem>
                           <FormLabel>Full Name</FormLabel>
                           <FormControl>
-                            <Input placeholder="Vehicle Number" {...field} />
+                            <Input placeholder="Driver Full Name" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
                   </div>
-                  <div className="w-1/4">
+                  <div className="w-1/5">
+                    <FormField
+                      control={form.control}
+                      name="driver_information_email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Driver's Email"
+                              type="email"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-1/5">
                     <FormField
                       control={form.control}
                       name="driver_information_phone_number"
@@ -355,7 +411,7 @@ export function VehicleEntryApplication({
                       )}
                     />
                   </div>
-                  <div className="w-1/4">
+                  <div className="w-1/5">
                     <FormField
                       control={form.control}
                       name="driver_information_position"

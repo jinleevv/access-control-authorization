@@ -29,9 +29,9 @@ export function PersonnelPendingApprovals({
 
   return (
     <section className="h-full p-2 border rounded-lg overflow-auto">
-      <div>
+      {/* <div>
         <Button onClick={handleEmail}>Send Email</Button>
-      </div>
+      </div> */}
       <DataTable columns={columns} data={data} />
     </section>
   );

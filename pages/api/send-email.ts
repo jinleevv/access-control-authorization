@@ -6,7 +6,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    const { to, subject, text } = req.body;
+    const { emailTo, subject, text} = req.body;
 
     // Create a transporter object
     let transporter = nodemailer.createTransport({
@@ -23,9 +23,11 @@ export default async function handler(
       // Send mail
       let info = await transporter.sendMail({
         from: '"Ultium CAM" <uc_visiting@ultiumcam.net>', // Sender address
-        to: "jinwon.lee@ultiumcam.net", // List of recipients
-        subject: "[NO REPLY] Visit Information for the Company", // Subject line
-        text: "Dear visitor,\n\nI hope this message finds you well.\n\nWe are pleased to inform you that your visit to Ultium CAM has been approved. Kindly ensure that you adhere to the guidelines and regulations agreed upon during your visit.\n\nShould you have any questions or require further assistance, please do not hesitate to reach out.\n\nWe look forward to welcoming you.\n\nBest regards,\nUltium CAM", // Plain text body
+        to: emailTo, // List of recipients
+        // subject: "[NO REPLY] Visit Information for the Company", // Subject line
+        subject: subject,
+        // text: "Dear visitor,\n\nI hope this message finds you well.\n\nWe are pleased to inform you that your visit to Ultium CAM has been approved. Kindly ensure that you adhere to the guidelines and regulations agreed upon during your visit.\n\nShould you have any questions or require further assistance, please do not hesitate to reach out.\n\nWe look forward to welcoming you.\n\nBest regards,\nUltium CAM", // Plain text body
+        text: text,
       });
 
       console.log("Message sent: %s", info.messageId);

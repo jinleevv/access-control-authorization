@@ -13,6 +13,7 @@ interface RequesterInfoType {
 
 interface VisitorInfoType {
   fullName: string;
+  email: string;
   visitLocation: string;
   vehicleUsage: boolean;
   dateOfBirth: Date;
@@ -115,6 +116,7 @@ export default async function handler(
 
       const visitorInfo: VisitorInfoType = {
         fullName: data.visitorInfo.fullName,
+        email: data.visitorInfo.email,
         visitLocation: data.visitorInfo.visitLocation,
         vehicleUsage: data.visitorInfo.vehicleUsage,
         dateOfBirth: data.visitorInfo.dateOfBirth,
@@ -208,6 +210,7 @@ export default async function handler(
           requesterEmail: requesterInfo.email,
 
           visitorFullName: visitorInfo.fullName,
+          visitorEmail: visitorInfo.email,
           visitorVisitLocation: visitorInfo.visitLocation,
           visitorDateOfBirth: visitorInfo.dateOfBirth,
           visitorPhoneNumber: visitorInfo.phoneNumber,

@@ -34,7 +34,7 @@ export default async function UserDatabasePage() {
           <Label className="grid text-2xl font-bold">User Database</Label>
           <Label className="pl-1">User Database for Admin</Label>
         </div>
-        <div className="p-10 h-[750px] 2xl:h-[900px] overflow-auto">
+        <div className="ml-10 mr-10 mt-7 h-[750px] 2xl:h-[900px] border rounded-lg overflow-auto">
           <UserDataTable columns={columns} data={usersData} />
         </div>
       </div>

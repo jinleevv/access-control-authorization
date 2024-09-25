@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./ui/globals.css";
-import Sidebar from "./ui/sidebar/sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import { NextUIProvider } from "@nextui-org/react";
 

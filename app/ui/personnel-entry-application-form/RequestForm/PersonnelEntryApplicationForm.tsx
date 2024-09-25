@@ -44,6 +44,7 @@ interface RequestFormProps {
 
 let formSchema = z.object({
   visitor_full_name: z.string().min(1).max(50),
+  visitor_email: z.string().min(1).max(100),
   visitor_birth_date: z.any(),
   visitor_nationality: z.string().min(1).max(50),
   visitor_phone_number: z.string().min(1).max(50),
@@ -178,6 +179,7 @@ export function RequestForm({ requester, signed }: RequestFormProps) {
 
     const visitorInfo = {
       fullName: values.visitor_full_name,
+      email: values.visitor_email,
       visitLocation: values.visitor_visit_location,
       vehicalUsage: usage,
       dateOfBirth: new Date(
@@ -330,9 +332,93 @@ export function RequestForm({ requester, signed }: RequestFormProps) {
     });
 
     if (response.ok) {
-      // const data = await response.json();
+      form.reset({
+        visitor_full_name: "",
+        visitor_email: "",
+        visitor_nationality: "",
+        visitor_phone_number: "",
+        visitor_company: "",
+        visitor_position: "",
+
+        visitor_visit_location: "",
+
+        purpose_of_visit: "",
+        info_person_visit_name: "",
+        info_person_phone_number: "",
+        info_person_company: "",
+        info_person_department: "",
+
+        companion_0_full_name: "",
+        companion_0_nationality: "",
+        companion_0_phone_number: "",
+        companion_0_company: "",
+        companion_0_position: "",
+
+        companion_1_full_name: "",
+        companion_1_nationality: "",
+        companion_1_phone_number: "",
+        companion_1_company: "",
+        companion_1_position: "",
+
+        companion_2_full_name: "",
+        companion_2_nationality: "",
+        companion_2_phone_number: "",
+        companion_2_company: "",
+        companion_2_position: "",
+
+        companion_3_full_name: "",
+        companion_3_nationality: "",
+        companion_3_phone_number: "",
+        companion_3_company: "",
+        companion_3_position: "",
+
+        companion_4_full_name: "",
+        companion_4_nationality: "",
+        companion_4_phone_number: "",
+        companion_4_company: "",
+        companion_4_position: "",
+
+        companion_5_full_name: "",
+        companion_5_nationality: "",
+        companion_5_phone_number: "",
+        companion_5_company: "",
+        companion_5_position: "",
+
+        companion_6_full_name: "",
+        companion_6_nationality: "",
+        companion_6_phone_number: "",
+        companion_6_company: "",
+        companion_6_position: "",
+
+        companion_7_full_name: "",
+        companion_7_nationality: "",
+        companion_7_phone_number: "",
+        companion_7_company: "",
+        companion_7_position: "",
+
+        approval_line: "",
+      });
+      toast("Successfully submitted the application");
+      const emailResponse = await fetch("/api/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          emailTo: requesterInfo.supervisor,
+          subject:
+            "[NO REPLY] [Access Control Authorization System] Approval Request for Personnel Entry Application",
+          text: `Hello,\n\nYou received one pending personnel entry approval request from ${requesterInfo.firstName} ${requesterInfo.lastName}\nPlease review the request as soon as possible.\n\nBest,\nUltium CAM`,
+        }),
+      });
+
+      if (emailResponse.ok) {
+      } else {
+        toast("Failed to send an email");
+      }
     } else {
-      console.error("Failed to submit form:", response.statusText);
+      // console.error("Failed to submit form:", response.statusText);
+      toast("Failed to submit the application");
     }
   }
 
@@ -440,6 +526,25 @@ export function RequestForm({ requester, signed }: RequestFormProps) {
                           <FormLabel>Full Name</FormLabel>
                           <FormControl>
                             <Input placeholder="Visitor Full Name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-1/6">
+                    <FormField
+                      control={form.control}
+                      name="visitor_email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Visitor Email"
+                              type="email"
+                              {...field}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -880,8 +985,8 @@ export function RequestForm({ requester, signed }: RequestFormProps) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="m@example.com">
-                          m@example.com
+                        <SelectItem value="jinwon.lee@ultiumcam.net">
+                          jinwon.lee@ultiumcam.net
                         </SelectItem>
                         <SelectItem value="m@google.com">
                           m@google.com

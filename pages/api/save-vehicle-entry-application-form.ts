@@ -22,6 +22,7 @@ interface FormInformationType {
 
   driverInformationCompany: string;
   driverInformationFullName: string;
+  driverInformationEmail: string;
   driverInformationPhoneNumber: string;
   driverInformationPosition: string;
 
@@ -63,6 +64,7 @@ export default async function handler(
         driverInformationCompany: data.formInformation.driverInformationCompany,
         driverInformationFullName:
           data.formInformation.driverInformationFullName,
+        driverInformationEmail: data.formInformation.driverInformationEmail,
         driverInformationPhoneNumber:
           data.formInformation.driverInformationPhoneNumber,
         driverInformationPosition:
@@ -91,6 +93,7 @@ export default async function handler(
 
           driverCompany: formInformation.driverInformationCompany,
           driverName: formInformation.driverInformationFullName,
+          driverEmail: formInformation.driverInformationEmail,
           driverPhoneNumber: formInformation.driverInformationPhoneNumber,
           driverPosition: formInformation.driverInformationPosition,
 

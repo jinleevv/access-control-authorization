@@ -18,8 +18,6 @@ export async function POST(request: Request) {
       company,
     } = await request.json();
 
-    console.log(dateOfBirth);
-
     const saltRounds = 14;
     const salt = await genSalt(saltRounds);
     const hashedPassword = await hash(password, salt);
