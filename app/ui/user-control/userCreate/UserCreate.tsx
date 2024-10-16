@@ -1,7 +1,7 @@
 "use client";
 
 import { Label } from "@/components/ui/label";
-import { date, z } from "zod";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -16,20 +16,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DatePicker } from "@nextui-org/date-picker";
 
 const formSchema = z.object({
   admin: z.boolean().optional(),
+  security: z.boolean().optional(),
   first_name: z
     .string({ required_error: "First name is required" })
     .min(1, "First name is required"),
@@ -88,6 +80,7 @@ export default function UserCreate() {
         },
         body: JSON.stringify({
           admin: values.admin,
+          security: values.security,
           email: values.email,
           password: values.password,
           firstName: values.first_name.toUpperCase(),
@@ -103,6 +96,7 @@ export default function UserCreate() {
       // Process response here
       form.reset({
         admin: false,
+        security: false,
         first_name: "",
         last_name: "",
         email: "",
@@ -126,24 +120,44 @@ export default function UserCreate() {
       <div className="mt-2 ml-10 mr-10">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
-            <FormField
-              control={form.control}
-              name="admin"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormLabel className="w-full h-full ml-1 -mt-3">
-                    Admin
-                  </FormLabel>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="flex w-full space-x-4">
+              <FormField
+                control={form.control}
+                name="admin"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel className="w-full h-full ml-1 -mt-3">
+                      Admin
+                    </FormLabel>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="security"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel className="w-full h-full ml-1 -mt-3">
+                      Security
+                    </FormLabel>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <div className="flex w-full gap-3">
               <div className="w-1/3">
                 <FormField
@@ -255,41 +269,6 @@ export default function UserCreate() {
                       </div>
                       <FormMessage />
                     </FormItem>
-                    // <FormItem>
-                    //   <FormLabel>Date of birth</FormLabel>
-                    //   <Popover>
-                    //     <PopoverTrigger asChild>
-                    //       <FormControl>
-                    //         <Button
-                    //           variant={"outline"}
-                    //           className={cn(
-                    //             "w-full text-left font-normal",
-                    //             !field.value && "text-muted-foreground"
-                    //           )}
-                    //         >
-                    //           {field.value ? (
-                    //             format(field.value, "PPP")
-                    //           ) : (
-                    //             <span>Pick a date</span>
-                    //           )}
-                    //           <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    //         </Button>
-                    //       </FormControl>
-                    //     </PopoverTrigger>
-                    //     <PopoverContent className="w-auto p-0" align="start">
-                    //       <Calendar
-                    //         mode="single"
-                    //         selected={field.value}
-                    //         onSelect={field.onChange}
-                    //         disabled={(date) =>
-                    //           date > new Date() || date < new Date("1900-01-01")
-                    //         }
-                    //         initialFocus
-                    //       />
-                    //     </PopoverContent>
-                    //   </Popover>
-                    //   <FormMessage />
-                    // </FormItem>
                   )}
                 />
               </div>

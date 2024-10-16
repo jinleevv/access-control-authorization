@@ -282,7 +282,6 @@ export default async function handler(
           infoPersonVisitDepartment: visitInfo.visitPersonDepartment,
 
           supervisor: requesterInfo.supervisor,
-          pledgeSigned: data.pledgeSigned,
           status: status,
         },
       });

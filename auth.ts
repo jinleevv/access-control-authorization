@@ -42,6 +42,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             phoneNumber: user.phoneNumber,
             company: user.company,
             admin: user.admin,
+            security: user.security,
           };
         } else {
           return null;
@@ -67,6 +68,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.phoneNumber = user.phoneNumber;
         token.company = user.company;
         token.admin = user.admin;
+        token.security = user.security;
       }
       return token;
     },
@@ -80,6 +82,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       session.user.phoneNumber = token.phoneNumber;
       session.user.company = token.company;
       session.user.admin = token.admin;
+      session.user.security = token.security;
 
       return session;
     },

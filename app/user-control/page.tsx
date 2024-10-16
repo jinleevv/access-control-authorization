@@ -6,16 +6,16 @@ import UserCreate from "../ui/user-control/userCreate/UserCreate";
 import UserDelete from "../ui/user-control/userDelete/UserDelete";
 
 export default async function UserControlPage() {
-  //const session = await auth();
+  const session = await auth();
 
-  // if (!session?.user) redirect("/login");
-  // if (session.user.admin === false) redirect("/home");
+  if (!session?.user) redirect("/login");
+  if (session.user.admin === false) redirect("/home");
 
   return (
     <section className="flex w-full h-full">
-      {/* <div className="w-3/12">
+      <div className="w-3/12">
         <Sidebar />
-      </div> */}
+      </div>
       <div className="w-full p-4">
         <div className="pl-10 pr-10">
           <Label className="grid text-2xl font-bold">User Control</Label>

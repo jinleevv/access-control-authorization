@@ -9,6 +9,7 @@ export async function POST(request: Request) {
   try {
     const {
       admin,
+      security,
       email,
       password,
       firstName,
@@ -25,6 +26,7 @@ export async function POST(request: Request) {
     const response = await prisma.user.create({
       data: {
         admin: admin,
+        security: security,
         email: email,
         password: hashedPassword,
         firstName: firstName,

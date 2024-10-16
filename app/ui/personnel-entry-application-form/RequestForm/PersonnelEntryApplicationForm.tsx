@@ -39,7 +39,6 @@ import { IoWarning } from "react-icons/io5";
 
 interface RequestFormProps {
   requester: any;
-  signed: boolean;
 }
 
 let formSchema = z.object({
@@ -119,7 +118,7 @@ let formSchema = z.object({
   approval_line: z.string().min(1).max(50),
 });
 
-export function RequestForm({ requester, signed }: RequestFormProps) {
+export function RequestForm({ requester }: RequestFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
@@ -327,7 +326,6 @@ export function RequestForm({ requester, signed }: RequestFormProps) {
         visitorInfo: visitorInfo,
         companionInfo: companionInfo,
         visitInfo: visitInfo,
-        pledgeSigned: signed,
       }),
     });
 
@@ -424,7 +422,7 @@ export function RequestForm({ requester, signed }: RequestFormProps) {
 
   return (
     <div>
-      <div className="border w-full h-full p-2 rounded-lg mb-4">
+      <div className="border w-full p-2 rounded-lg mb-4">
         <div className="grid">
           <Label className="flex text-md font-bold">
             <IoWarning className="mr-1 mt-1" />

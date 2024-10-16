@@ -45,6 +45,29 @@ const menuItems = [
   },
 ];
 
+const securityMenuItems = [
+  {
+    title: "Visitor Logbook",
+    path: "/user-control",
+    icon: <IoHammer />,
+  },
+  {
+    title: "Check-In / Check-Out",
+    path: "/user-database",
+    icon: <IoHammer />,
+  },
+  {
+    title: "RPRM",
+    path: "/manage-approvals",
+    icon: <IoServer />,
+  },
+  {
+    title: "Security Reports",
+    path: "/export-data",
+    icon: <IoArrowDownCircleSharp />,
+  },
+];
+
 const adminMenuItems = [
   {
     title: "Create / Delete Users",
@@ -73,6 +96,7 @@ interface userInfo {
   lastName: string;
   email: string;
   admin: boolean;
+  security: boolean;
 }
 
 export default async function Sidebar() {
@@ -99,18 +123,34 @@ export default async function Sidebar() {
             return <MenuLink item={item} key={item.path} />;
           })}
         </div>
+
+        {userSession.security ? (
+          <>
+            <div className="w-full border-t-1.5"></div>
+            <div className="w-full p-3 space-y-2">
+              {securityMenuItems.map((item) => {
+                return <MenuLink item={item} key={item.path} />;
+              })}
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
         <div className="w-full border-t-1.5"></div>
         {userSession.admin ? (
-          <div className="w-full p-3 space-y-2">
-            {adminMenuItems.map((item) => {
-              return <MenuLink item={item} key={item.path} />;
-            })}
-          </div>
+          <>
+            <div className="w-full border-t-1.5"></div>
+            <div className="w-full p-3 space-y-2">
+              {adminMenuItems.map((item) => {
+                return <MenuLink item={item} key={item.path} />;
+              })}
+            </div>
+          </>
         ) : (
           <></>
         )}
       </nav>
-      <div className="flex w-full border-t-1">
+      <div className="flex w-full border-t-1.5">
         <div className="m-auto">
           <IoPersonCircle size={35} />
         </div>
