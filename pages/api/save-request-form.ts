@@ -8,7 +8,6 @@ interface RequesterInfoType {
   dateOfBirth: Date;
   phoneNumber: string;
   company: string;
-  supervisor: string;
 }
 
 interface VisitorInfoType {
@@ -111,7 +110,6 @@ export default async function handler(
         dateOfBirth: data.requesterInfo.dateOfBirth,
         phoneNumber: data.requesterInfo.phoneNumber,
         company: data.requesterInfo.company,
-        supervisor: data.requesterInfo.supervisor,
       };
 
       const visitorInfo: VisitorInfoType = {
@@ -281,7 +279,6 @@ export default async function handler(
           infoPersonVisitCompany: visitInfo.visitPersonCompany,
           infoPersonVisitDepartment: visitInfo.visitPersonDepartment,
 
-          supervisor: requesterInfo.supervisor,
           status: status,
         },
       });

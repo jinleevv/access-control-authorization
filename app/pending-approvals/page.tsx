@@ -16,7 +16,6 @@ export default async function PendingApprovalsPage() {
   const matchingPersonnelForms =
     await prisma.personnelEntryApplicationForm.findMany({
       where: {
-        supervisor: myEmail,
         status: "In Progress",
       },
     });
@@ -24,7 +23,6 @@ export default async function PendingApprovalsPage() {
   const matchingVehicleForms =
     await prisma.vehicleEntryApplicationForm.findMany({
       where: {
-        supervisor: myEmail,
         status: "In Progress",
       },
     });

@@ -24,13 +24,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 import { DatePicker, DateRangePicker } from "@nextui-org/date-picker";
@@ -114,8 +107,6 @@ let formSchema = z.object({
   companion_7_phone_number: z.string().optional(),
   companion_7_company: z.string().optional(),
   companion_7_position: z.string().optional(),
-
-  approval_line: z.string().min(1).max(50),
 });
 
 export function RequestForm({ requester }: RequestFormProps) {
@@ -170,7 +161,6 @@ export function RequestForm({ requester }: RequestFormProps) {
       dateOfBirth: requesterDateOfBirth,
       phoneNumber: requester.phoneNumber,
       company: requester.company,
-      supervisor: values.approval_line,
       email: requester.email,
     };
 
@@ -393,8 +383,6 @@ export function RequestForm({ requester }: RequestFormProps) {
         companion_7_phone_number: "",
         companion_7_company: "",
         companion_7_position: "",
-
-        approval_line: "",
       });
       toast("Successfully submitted the application");
       const emailResponse = await fetch("/api/send-email", {
@@ -422,7 +410,7 @@ export function RequestForm({ requester }: RequestFormProps) {
 
   return (
     <div>
-      <div className="border w-full p-2 rounded-lg mb-4">
+      <div className="border w-full p-2 rounded-lg mb-3">
         <div className="grid">
           <Label className="flex text-md font-bold">
             <IoWarning className="mr-1 mt-1" />
@@ -443,7 +431,7 @@ export function RequestForm({ requester }: RequestFormProps) {
           </div>
         </div>
       </div>
-      <ScrollArea className="border p-3 w-full h-[595px] mt-2 2xl:h-[780px] rounded-lg">
+      <ScrollArea className="border p-3 w-full h-[660px] mt-2 2xl:h-[780px] rounded-lg">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
             <div className="border p-4 space-y-2 rounded-lg">
@@ -965,39 +953,6 @@ export function RequestForm({ requester }: RequestFormProps) {
                   />
                 )}
               </div>
-            </div>
-            <div className="p-2">
-              <FormField
-                control={form.control}
-                name="approval_line"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Approval Line</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Appoval Line" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="jinwon.lee@ultiumcam.net">
-                          jinwon.lee@ultiumcam.net
-                        </SelectItem>
-                        <SelectItem value="m@google.com">
-                          m@google.com
-                        </SelectItem>
-                        <SelectItem value="m@support.com">
-                          m@support.com
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
             </div>
             <div className="flex w-full justify-end">
               <Button type="submit">Submit</Button>

@@ -22,7 +22,6 @@ export default async function ManageApprovalsPage() {
     status: form.status,
     requesterName: form.requesterFirstName + " " + form.requesterLastName,
     requesterEmail: form.requesterEmail,
-    approvalEmail: form.supervisor,
   }));
 
   const VehicleApprovalsData = VehicleApprovalForms.map((form) => ({

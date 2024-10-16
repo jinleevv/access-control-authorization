@@ -123,10 +123,9 @@ export default async function Sidebar() {
             return <MenuLink item={item} key={item.path} />;
           })}
         </div>
-
-        {userSession.security ? (
+        {/* {userSession.security ? (
           <>
-            <div className="w-full border-t-1.5"></div>
+            <div className="w-full border-t-1"></div>
             <div className="w-full p-3 space-y-2">
               {securityMenuItems.map((item) => {
                 return <MenuLink item={item} key={item.path} />;
@@ -135,11 +134,10 @@ export default async function Sidebar() {
           </>
         ) : (
           <></>
-        )}
-        <div className="w-full border-t-1.5"></div>
+        )} */}
         {userSession.admin ? (
           <>
-            <div className="w-full border-t-1.5"></div>
+            <div className="w-full border-t-1"></div>
             <div className="w-full p-3 space-y-2">
               {adminMenuItems.map((item) => {
                 return <MenuLink item={item} key={item.path} />;

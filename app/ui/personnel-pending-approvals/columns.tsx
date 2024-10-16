@@ -75,7 +75,6 @@ export type PersonnelPendingApprovals = {
   infoPersonVisitPhoneNumber: string;
   infoPersonVisitCompany: string;
   infoPersonVisitDepartment: string;
-  supervisor: string;
   status: string;
   createdAt: string;
   updatedAt: string;
