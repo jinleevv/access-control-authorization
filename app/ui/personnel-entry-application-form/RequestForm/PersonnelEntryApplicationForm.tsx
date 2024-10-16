@@ -49,7 +49,7 @@ let formSchema = z.object({
   purpose_of_visit: z.string().min(1).max(50),
   info_person_visit_name: z.string().min(1).max(50),
   info_person_phone_number: z.string().min(1).max(50),
-  info_person_company: z.string().min(1).max(50),
+  info_person_email: z.string().min(1).max(50),
   info_person_department: z.string().min(1).max(50),
 
   companion_0_full_name: z.string().optional(),
@@ -301,8 +301,8 @@ export function RequestForm({ requester }: RequestFormProps) {
       ),
       purpose: values.purpose_of_visit,
       visitPersonName: values.info_person_visit_name,
+      infoPersonVisitEmail: values.info_person_email,
       visitPersonPhoneNumber: values.info_person_phone_number,
-      visitPersonCompany: values.info_person_company,
       visitPersonDepartment: values.info_person_department,
     };
 
@@ -333,7 +333,6 @@ export function RequestForm({ requester }: RequestFormProps) {
         purpose_of_visit: "",
         info_person_visit_name: "",
         info_person_phone_number: "",
-        info_person_company: "",
         info_person_department: "",
 
         companion_0_full_name: "",
@@ -391,7 +390,7 @@ export function RequestForm({ requester }: RequestFormProps) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          emailTo: requesterInfo.supervisor,
+          emailTo: visitInfo.infoPersonVisitEmail,
           subject:
             "[NO REPLY] [Access Control Authorization System] Approval Request for Personnel Entry Application",
           text: `Hello,\n\nYou received one pending personnel entry approval request from ${requesterInfo.firstName} ${requesterInfo.lastName}\nPlease review the request as soon as possible.\n\nBest,\nUltium CAM`,
@@ -837,12 +836,12 @@ export function RequestForm({ requester }: RequestFormProps) {
                 <div className="w-1/4">
                   <FormField
                     control={form.control}
-                    name="info_person_phone_number"
+                    name="info_person_email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Phone Number</FormLabel>
+                        <FormLabel>Email</FormLabel>
                         <FormControl>
-                          <Input placeholder="Phone Number" {...field} />
+                          <Input placeholder="Email" type="email" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -852,12 +851,12 @@ export function RequestForm({ requester }: RequestFormProps) {
                 <div className="w-1/4">
                   <FormField
                     control={form.control}
-                    name="info_person_company"
+                    name="info_person_phone_number"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Company</FormLabel>
+                        <FormLabel>Phone Number</FormLabel>
                         <FormControl>
-                          <Input placeholder="Company" {...field} />
+                          <Input placeholder="Phone Number" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

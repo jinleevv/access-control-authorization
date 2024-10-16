@@ -89,8 +89,8 @@ interface VisitInfoType {
   durationEnd: Date;
   purpose: string;
   visitPersonName: string;
+  visitPersonEmail: string;
   visitPersonPhoneNumber: string;
-  visitPersonCompany: string;
   visitPersonDepartment: string;
 }
 
@@ -192,7 +192,7 @@ export default async function handler(
         purpose: data.visitInfo.purpose,
         visitPersonName: data.visitInfo.visitPersonName,
         visitPersonPhoneNumber: data.visitInfo.visitPersonPhoneNumber,
-        visitPersonCompany: data.visitInfo.visitPersonCompany,
+        visitPersonEmail: data.visitInfo.visitPersonEmail,
         visitPersonDepartment: data.visitInfo.visitPersonDepartment,
       };
 
@@ -276,7 +276,7 @@ export default async function handler(
           purposeOfVisit: visitInfo.purpose,
           infoPersonVisitFullName: visitInfo.visitPersonName,
           infoPersonVisitPhoneNumber: visitInfo.visitPersonPhoneNumber,
-          infoPersonVisitCompany: visitInfo.visitPersonCompany,
+          infoPersonVisitEmail: visitInfo.visitPersonEmail,
           infoPersonVisitDepartment: visitInfo.visitPersonDepartment,
 
           status: status,
