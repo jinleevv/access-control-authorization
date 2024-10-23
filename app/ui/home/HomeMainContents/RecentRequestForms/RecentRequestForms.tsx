@@ -38,7 +38,6 @@ async function getData(): Promise<RequestFormStatus[]> {
 
   const data = matchingRequesters.map((form) => ({
     id: form.id,
-    status: form.status,
     visitorFullName: form.visitorFullName,
     visitorCompany: form.visitorCompany,
     visitorPhoneNumber: form.visitorPhoneNumber,

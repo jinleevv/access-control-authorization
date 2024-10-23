@@ -12,13 +12,11 @@ interface RequesterInfoType {
 }
 
 interface FormInformationType {
-  applicationType: string;
   purpose: string;
 
   vehicleInformationProvince: string;
   vehicleInformationNumber: string;
   vehicleInformationType: string;
-  vehicleInformationModel: string;
 
   driverInformationCompany: string;
   driverInformationFullName: string;
@@ -28,6 +26,8 @@ interface FormInformationType {
 
   durationStart: Date;
   durationEnd: Date;
+
+  numberOfCompanions: string;
 }
 
 export default async function handler(
@@ -52,14 +52,12 @@ export default async function handler(
       };
 
       const formInformation: FormInformationType = {
-        applicationType: data.formInformation.applicationType,
         purpose: data.formInformation.purpose,
 
         vehicleInformationProvince:
           data.formInformation.vehicleInformationProvince,
         vehicleInformationNumber: data.formInformation.vehicleInformationNumber,
         vehicleInformationType: data.formInformation.vehicleInformationType,
-        vehicleInformationModel: data.formInformation.vehicleInformationModel,
 
         driverInformationCompany: data.formInformation.driverInformationCompany,
         driverInformationFullName:
@@ -72,6 +70,8 @@ export default async function handler(
 
         durationStart: data.formInformation.durationStart,
         durationEnd: data.formInformation.durationEnd,
+
+        numberOfCompanions: data.formInformation.vehicleInformationCompanion,
       };
 
       const response = await prisma.vehicleEntryApplicationForm.create({
@@ -83,25 +83,21 @@ export default async function handler(
           requesterCompany: requesterInfo.company,
           requesterEmail: requesterInfo.email,
 
-          applicationType: formInformation.applicationType,
-          purpose: formInformation.purpose,
-
           vehicleProvince: formInformation.vehicleInformationProvince,
           vehicleNumber: formInformation.vehicleInformationNumber,
           vehicleType: formInformation.vehicleInformationType,
-          vehicleModel: formInformation.vehicleInformationModel,
+          numberOfCompanions: formInformation.numberOfCompanions,
 
           driverCompany: formInformation.driverInformationCompany,
           driverName: formInformation.driverInformationFullName,
           driverEmail: formInformation.driverInformationEmail,
           driverPhoneNumber: formInformation.driverInformationPhoneNumber,
-          driverPosition: formInformation.driverInformationPosition,
 
           durationOfVisitStart: formInformation.durationStart,
           durationOfVistitEnd: formInformation.durationEnd,
 
           supervisor: requesterInfo.supervisor,
-          pledgeSigned: data.pledgeSigned,
+
           status: status,
         },
       });

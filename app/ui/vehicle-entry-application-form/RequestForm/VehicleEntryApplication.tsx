@@ -26,6 +26,7 @@ import { toast } from "sonner";
 import { DateRangePicker } from "@nextui-org/date-picker";
 import { IoWarning } from "react-icons/io5";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { parseZonedDateTime } from "@internationalized/date";
 
 interface RequestFormProps {
   requester: any;
@@ -39,7 +40,7 @@ const formSchema = z.object({
   vehicle_information_province: z.string(),
   vehicle_information_number: z.string(),
   vehicle_information_type: z.string(),
-  vehicle_information_model: z.string(),
+  vehicle_information_companions: z.string(),
 
   driver_information_company: z.string(),
   driver_information_name: z.string(),
@@ -59,6 +60,18 @@ export function VehicleEntryApplication({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
+  const currentDate = new Date();
+  const timezone = "America/Montreal";
+
+  // Format the current time in the same format as shown in your example
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
+  const day = String(currentDate.getDate()).padStart(2, "0");
+  const hours = String(currentDate.getHours()).padStart(2, "0");
+  const minutes = String(currentDate.getMinutes()).padStart(2, "0");
+
+  // Create the formatted string in the format you need
+  const formattedCurrentTime = `${year}-${month}-${day}T${hours}:${minutes}[${timezone}]`;
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const [datePart] = requester.dateOfBirth.split("T");
@@ -78,14 +91,10 @@ export function VehicleEntryApplication({
     };
 
     const formInformation = {
-      applicationType: values.application_type,
-
-      purpose: values.purpose,
-
       vehicleInformationProvince: values.vehicle_information_province,
       vehicleInformationNumber: values.vehicle_information_number,
       vehicleInformationType: values.vehicle_information_type,
-      vehicleInformationModel: values.vehicle_information_model,
+      vehicleInformationCompanion: values.vehicle_information_companions,
 
       driverInformationCompany: values.driver_information_company,
       driverInformationFullName: values.driver_information_name,
@@ -125,7 +134,7 @@ export function VehicleEntryApplication({
         vehicle_information_province: "",
         vehicle_information_number: "",
         vehicle_information_type: "",
-        vehicle_information_model: "",
+        vehicle_information_companions: "",
 
         driver_information_company: "",
         driver_information_name: "",
@@ -214,71 +223,10 @@ export function VehicleEntryApplication({
           </div>
         </div>
       </div>
-      <ScrollArea className="h-[500px] 2xl:h-[660px]">
-        <div className="border w-full h-full p-4 rounded-lg">
+      <ScrollArea className="h-[520px]">
+        <div className="border w-full h-full p-2 rounded-lg">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-              <div>
-                <FormField
-                  control={form.control}
-                  name="application_type"
-                  render={({ field }) => (
-                    <FormItem className="w-full flex">
-                      <FormLabel>Application Type *</FormLabel>
-                      <FormControl>
-                        <RadioGroup
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                          className="flex ml-3"
-                        >
-                          <FormItem className="flex -mt-2 items-center space-x-1.5 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="Short-term Access" />
-                            </FormControl>
-                            <FormLabel className="font-normal">
-                              Short-term Access
-                            </FormLabel>
-                          </FormItem>
-                          <FormItem className="flex -mt-2 items-center space-x-1.5 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="Long-term Access" />
-                            </FormControl>
-                            <FormLabel className="font-normal">
-                              Long-term Access
-                            </FormLabel>
-                          </FormItem>
-                          <FormItem className="flex -mt-2 items-center space-x-1.5 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="Emergency Access" />
-                            </FormControl>
-                            <FormLabel className="font-normal">
-                              Emergency Access
-                            </FormLabel>
-                          </FormItem>
-                        </RadioGroup>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="border p-4 rounded-lg">
-                <div>
-                  <FormField
-                    control={form.control}
-                    name="purpose"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Purpose of Visit</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Purpose of visit" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
               <div className="border p-4 space-y-2 rounded-lg">
                 <Label>Vehicle Information</Label>
                 <div className="flex mt-2 w-full gap-3">
@@ -330,12 +278,15 @@ export function VehicleEntryApplication({
                   <div className="w-1/4">
                     <FormField
                       control={form.control}
-                      name="vehicle_information_model"
+                      name="vehicle_information_companions"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Vehical Model</FormLabel>
+                          <FormLabel>Number of Companions</FormLabel>
                           <FormControl>
-                            <Input placeholder="Vehical Model" {...field} />
+                            <Input
+                              placeholder="Number of Companions"
+                              {...field}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -347,7 +298,7 @@ export function VehicleEntryApplication({
               <div className="border p-4 space-y-2 rounded-lg">
                 <Label>Driver Information</Label>
                 <div className="flex mt-2 w-full gap-3">
-                  <div className="w-1/5">
+                  <div className="w-1/4">
                     <FormField
                       control={form.control}
                       name="driver_information_company"
@@ -362,7 +313,7 @@ export function VehicleEntryApplication({
                       )}
                     />
                   </div>
-                  <div className="w-1/5">
+                  <div className="w-1/4">
                     <FormField
                       control={form.control}
                       name="driver_information_name"
@@ -377,7 +328,7 @@ export function VehicleEntryApplication({
                       )}
                     />
                   </div>
-                  <div className="w-1/5">
+                  <div className="w-1/4">
                     <FormField
                       control={form.control}
                       name="driver_information_email"
@@ -396,7 +347,7 @@ export function VehicleEntryApplication({
                       )}
                     />
                   </div>
-                  <div className="w-1/5">
+                  <div className="w-1/4">
                     <FormField
                       control={form.control}
                       name="driver_information_phone_number"
@@ -405,21 +356,6 @@ export function VehicleEntryApplication({
                           <FormLabel>Phone Number</FormLabel>
                           <FormControl>
                             <Input placeholder="Type of Vehical" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="w-1/5">
-                    <FormField
-                      control={form.control}
-                      name="driver_information_position"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Position</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Vehical Model" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -443,6 +379,10 @@ export function VehicleEntryApplication({
                           value={field.value}
                           onChange={field.onChange}
                           className="font-medium mt-1.5"
+                          defaultValue={{
+                            start: parseZonedDateTime(formattedCurrentTime),
+                            end: parseZonedDateTime(formattedCurrentTime),
+                          }}
                         />
                       </FormControl>
                       <FormMessage />
@@ -450,7 +390,7 @@ export function VehicleEntryApplication({
                   )}
                 />
               </div>
-              <div>
+              <div className="border p-4 rounded-lg">
                 <FormField
                   control={form.control}
                   name="approval_line"

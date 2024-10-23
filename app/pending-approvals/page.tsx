@@ -11,14 +11,7 @@ export default async function PendingApprovalsPage() {
 
   if (!session?.user) redirect("/login");
 
-  const myEmail : string = session.user.email;
-
-  const matchingPersonnelForms =
-    await prisma.personnelEntryApplicationForm.findMany({
-      where: {
-        status: "In Progress",
-      },
-    });
+  const myEmail: string = session.user.email;
 
   const matchingVehicleForms =
     await prisma.vehicleEntryApplicationForm.findMany({
@@ -38,12 +31,6 @@ export default async function PendingApprovalsPage() {
           <Label className="ml-1">
             Review the requested forms and either approve or reject
           </Label>
-        </div>
-        <div className="mt-4 ml-10 mr-10 space-y-5 h-[340px] 2xl:h-[400px]">
-          <Label className="text-lg font-bold">
-            Personnel Entry Approval Lists
-          </Label>
-          <PersonnelPendingApprovals data={matchingPersonnelForms} />
         </div>
         <div className="mt-16 ml-10 mr-10 space-y-5 h-[340px] 2xl:h-[400px]">
           <Label className="text-lg font-bold">

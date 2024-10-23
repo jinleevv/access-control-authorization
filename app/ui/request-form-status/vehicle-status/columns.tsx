@@ -13,7 +13,6 @@ export type VehicleEntryApplicationFormStatus = {
   driverPosition: string;
   durationStart: string;
   durationEnd: string;
-  purpose: string;
   createdAt: string;
 };
 
@@ -99,9 +98,5 @@ export const columns: ColumnDef<VehicleEntryApplicationFormStatus>[] = [
   {
     accessorKey: "driverPhoneNumber",
     header: "Driver Phone Number",
-  },
-  {
-    accessorKey: "purpose",
-    header: "Purpose",
   },
 ];

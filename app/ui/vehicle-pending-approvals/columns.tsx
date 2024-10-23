@@ -13,9 +13,6 @@ export type VehiclePendingApprovals = {
   requesterPhoneNumber: string;
   requesterCompany: string;
 
-  applicationType: string;
-  purpose: string;
-
   vehicleProvince: string;
   vehicleNumber: string;
   vehicleType: string;

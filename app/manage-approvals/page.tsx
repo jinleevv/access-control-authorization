@@ -11,18 +11,8 @@ export default async function ManageApprovalsPage() {
   if (!session?.user) redirect("/login");
   if (session.user.admin === false) redirect("/home");
 
-  const PersonnelApprovalForms =
-    await prisma.personnelEntryApplicationForm.findMany();
-
   const VehicleApprovalForms =
     await prisma.vehicleEntryApplicationForm.findMany();
-
-  const PersonnelApprovalsData = PersonnelApprovalForms.map((form) => ({
-    id: form.id,
-    status: form.status,
-    requesterName: form.requesterFirstName + " " + form.requesterLastName,
-    requesterEmail: form.requesterEmail,
-  }));
 
   const VehicleApprovalsData = VehicleApprovalForms.map((form) => ({
     id: form.id,
@@ -44,7 +34,6 @@ export default async function ManageApprovalsPage() {
         </div>
         <div>
           <ManageApprovalsData
-            personnelData={PersonnelApprovalsData}
             vehicleData={VehicleApprovalsData}
           />
         </div>
