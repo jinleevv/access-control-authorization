@@ -6,12 +6,8 @@ import { ArrowUpDown } from "lucide-react";
 
 export type RequestFormStatus = {
   id: string;
-  status: string;
   visitorFullName: string;
   visitorCompany: string;
-  visitorPhoneNumber: string;
-  durationStart: string;
-  durationEnd: string;
   purpose: string;
   createdAt: string;
 };

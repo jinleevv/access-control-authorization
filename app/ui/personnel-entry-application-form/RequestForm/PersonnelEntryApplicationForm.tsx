@@ -15,11 +15,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import { format } from "date-fns";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 import { DatePicker, DateRangePicker } from "@nextui-org/date-picker";
 import { IoWarning } from "react-icons/io5";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface RequestFormProps {
   requester: any;
@@ -29,10 +29,8 @@ let formSchema = z.object({
   visitor_full_name: z.string().min(1).max(50),
   visitor_email: z.string().min(1).max(100),
   visitor_birth_date: z.any(),
-  visitor_nationality: z.string().min(1).max(50),
   visitor_phone_number: z.string().min(1).max(50),
   visitor_company: z.string().min(1).max(50),
-  visitor_position: z.string().min(1).max(50),
 
   visitor_visit_location: z.string(),
 
@@ -42,6 +40,8 @@ let formSchema = z.object({
   info_person_phone_number: z.string().min(1).max(50),
   info_person_email: z.string().min(1).max(50),
   info_person_department: z.string().min(1).max(50),
+
+  sign: z.boolean().default(false),
 });
 
 export function RequestForm({ requester }: RequestFormProps) {
@@ -51,12 +51,13 @@ export function RequestForm({ requester }: RequestFormProps) {
   const [selectedLocation, setSelectedLocation] = useState<string>("");
 
   const requesterDateOfBirth = `${requester.dateOfBirth}`;
-  const formattedDate = format(
-    new Date(requesterDateOfBirth.slice(0, 19)),
-    "MMMM do, yyyy"
-  );
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (values.sign === false) {
+      toast("You must read and acknowledge the precautions");
+      return;
+    }
+
     const [datePart] = requester.dateOfBirth.split("T");
     const [year, month, day] = datePart.split("-").map(Number);
 
@@ -72,22 +73,17 @@ export function RequestForm({ requester }: RequestFormProps) {
       email: requester.email,
     };
 
-    let usage = true;
-
     const visitorInfo = {
       fullName: values.visitor_full_name,
       email: values.visitor_email,
       visitLocation: values.visitor_visit_location,
-      vehicalUsage: usage,
       dateOfBirth: new Date(
         values.visitor_birth_date.year,
         values.visitor_birth_date.month - 1,
         values.visitor_birth_date.day
       ),
-      nationality: values.visitor_nationality,
       phoneNumber: values.visitor_phone_number,
       company: values.visitor_company,
-      position: values.visitor_position,
     };
 
     const visitInfo = {
@@ -124,10 +120,8 @@ export function RequestForm({ requester }: RequestFormProps) {
       form.reset({
         visitor_full_name: "",
         visitor_email: "",
-        visitor_nationality: "",
         visitor_phone_number: "",
         visitor_company: "",
-        visitor_position: "",
 
         visitor_visit_location: "",
 
@@ -145,8 +139,8 @@ export function RequestForm({ requester }: RequestFormProps) {
         body: JSON.stringify({
           emailTo: visitInfo.infoPersonVisitEmail,
           subject:
-            "[NO REPLY] [Access Control Authorization System] Approval Request for Personnel Entry Application",
-          text: `Hello,\n\nYou received one pending personnel entry approval request from ${requesterInfo.firstName} ${requesterInfo.lastName}\nPlease review the request as soon as possible.\n\nBest,\nUltium CAM`,
+            "[NO REPLY] [Access Control Authorization System] Visitor Notification",
+          text: `Hello,\n\nThis is to inform you that ${visitorInfo.fullName}, from ${visitorInfo.company}, has arrived at the reception and is here for a scheduled visit.\nThank you, and have a great day!\n\nBest,\nUltium CAM`,
         }),
       });
 
@@ -464,6 +458,28 @@ export function RequestForm({ requester }: RequestFormProps) {
                     )}
                   />
                 )}
+              </div>
+            </div>
+            <div className="flex w-full justify-end gap-2">
+              <FormField
+                control={form.control}
+                name="sign"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="-mt-0.5">
+                <Label>
+                  I have read and fully understood all the precautions
+                </Label>
               </div>
             </div>
             <div className="flex w-full justify-end">

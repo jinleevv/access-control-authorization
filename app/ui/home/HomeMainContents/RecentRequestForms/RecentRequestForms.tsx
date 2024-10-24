@@ -6,7 +6,6 @@ import { redirect } from "next/navigation";
 import prisma from "@/lib/db";
 
 async function getData(): Promise<RequestFormStatus[]> {
-  // Fetch data from your API here.
   const session = await auth();
 
   if (!session?.user) redirect("/login");

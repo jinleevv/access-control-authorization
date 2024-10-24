@@ -14,16 +14,9 @@ interface VisitorInfoType {
   fullName: string;
   email: string;
   visitLocation: string;
-  vehicleUsage: boolean;
   dateOfBirth: Date;
-  nationality: string;
   phoneNumber: string;
   company: string;
-  position: string;
-  vehicalProvince: string;
-  vehicalNumber: string;
-  vehicalType: string;
-  vehicalModel: string;
 }
 
 interface VisitInfoType {
@@ -58,16 +51,9 @@ export default async function handler(
         fullName: data.visitorInfo.fullName,
         email: data.visitorInfo.email,
         visitLocation: data.visitorInfo.visitLocation,
-        vehicleUsage: data.visitorInfo.vehicleUsage,
         dateOfBirth: data.visitorInfo.dateOfBirth,
-        nationality: data.visitorInfo.nationality,
         phoneNumber: data.visitorInfo.phoneNumber,
         company: data.visitorInfo.company,
-        position: data.visitorInfo.position,
-        vehicalProvince: data.visitorInfo.vehicalProvince,
-        vehicalNumber: data.visitorInfo.vehicalNumber,
-        vehicalType: data.visitorInfo.vehicalType,
-        vehicalModel: data.visitorInfo.vehicalModel,
       };
 
       const visitInfo: VisitInfoType = {
@@ -79,8 +65,6 @@ export default async function handler(
         visitPersonEmail: data.visitInfo.visitPersonEmail,
         visitPersonDepartment: data.visitInfo.visitPersonDepartment,
       };
-
-      const status: string = "In Progress";
 
       const response = await prisma.personnelEntryApplicationForm.create({
         data: {
