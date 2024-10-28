@@ -10,7 +10,6 @@ export type VehicleEntryApplicationFormStatus = {
   driverFullName: string;
   driverCompany: string;
   driverPhoneNumber: string;
-  driverPosition: string;
   durationStart: string;
   durationEnd: string;
   createdAt: string;

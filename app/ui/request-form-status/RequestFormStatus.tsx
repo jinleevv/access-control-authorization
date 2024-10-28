@@ -49,7 +49,7 @@ export async function RequestFormStatus({ requester }: RequestFormStatusProps) {
 
   return (
     <section className="w-full h-full space-y-12">
-      <div className="h-[340px] 2xl:h-[400px]">
+      <div className="h-full">
         <Label className="text-lg font-bold">
           Vehicle Entry Application Form
         </Label>

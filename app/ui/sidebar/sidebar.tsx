@@ -17,7 +17,7 @@ import { doLogout } from "@/app/actions";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
-const menuItems = [
+const employeeMenuItems = [
   {
     title: "Home",
     path: "/home",
@@ -33,6 +33,9 @@ const menuItems = [
     path: "/vehicle-entry-application-form",
     icon: <IoCar />,
   },
+];
+
+const ApprovalMenuItems = [
   {
     title: "Application Form Status",
     path: "/request-status",
@@ -119,22 +122,15 @@ export default async function Sidebar() {
           </Label>
         </div>
         <div className="w-full p-3 space-y-2">
-          {menuItems.map((item) => {
+          {employeeMenuItems.map((item) => {
             return <MenuLink item={item} key={item.path} />;
           })}
         </div>
-        {/* {userSession.security ? (
-          <>
-            <div className="w-full border-t-1"></div>
-            <div className="w-full p-3 space-y-2">
-              {securityMenuItems.map((item) => {
-                return <MenuLink item={item} key={item.path} />;
-              })}
-            </div>
-          </>
-        ) : (
-          <></>
-        )} */}
+        <div className="border-t-1 w-full p-3 space-y-2">
+          {ApprovalMenuItems.map((item) => {
+            return <MenuLink item={item} key={item.path} />;
+          })}
+        </div>
         {userSession.admin ? (
           <>
             <div className="w-full border-t-1"></div>

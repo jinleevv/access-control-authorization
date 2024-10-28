@@ -21,12 +21,12 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 import { DateRangePicker } from "@nextui-org/date-picker";
 import { IoWarning } from "react-icons/io5";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { parseZonedDateTime } from "@internationalized/date";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface RequestFormProps {
   requester: any;
@@ -34,9 +34,6 @@ interface RequestFormProps {
 }
 
 const formSchema = z.object({
-  application_type: z.string(),
-  purpose: z.string(),
-
   vehicle_information_province: z.string(),
   vehicle_information_number: z.string(),
   vehicle_information_type: z.string(),
@@ -46,11 +43,11 @@ const formSchema = z.object({
   driver_information_name: z.string(),
   driver_information_email: z.string(),
   driver_information_phone_number: z.string(),
-  driver_information_position: z.string(),
 
   duration_of_visit: z.any(),
 
   approval_line: z.string(),
+  sign: z.boolean().default(false),
 });
 
 export function VehicleEntryApplication({
@@ -74,6 +71,17 @@ export function VehicleEntryApplication({
   const formattedCurrentTime = `${year}-${month}-${day}T${hours}:${minutes}[${timezone}]`;
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (values.sign === false) {
+      toast("You must read and acknowledge the precautions");
+      return;
+    }
+    if (values.duration_of_visit == null) {
+      values.duration_of_visit = {
+        start: parseZonedDateTime(formattedCurrentTime),
+        end: parseZonedDateTime(formattedCurrentTime),
+      };
+    }
+
     const [datePart] = requester.dateOfBirth.split("T");
     const [year, month, day] = datePart.split("-").map(Number);
 
@@ -100,17 +108,28 @@ export function VehicleEntryApplication({
       driverInformationFullName: values.driver_information_name,
       driverInformationEmail: values.driver_information_email,
       driverInformationPhoneNumber: values.driver_information_phone_number,
-      driverInformationPosition: values.driver_information_position,
 
       durationStart: new Date(
-        values.duration_of_visit.start.year,
-        values.duration_of_visit.start.month - 1,
-        values.duration_of_visit.start.day
+        Date.UTC(
+          values.duration_of_visit.start.year,
+          values.duration_of_visit.start.month - 1,
+          values.duration_of_visit.start.day,
+          values.duration_of_visit.start.hour,
+          values.duration_of_visit.start.minute,
+          values.duration_of_visit.start.second,
+          values.duration_of_visit.start.millisecond
+        )
       ),
       durationEnd: new Date(
-        values.duration_of_visit.end.year,
-        values.duration_of_visit.end.month - 1,
-        values.duration_of_visit.end.day
+        Date.UTC(
+          values.duration_of_visit.end.year,
+          values.duration_of_visit.end.month - 1,
+          values.duration_of_visit.end.day,
+          values.duration_of_visit.end.hour,
+          values.duration_of_visit.end.minute,
+          values.duration_of_visit.end.second,
+          values.duration_of_visit.end.millisecond
+        )
       ),
     };
 
@@ -128,9 +147,6 @@ export function VehicleEntryApplication({
 
     if (response.ok) {
       form.reset({
-        application_type: "",
-        purpose: "",
-
         vehicle_information_province: "",
         vehicle_information_number: "",
         vehicle_information_type: "",
@@ -140,28 +156,27 @@ export function VehicleEntryApplication({
         driver_information_name: "",
         driver_information_email: "",
         driver_information_phone_number: "",
-        driver_information_position: "",
 
         approval_line: "",
       });
       toast("Successfully submitted the application");
-      const emailResponse = await fetch("/api/send-email", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          emailTo: requesterInfo.supervisor,
-          subject:
-            "[NO REPLY] [Access Control Authorization System] Approval Request for Vehicle Entry Application",
-          text: `Hello,\n\nYou received one pending vehicle entry approval request from ${requesterInfo.firstName} ${requesterInfo.lastName}\nPlease review the request as soon as possible.\n\nBest,\nUltium CAM`,
-        }),
-      });
+      // const emailResponse = await fetch("/api/send-email", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     emailTo: requesterInfo.supervisor,
+      //     subject:
+      //       "[NO REPLY] [Access Control Authorization System] Approval Request for Vehicle Entry Application",
+      //     text: `Hello,\n\nYou received one pending vehicle entry approval request from ${requesterInfo.firstName} ${requesterInfo.lastName}\nPlease review the request as soon as possible.\n\nBest,\nUltium CAM`,
+      //   }),
+      // });
 
-      if (emailResponse.ok) {
-      } else {
-        toast("Failed to send an email");
-      }
+      // if (emailResponse.ok) {
+      // } else {
+      //   toast("Failed to send an email");
+      // }
     } else {
       // console.error("Failed to submit form:", response.statusText);
       toast("Failed to submit the application");
@@ -407,14 +422,17 @@ export function VehicleEntryApplication({
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="m@example.com">
-                            m@example.com
+                          <SelectItem value="skjeong23@ultiumcam.net">
+                            Soonki Jeong
                           </SelectItem>
-                          <SelectItem value="m@google.com">
-                            m@google.com
+                          <SelectItem value="andre.martel@ultiumcam.net">
+                            André Martel
                           </SelectItem>
-                          <SelectItem value="m@support.com">
-                            m@support.com
+                          <SelectItem value="reza.mokari@ultiumcam.net">
+                            Mohammad Reza Mokari
+                          </SelectItem>
+                          <SelectItem value="jinwon.lee@ultiumcam.net">
+                            Test
                           </SelectItem>
                         </SelectContent>
                       </Select>
@@ -422,6 +440,28 @@ export function VehicleEntryApplication({
                     </FormItem>
                   )}
                 />
+              </div>
+              <div className="flex w-full justify-end gap-2">
+                <FormField
+                  control={form.control}
+                  name="sign"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <div className="-mt-0.5">
+                  <Label>
+                    I have read and fully understood all the precautions
+                  </Label>
+                </div>
               </div>
               <div className="flex w-full h-full justify-end">
                 <Button>Submit</Button>

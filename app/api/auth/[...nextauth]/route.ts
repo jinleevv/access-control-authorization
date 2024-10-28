@@ -16,7 +16,7 @@ export async function POST(request: Request) {
       lastName,
       dateOfBirth,
       phoneNumber,
-      company,
+      department,
     } = await request.json();
 
     const saltRounds = 14;
@@ -33,7 +33,7 @@ export async function POST(request: Request) {
         lastName: lastName,
         dateOfBirth: dateOfBirth,
         phoneNumber: phoneNumber,
-        company: company,
+        department: department,
       },
     });
 

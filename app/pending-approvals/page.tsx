@@ -32,7 +32,7 @@ export default async function PendingApprovalsPage() {
             Review the requested forms and either approve or reject
           </Label>
         </div>
-        <div className="mt-16 ml-10 mr-10 space-y-5 h-[340px] 2xl:h-[400px]">
+        <div className="mt-3 ml-10 mr-10 space-y-2 h-[710px] 2xl:h-[840px]">
           <Label className="text-lg font-bold">
             Vehicle Entry Approval Lists
           </Label>

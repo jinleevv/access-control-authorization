@@ -44,7 +44,7 @@ const formSchema = z.object({
     .max(32, "Password must be less than 32 characters"),
   date_of_birth: z.any(),
   phone_number: z.string(),
-  company: z.string(),
+  department: z.string(),
 });
 
 export default function UserCreate() {
@@ -87,7 +87,7 @@ export default function UserCreate() {
           lastName: values.last_name.toUpperCase(),
           dateOfBirth: dateOfBirth,
           phoneNumber: values.phone_number,
-          company: values.company,
+          department: values.department,
         }),
       });
       if (!response) {
@@ -103,7 +103,7 @@ export default function UserCreate() {
         password: "",
         verify_password: "",
         phone_number: "",
-        company: "",
+        department: "",
       });
       toast("Registration Successful");
     } catch (error: any) {
@@ -290,12 +290,12 @@ export default function UserCreate() {
               <div className="w-1/3">
                 <FormField
                   control={form.control}
-                  name="company"
+                  name="department"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Company</FormLabel>
+                      <FormLabel>Department</FormLabel>
                       <FormControl>
-                        <Input placeholder="Company" {...field} />
+                        <Input placeholder="Department" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

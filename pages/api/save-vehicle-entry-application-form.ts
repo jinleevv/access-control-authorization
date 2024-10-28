@@ -12,22 +12,18 @@ interface RequesterInfoType {
 }
 
 interface FormInformationType {
-  purpose: string;
-
   vehicleInformationProvince: string;
   vehicleInformationNumber: string;
   vehicleInformationType: string;
+  numberOfCompanions: string;
 
   driverInformationCompany: string;
   driverInformationFullName: string;
   driverInformationEmail: string;
   driverInformationPhoneNumber: string;
-  driverInformationPosition: string;
 
   durationStart: Date;
   durationEnd: Date;
-
-  numberOfCompanions: string;
 }
 
 export default async function handler(
@@ -52,12 +48,11 @@ export default async function handler(
       };
 
       const formInformation: FormInformationType = {
-        purpose: data.formInformation.purpose,
-
         vehicleInformationProvince:
           data.formInformation.vehicleInformationProvince,
         vehicleInformationNumber: data.formInformation.vehicleInformationNumber,
         vehicleInformationType: data.formInformation.vehicleInformationType,
+        numberOfCompanions: data.formInformation.vehicleInformationCompanion,
 
         driverInformationCompany: data.formInformation.driverInformationCompany,
         driverInformationFullName:
@@ -65,13 +60,9 @@ export default async function handler(
         driverInformationEmail: data.formInformation.driverInformationEmail,
         driverInformationPhoneNumber:
           data.formInformation.driverInformationPhoneNumber,
-        driverInformationPosition:
-          data.formInformation.driverInformationPosition,
 
         durationStart: data.formInformation.durationStart,
         durationEnd: data.formInformation.durationEnd,
-
-        numberOfCompanions: data.formInformation.vehicleInformationCompanion,
       };
 
       const response = await prisma.vehicleEntryApplicationForm.create({
