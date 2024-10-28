@@ -14,7 +14,7 @@ export default async function handler(
           email: req.body["email"],
           firstName: req.body["firstName"],
           lastName: req.body["lastName"],
-          company: req.body["company"],
+          department: req.body["department"],
         },
       });
 

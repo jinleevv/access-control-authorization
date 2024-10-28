@@ -14,8 +14,6 @@ export async function POST(request: Request) {
       password,
       firstName,
       lastName,
-      dateOfBirth,
-      phoneNumber,
       department,
     } = await request.json();
 
@@ -31,8 +29,6 @@ export async function POST(request: Request) {
         password: hashedPassword,
         firstName: firstName,
         lastName: lastName,
-        dateOfBirth: dateOfBirth,
-        phoneNumber: phoneNumber,
         department: department,
       },
     });

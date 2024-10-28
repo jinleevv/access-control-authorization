@@ -42,8 +42,6 @@ const formSchema = z.object({
     .min(1, "Password is required")
     .min(8, "Password must be more than 8 characters")
     .max(32, "Password must be less than 32 characters"),
-  date_of_birth: z.any(),
-  phone_number: z.string(),
   department: z.string(),
 });
 
@@ -66,12 +64,6 @@ export default function UserCreate() {
       return;
     }
 
-    const dateOfBirth = new Date(
-      values.date_of_birth.year,
-      values.date_of_birth.month - 1,
-      values.date_of_birth.day
-    );
-
     try {
       const response = await fetch("/api/auth/register", {
         method: "POST",
@@ -85,8 +77,6 @@ export default function UserCreate() {
           password: values.password,
           firstName: values.first_name.toUpperCase(),
           lastName: values.last_name.toUpperCase(),
-          dateOfBirth: dateOfBirth,
-          phoneNumber: values.phone_number,
           department: values.department,
         }),
       });
@@ -102,7 +92,6 @@ export default function UserCreate() {
         email: "",
         password: "",
         verify_password: "",
-        phone_number: "",
         department: "",
       });
       toast("Registration Successful");
@@ -250,44 +239,7 @@ export default function UserCreate() {
               </div>
             </div>
             <div className="flex w-full gap-3">
-              <div className="w-1/3">
-                <FormField
-                  control={form.control}
-                  name="date_of_birth"
-                  render={({ field }) => (
-                    <FormItem>
-                      <div>
-                        <DatePicker
-                          label="Date of birth"
-                          labelPlacement="outside"
-                          variant="bordered"
-                          className="max-w-full h-12 font-medium mt-1.5"
-                          radius="sm"
-                          value={field.value}
-                          onChange={field.onChange}
-                        />
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="w-1/3">
-                <FormField
-                  control={form.control}
-                  name="phone_number"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Phone Number</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Phone Number" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="w-1/3">
+              <div className="w-full">
                 <FormField
                   control={form.control}
                   name="department"

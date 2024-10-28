@@ -37,7 +37,7 @@ const formSchema = z.object({
     .string({ required_error: "Email is required" })
     .min(1, "Email is required")
     .email("Invalid email"),
-  company: z.string(),
+  department: z.string(),
 });
 
 export default function UserDelete() {
@@ -47,7 +47,7 @@ export default function UserDelete() {
       first_name: "",
       last_name: "",
       email: "",
-      company: "",
+      department: "",
     },
   });
 
@@ -62,7 +62,7 @@ export default function UserDelete() {
           email: values.email,
           firstName: values.first_name.toUpperCase(),
           lastName: values.last_name.toUpperCase(),
-          company: values.company,
+          department: values.department,
         }),
       });
 
@@ -74,7 +74,7 @@ export default function UserDelete() {
         first_name: "",
         last_name: "",
         email: "",
-        company: "",
+        department: "",
       });
       toast("Deletion Successful");
     } catch (error: any) {
@@ -144,12 +144,12 @@ export default function UserDelete() {
               <div className="w-1/4">
                 <FormField
                   control={form.control}
-                  name="company"
+                  name="department"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Company</FormLabel>
+                      <FormLabel>Department</FormLabel>
                       <FormControl>
-                        <Input placeholder="Company" {...field} />
+                        <Input placeholder="Department" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
