@@ -14,14 +14,20 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DatePicker } from "@nextui-org/date-picker";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const formSchema = z.object({
-  admin: z.boolean().optional(),
-  security: z.boolean().optional(),
+  admin: z.boolean().optional().default(false),
+  security: z.boolean().optional().default(false),
+  department_IT: z.boolean().optional().default(false),
   first_name: z
     .string({ required_error: "First name is required" })
     .min(1, "First name is required"),
@@ -46,7 +52,6 @@ const formSchema = z.object({
 });
 
 export default function UserCreate() {
-  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -73,6 +78,7 @@ export default function UserCreate() {
         body: JSON.stringify({
           admin: values.admin,
           security: values.security,
+          departmentIT: values.department_IT,
           email: values.email,
           password: values.password,
           firstName: values.first_name.toUpperCase(),
@@ -87,6 +93,7 @@ export default function UserCreate() {
       form.reset({
         admin: false,
         security: false,
+        department_IT: false,
         first_name: "",
         last_name: "",
         email: "",
@@ -123,6 +130,24 @@ export default function UserCreate() {
                     </FormControl>
                     <FormLabel className="w-full h-full ml-1 -mt-3">
                       Admin
+                    </FormLabel>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="department_IT"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel className="w-full h-full ml-1 -mt-3">
+                      IT department
                     </FormLabel>
                     <FormMessage />
                   </FormItem>
@@ -245,10 +270,33 @@ export default function UserCreate() {
                   name="department"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Department</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Department" {...field} />
-                      </FormControl>
+                      <FormLabel>Email</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select the department" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="president">President</SelectItem>
+                          <SelectItem value="compliance">Compliance</SelectItem>
+                          <SelectItem value="finance">Finance</SelectItem>
+                          <SelectItem value="hr">
+                            HR & General Affairs
+                          </SelectItem>
+                          <SelectItem value="marketing">Marketing</SelectItem>
+                          <SelectItem value="IT">IT & Security</SelectItem>
+                          <SelectItem value="supply chain">
+                            Supply Chain & Logistics
+                          </SelectItem>
+                          <SelectItem value="construction">
+                            Construction & Operation Division
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}

@@ -100,6 +100,7 @@ interface userInfo {
   email: string;
   admin: boolean;
   security: boolean;
+  departmentIT: boolean;
 }
 
 export default async function Sidebar() {
@@ -107,10 +108,10 @@ export default async function Sidebar() {
 
   if (!session?.user) redirect("/login");
 
-  const userSession: userInfo = session.user;
+  const userSession = session.user;
 
   const myFullName = userSession.firstName + " " + userSession.lastName;
-  const myDepartment = userSession.email;
+  const myDepartment = userSession.department;
 
   return (
     <section className="sticky left-0 top-0 flex h-screen flex-col justify-between border-r border-gray-200 pt-8 max-md:hidden">
@@ -126,11 +127,15 @@ export default async function Sidebar() {
             return <MenuLink item={item} key={item.path} />;
           })}
         </div>
-        <div className="border-t-1 w-full p-3 space-y-2">
-          {ApprovalMenuItems.map((item) => {
-            return <MenuLink item={item} key={item.path} />;
-          })}
-        </div>
+        {userSession.departmentIT ? (
+          <div className="border-t-1 w-full p-3 space-y-2">
+            {ApprovalMenuItems.map((item) => {
+              return <MenuLink item={item} key={item.path} />;
+            })}
+          </div>
+        ) : (
+          <></>
+        )}
         {userSession.admin ? (
           <>
             <div className="w-full border-t-1"></div>

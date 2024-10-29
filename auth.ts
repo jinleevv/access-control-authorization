@@ -38,11 +38,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             email: user.email,
             firstName: user.firstName,
             lastName: user.lastName,
-            dateOfBirth: user.dateOfBirth,
-            phoneNumber: user.phoneNumber,
-            company: user.company,
+            department: user.department,
             admin: user.admin,
             security: user.security,
+            departmentIT: user.departmentIT,
           };
         } else {
           return null;
@@ -61,28 +60,25 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async jwt({ token, user }) {
       // First time JWT callback is run, `user` object will be available
       if (user) {
-        token.id = user.id;
+        token.id = user.id as string;
         token.firstName = user.firstName;
         token.lastName = user.lastName;
-        token.dateOfBirth = user.dateOfBirth;
-        token.phoneNumber = user.phoneNumber;
-        token.company = user.company;
+        token.department = user.department;
         token.admin = user.admin;
         token.security = user.security;
+        token.departmentIT = user.departmentIT;
       }
       return token;
     },
     async session({ session, token }) {
       // Add token properties to the session
-      const token_id: any = token.id;
-      session.user.id = token_id;
+      session.user.id = token.id;
       session.user.firstName = token.firstName;
       session.user.lastName = token.lastName;
-      session.user.dateOfBirth = token.dateOfBirth;
-      session.user.phoneNumber = token.phoneNumber;
-      session.user.company = token.company;
+      session.user.department = token.department;
       session.user.admin = token.admin;
       session.user.security = token.security;
+      session.user.departmentIT = token.departmentIT;
 
       return session;
     },
