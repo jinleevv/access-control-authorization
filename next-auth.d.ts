@@ -7,6 +7,7 @@ declare module "next-auth" {
     id: string;
     firstName: string;
     lastName: string;
+    email: string;
     department: string;
     admin: boolean;
     security: boolean;
@@ -19,6 +20,7 @@ declare module "next-auth" {
       id: string;
       firstName: string;
       lastName: string;
+      email: string;
       department: string;
       admin: boolean;
       security: boolean;
@@ -33,6 +35,7 @@ declare module "next-auth/jwt" {
     id: string;
     firstName: string;
     lastName: string;
+    email: string;
     department: string;
     admin: boolean;
     security: boolean;

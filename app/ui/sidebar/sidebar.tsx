@@ -94,15 +94,6 @@ const adminMenuItems = [
   },
 ];
 
-interface userInfo {
-  firstName: string;
-  lastName: string;
-  email: string;
-  admin: boolean;
-  security: boolean;
-  departmentIT: boolean;
-}
-
 export default async function Sidebar() {
   const session = await auth();
 
@@ -111,7 +102,7 @@ export default async function Sidebar() {
   const userSession = session.user;
 
   const myFullName = userSession.firstName + " " + userSession.lastName;
-  const myDepartment = userSession.department;
+  const myEmail = userSession.email;
 
   return (
     <section className="sticky left-0 top-0 flex h-screen flex-col justify-between border-r border-gray-200 pt-8 max-md:hidden">
@@ -155,7 +146,7 @@ export default async function Sidebar() {
         </div>
         <div className="grid space-y-1.5 mt-auto mb-auto">
           <Label className="font-bold">{myFullName},</Label>
-          <Label className="text-xs">{myDepartment}</Label>
+          <Label className="text-xs">{myEmail}</Label>
         </div>
         <div className="p-2 ml-auto mb-auto mr-auto">
           <form action={doLogout}>
