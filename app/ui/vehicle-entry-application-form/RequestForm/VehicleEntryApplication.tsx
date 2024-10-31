@@ -82,18 +82,10 @@ export function VehicleEntryApplication({
       };
     }
 
-    const [datePart] = requester.dateOfBirth.split("T");
-    const [year, month, day] = datePart.split("-").map(Number);
-
-    // Create a new Date object (months are zero-based in the Date constructor)
-    const requesterDateOfBirth = new Date(year, month - 1, day);
-
     const requesterInfo = {
       firstName: requester.firstName,
       lastName: requester.lastName,
-      dateOfBirth: requesterDateOfBirth,
-      phoneNumber: requester.phoneNumber,
-      company: requester.company,
+      department: requester.department,
       supervisor: values.approval_line,
       email: requester.email,
     };
@@ -160,25 +152,25 @@ export function VehicleEntryApplication({
         approval_line: "",
       });
       toast("Successfully submitted the application");
-      // const emailResponse = await fetch("/api/send-email", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({
-      //     emailTo: requesterInfo.supervisor,
-      //     subject:
-      //       "[NO REPLY] [Access Control Authorization System] Approval Request for Vehicle Entry Application",
-      //     text: `Hello,\n\nYou received one pending vehicle entry approval request from ${requesterInfo.firstName} ${requesterInfo.lastName}\nPlease review the request as soon as possible.\n\nBest,\nUltium CAM`,
-      //   }),
-      // });
+      const emailResponse = await fetch("/api/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          emailTo: requesterInfo.supervisor,
+          subject:
+            "[NO REPLY] [Access Control Authorization System] Approval Request for Vehicle Entry Application",
+          text: `Hello,\n\nYou received one pending vehicle entry approval request from ${requesterInfo.firstName} ${requesterInfo.lastName}\nPlease review the request as soon as possible.\n\nBest,\nUltium CAM`,
+        }),
+      });
 
-      // if (emailResponse.ok) {
-      // } else {
-      //   toast("Failed to send an email");
-      // }
+      if (emailResponse.ok) {
+      } else {
+        toast("Failed to send an email");
+      }
     } else {
-      // console.error("Failed to submit form:", response.statusText);
+      console.error("Failed to submit form:", response.statusText);
       toast("Failed to submit the application");
     }
   }

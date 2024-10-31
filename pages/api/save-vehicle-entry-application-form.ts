@@ -5,9 +5,7 @@ interface RequesterInfoType {
   firstName: string;
   lastName: string;
   email: string;
-  dateOfBirth: Date;
-  phoneNumber: string;
-  company: string;
+  department: string;
   supervisor: string;
 }
 
@@ -41,9 +39,7 @@ export default async function handler(
         firstName: data.requesterInfo.firstName,
         lastName: data.requesterInfo.lastName,
         email: data.requesterInfo.email,
-        dateOfBirth: data.requesterInfo.dateOfBirth,
-        phoneNumber: data.requesterInfo.phoneNumber,
-        company: data.requesterInfo.company,
+        department: data.requesterInfo.department,
         supervisor: data.requesterInfo.supervisor,
       };
 
@@ -69,9 +65,7 @@ export default async function handler(
         data: {
           requesterFirstName: requesterInfo.firstName,
           requesterLastName: requesterInfo.lastName,
-          requesterDateOfBirth: requesterInfo.dateOfBirth,
-          requesterPhoneNumber: requesterInfo.phoneNumber,
-          requesterCompany: requesterInfo.company,
+          requesterDepartment: requesterInfo.department,
           requesterEmail: requesterInfo.email,
 
           vehicleProvince: formInformation.vehicleInformationProvince,

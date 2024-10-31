@@ -17,10 +17,8 @@ export default async function UserDatabasePage() {
   const usersData = users.map((form) => ({
     firstName: form.firstName,
     lastName: form.lastName,
-    dateOfBirth: form.dateOfBirth,
     email: form.email,
-    phoneNumber: form.phoneNumber,
-    company: form.company,
+    department: form.department,
     admin: form.admin,
   }));
 
