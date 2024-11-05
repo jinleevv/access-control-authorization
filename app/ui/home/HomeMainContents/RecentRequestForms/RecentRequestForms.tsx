@@ -15,8 +15,7 @@ async function getData(): Promise<RequestFormStatus[]> {
   const requesterInfo = {
     firstName: requester.firstName,
     lastName: requester.lastName,
-    phoneNumber: requester.phoneNumber,
-    company: requester.company,
+    department: requester.department,
   };
 
   const matchingRequesters =
@@ -24,8 +23,6 @@ async function getData(): Promise<RequestFormStatus[]> {
       where: {
         requesterFirstName: requesterInfo.firstName,
         requesterLastName: requesterInfo.lastName,
-        requesterPhoneNumber: requesterInfo.phoneNumber,
-        requesterCompany: requesterInfo.company,
       },
     });
 
@@ -37,7 +34,7 @@ async function getData(): Promise<RequestFormStatus[]> {
 
   const data = matchingRequesters.map((form) => ({
     id: form.id,
-    visitorFullName: form.visitorFullName,
+    visitorFirstName: form.visitorFirstName,
     visitorCompany: form.visitorCompany,
     visitorPhoneNumber: form.visitorPhoneNumber,
     durationStart: form.durationOfVisitStart.toLocaleDateString(

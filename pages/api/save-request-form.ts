@@ -11,7 +11,8 @@ interface RequesterInfoType {
 }
 
 interface VisitorInfoType {
-  fullName: string;
+  firstName: string;
+  lastName: string;
   email: string;
   visitLocation: string;
   dateOfBirth: Date;
@@ -25,7 +26,6 @@ interface VisitInfoType {
   purpose: string;
   visitPersonName: string;
   visitPersonEmail: string;
-  visitPersonPhoneNumber: string;
   visitPersonDepartment: string;
 }
 
@@ -48,7 +48,8 @@ export default async function handler(
       };
 
       const visitorInfo: VisitorInfoType = {
-        fullName: data.visitorInfo.fullName,
+        firstName: data.visitorInfo.firstName,
+        lastName: data.visitorInfo.lastName,
         email: data.visitorInfo.email,
         visitLocation: data.visitorInfo.visitLocation,
         dateOfBirth: data.visitorInfo.dateOfBirth,
@@ -61,7 +62,6 @@ export default async function handler(
         durationEnd: data.visitInfo.durationEnd,
         purpose: data.visitInfo.purpose,
         visitPersonName: data.visitInfo.visitPersonName,
-        visitPersonPhoneNumber: data.visitInfo.visitPersonPhoneNumber,
         visitPersonEmail: data.visitInfo.visitPersonEmail,
         visitPersonDepartment: data.visitInfo.visitPersonDepartment,
       };
@@ -75,10 +75,10 @@ export default async function handler(
           requesterCompany: requesterInfo.company,
           requesterEmail: requesterInfo.email,
 
-          visitorFullName: visitorInfo.fullName,
+          visitorFirstName: visitorInfo.firstName,
+          visitorLastName: visitorInfo.lastName,
           visitorEmail: visitorInfo.email,
           visitLocation: visitorInfo.visitLocation,
-          visitorDateOfBirth: visitorInfo.dateOfBirth,
           visitorPhoneNumber: visitorInfo.phoneNumber,
           visitorCompany: visitorInfo.company,
 
@@ -86,7 +86,6 @@ export default async function handler(
           durationOfVistitEnd: visitInfo.durationEnd,
           purposeOfVisit: visitInfo.purpose,
           infoPersonVisitFullName: visitInfo.visitPersonName,
-          infoPersonVisitPhoneNumber: visitInfo.visitPersonPhoneNumber,
           infoPersonVisitEmail: visitInfo.visitPersonEmail,
           infoPersonVisitDepartment: visitInfo.visitPersonDepartment,
         },

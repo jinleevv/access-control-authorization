@@ -6,7 +6,7 @@ import { ArrowUpDown } from "lucide-react";
 
 export type RequestFormStatus = {
   id: string;
-  visitorFullName: string;
+  visitorFirstName: string;
   visitorCompany: string;
   purpose: string;
   createdAt: string;
@@ -28,8 +28,8 @@ export const columns: ColumnDef<RequestFormStatus>[] = [
     },
   },
   {
-    accessorKey: "visitorFullName",
-    header: "Visitor Name",
+    accessorKey: "visitorFirstName",
+    header: "Visitor First Name",
   },
   {
     accessorKey: "visitorCompany",

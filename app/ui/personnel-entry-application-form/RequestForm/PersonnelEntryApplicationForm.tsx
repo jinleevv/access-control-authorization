@@ -26,9 +26,9 @@ interface RequestFormProps {
 }
 
 let formSchema = z.object({
-  visitor_full_name: z.string().min(1).max(50),
+  visitor_first_name: z.string().min(1).max(50),
+  visitor_last_name: z.string().min(1).max(50),
   visitor_email: z.string().min(1).max(100),
-  visitor_birth_date: z.any(),
   visitor_phone_number: z.string().min(1).max(50),
   visitor_company: z.string().min(1).max(50),
 
@@ -37,7 +37,6 @@ let formSchema = z.object({
   duration_of_visit: z.any(),
   purpose_of_visit: z.string().min(1).max(50),
   info_person_visit_name: z.string().min(1).max(50),
-  info_person_phone_number: z.string().min(1).max(50),
   info_person_email: z.string().min(1).max(50),
   info_person_department: z.string().min(1).max(50),
 
@@ -74,14 +73,10 @@ export function RequestForm({ requester }: RequestFormProps) {
     };
 
     const visitorInfo = {
-      fullName: values.visitor_full_name,
+      firstName: values.visitor_first_name,
+      lastName: values.visitor_last_name,
       email: values.visitor_email,
       visitLocation: values.visitor_visit_location,
-      dateOfBirth: new Date(
-        values.visitor_birth_date.year,
-        values.visitor_birth_date.month - 1,
-        values.visitor_birth_date.day
-      ),
       phoneNumber: values.visitor_phone_number,
       company: values.visitor_company,
     };
@@ -100,7 +95,6 @@ export function RequestForm({ requester }: RequestFormProps) {
       purpose: values.purpose_of_visit,
       visitPersonName: values.info_person_visit_name,
       infoPersonVisitEmail: values.info_person_email,
-      visitPersonPhoneNumber: values.info_person_phone_number,
       visitPersonDepartment: values.info_person_department,
     };
 
@@ -118,7 +112,6 @@ export function RequestForm({ requester }: RequestFormProps) {
 
     if (response.ok) {
       form.reset({
-        visitor_full_name: "",
         visitor_email: "",
         visitor_phone_number: "",
         visitor_company: "",
@@ -127,7 +120,6 @@ export function RequestForm({ requester }: RequestFormProps) {
 
         purpose_of_visit: "",
         info_person_visit_name: "",
-        info_person_phone_number: "",
         info_person_department: "",
       });
       toast("Successfully submitted the application");
@@ -140,7 +132,7 @@ export function RequestForm({ requester }: RequestFormProps) {
           emailTo: visitInfo.infoPersonVisitEmail,
           subject:
             "[NO REPLY] [Access Control Authorization System] Visitor Notification",
-          text: `Hello,\n\nThis is to inform you that ${visitorInfo.fullName}, from ${visitorInfo.company}, has arrived at the reception and is here for a scheduled visit.\nThank you, and have a great day!\n\nBest,\nUltium CAM`,
+          text: `Hello,\n\nThis is to inform you that ${visitorInfo.firstName} ${visitorInfo.lastName}, from ${visitorInfo.company}, has arrived at the reception and is here for a scheduled visit.\nThank you, and have a great day!\n\nBest,\nUltium CAM`,
         }),
       });
 
@@ -180,213 +172,6 @@ export function RequestForm({ requester }: RequestFormProps) {
       <div className="border p-3 w-full mt-2 rounded-lg">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-            <div className="space-y-2 rounded-lg border p-4">
-              <div>
-                <Label>Visitor Information *</Label>
-                <div className="flex w-full mt-3 gap-3">
-                  <div className="w-1/6">
-                    <FormField
-                      control={form.control}
-                      name="visitor_full_name"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Full Name</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Visitor Full Name" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="w-1/5">
-                    <FormField
-                      control={form.control}
-                      name="visitor_email"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Email</FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="Visitor Email"
-                              type="email"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="w-1/5">
-                    <FormField
-                      control={form.control}
-                      name="visitor_birth_date"
-                      render={({ field }) => (
-                        <FormItem>
-                          <div>
-                            <DatePicker
-                              label="Date of birth"
-                              labelPlacement="outside"
-                              variant="bordered"
-                              className="max-w-full h-12 font-medium mt-1.5"
-                              radius="sm"
-                              value={field.value}
-                              onChange={field.onChange}
-                            />
-                          </div>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="w-1/5">
-                    <FormField
-                      control={form.control}
-                      name="visitor_phone_number"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Phone Number</FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="Visitor Phone Number"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="w-1/5">
-                    <FormField
-                      control={form.control}
-                      name="visitor_company"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Company</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Visitor Company" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="space-y-2 rounded-lg border p-4">
-              <div>
-                <Label>Duration/Purpose of Visit *</Label>
-              </div>
-              <div className="flex w-full gap-3">
-                <div className="w-1/2">
-                  <FormField
-                    control={form.control}
-                    name="duration_of_visit"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <DateRangePicker
-                            label="Duration of visit"
-                            labelPlacement="outside"
-                            variant="bordered"
-                            radius="sm"
-                            value={field.value}
-                            onChange={field.onChange}
-                            className="font-medium mt-1.5"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="w-1/2">
-                  <FormField
-                    control={form.control}
-                    name="purpose_of_visit"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Purpose of Visit</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Purpose of visit" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="rounded-lg border p-4">
-              <div>
-                <Label>Information of the Person to Visit *</Label>
-              </div>
-              <div className="flex w-full gap-3">
-                <div className="w-1/4">
-                  <FormField
-                    control={form.control}
-                    name="info_person_visit_name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Full Name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Full Name" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="w-1/4">
-                  <FormField
-                    control={form.control}
-                    name="info_person_email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Email" type="email" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="w-1/4">
-                  <FormField
-                    control={form.control}
-                    name="info_person_phone_number"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Phone Number</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Phone Number" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="w-1/4">
-                  <FormField
-                    control={form.control}
-                    name="info_person_department"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Department</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Department" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
-            </div>
             <div className="rounded-lg border p-4">
               <div className="flex w-full">
                 <Label className="w-40">Visiting Location *</Label>
@@ -458,6 +243,194 @@ export function RequestForm({ requester }: RequestFormProps) {
                     )}
                   />
                 )}
+              </div>
+            </div>
+            <div className="space-y-2 rounded-lg border p-4">
+              <div>
+                <Label>Visitor Information *</Label>
+                <div className="flex w-full mt-3 gap-3">
+                  <div className="w-1/4">
+                    <FormField
+                      control={form.control}
+                      name="visitor_first_name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>First Name</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Visitor First Name"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-1/4">
+                    <FormField
+                      control={form.control}
+                      name="visitor_last_name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Last Name</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Visitor Last Name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-1/4">
+                    <FormField
+                      control={form.control}
+                      name="visitor_email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Visitor Email"
+                              type="email"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-1/4">
+                    <FormField
+                      control={form.control}
+                      name="visitor_phone_number"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Phone Number</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Visitor Phone Number"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-1/4">
+                    <FormField
+                      control={form.control}
+                      name="visitor_company"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Company</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Visitor Company" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="space-y-2 rounded-lg border p-4">
+              <div>
+                <Label>Duration/Purpose of Visit *</Label>
+              </div>
+              <div className="flex w-full gap-3">
+                <div className="w-1/2">
+                  <FormField
+                    control={form.control}
+                    name="duration_of_visit"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <DateRangePicker
+                            label="Duration of visit"
+                            labelPlacement="outside"
+                            variant="bordered"
+                            radius="sm"
+                            value={field.value}
+                            onChange={field.onChange}
+                            className="font-medium mt-1.5"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="w-1/2">
+                  <FormField
+                    control={form.control}
+                    name="purpose_of_visit"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Purpose of Visit</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Purpose of visit" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="rounded-lg border p-4">
+              <div>
+                <Label>Information of the Person to Visit *</Label>
+              </div>
+              <div className="flex w-full gap-3">
+                <div className="w-1/3">
+                  <FormField
+                    control={form.control}
+                    name="info_person_visit_name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Full Name</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Full Name" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="w-1/3">
+                  <FormField
+                    control={form.control}
+                    name="info_person_email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Email" type="email" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="w-1/3">
+                  <FormField
+                    control={form.control}
+                    name="info_person_department"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Department</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Department" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
             </div>
             <div className="flex w-full justify-end gap-2">
