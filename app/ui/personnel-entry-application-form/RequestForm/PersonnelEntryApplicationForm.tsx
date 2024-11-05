@@ -17,9 +17,10 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
-import { DatePicker, DateRangePicker } from "@nextui-org/date-picker";
+import { DateRangePicker } from "@nextui-org/date-picker";
 import { IoWarning } from "react-icons/io5";
 import { Checkbox } from "@/components/ui/checkbox";
+import { parseZonedDateTime } from "@internationalized/date";
 
 interface RequestFormProps {
   requester: any;
@@ -33,6 +34,7 @@ let formSchema = z.object({
   visitor_company: z.string().min(1).max(50),
 
   visitor_visit_location: z.string(),
+  id_info: z.string(),
 
   duration_of_visit: z.any(),
   purpose_of_visit: z.string().min(1).max(50),
@@ -47,9 +49,21 @@ export function RequestForm({ requester }: RequestFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
-  const [selectedLocation, setSelectedLocation] = useState<string>("");
+  const currentDate = new Date();
+  const timezone = "America/Montreal";
 
-  const requesterDateOfBirth = `${requester.dateOfBirth}`;
+  // Format the current time in the same format as shown in your example
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
+  const day = String(currentDate.getDate()).padStart(2, "0");
+  const hours = String(currentDate.getHours()).padStart(2, "0");
+  const minutes = String(currentDate.getMinutes()).padStart(2, "0");
+
+  // Create the formatted string in the format you need
+  const formattedCurrentTime = `${year}-${month}-${day}T${hours}:${minutes}[${timezone}]`;
+
+  const [selectedLocation, setSelectedLocation] = useState<string>("");
+  const [selectedID, setSelectedID] = useState<string>("");
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (values.sign === false) {
@@ -335,6 +349,95 @@ export function RequestForm({ requester }: RequestFormProps) {
                     />
                   </div>
                 </div>
+                <div className="mt-2 border p-4 rounded-lg">
+                  <div className="flex w-full">
+                    <Label className="w-8">ID *</Label>
+                    <FormField
+                      control={form.control}
+                      name="id_info"
+                      render={({ field }) => (
+                        <FormItem className="w-full flex ml-3">
+                          <FormControl>
+                            <RadioGroup
+                              onValueChange={(value) => {
+                                field.onChange(value); // Update the form value
+                                setSelectedID(value); // Update the state
+                              }}
+                              defaultValue={field.value}
+                              className="flex"
+                            >
+                              <FormItem className="flex items-center space-x-1 space-y-0">
+                                <FormControl>
+                                  <RadioGroupItem value="driver licence" />
+                                </FormControl>
+                                <FormLabel className="font-normal">
+                                  Driver Licence
+                                </FormLabel>
+                              </FormItem>
+                              <FormItem className="flex items-center space-x-1 space-y-0">
+                                <FormControl>
+                                  <RadioGroupItem value="quebec public health insurance card" />
+                                </FormControl>
+                                <FormLabel className="font-normal">
+                                  Quebec Public Health Insurance Card
+                                </FormLabel>
+                              </FormItem>
+                              <FormItem className="flex items-center space-x-1 space-y-0">
+                                <FormControl>
+                                  <RadioGroupItem value="passport" />
+                                </FormControl>
+                                <FormLabel className="font-normal">
+                                  Passport
+                                </FormLabel>
+                              </FormItem>
+                              <FormItem className="flex items-center space-x-1 space-y-0">
+                                <FormControl>
+                                  <RadioGroupItem value="governmental card" />
+                                </FormControl>
+                                <FormLabel className="font-normal">
+                                  Other Governmental Card
+                                </FormLabel>
+                              </FormItem>
+                              <FormItem className="flex items-center space-x-1 space-y-0">
+                                <FormControl>
+                                  <RadioGroupItem value="Other" />
+                                </FormControl>
+                                <FormLabel className="font-normal">
+                                  Other
+                                </FormLabel>
+                              </FormItem>
+                            </RadioGroup>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div>
+                    {selectedID === "Other" && (
+                      <FormField
+                        control={form.control}
+                        name="id_info"
+                        render={({ field }) => (
+                          <FormItem className="mt-4 w-full flex">
+                            <FormLabel className="w-40 mt-5">
+                              Please specify *
+                            </FormLabel>
+                            <FormControl>
+                              <Input
+                                type="text"
+                                {...field}
+                                placeholder="please specify the ID"
+                                className="border rounded-md w-full"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
             <div className="space-y-2 rounded-lg border p-4">
@@ -357,6 +460,10 @@ export function RequestForm({ requester }: RequestFormProps) {
                             value={field.value}
                             onChange={field.onChange}
                             className="font-medium mt-1.5"
+                            defaultValue={{
+                              start: parseZonedDateTime(formattedCurrentTime),
+                              end: parseZonedDateTime(formattedCurrentTime),
+                            }}
                           />
                         </FormControl>
                         <FormMessage />

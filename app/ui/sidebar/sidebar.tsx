@@ -50,11 +50,6 @@ const ApprovalMenuItems = [
 
 const securityMenuItems = [
   {
-    title: "Visitor Logbook",
-    path: "/user-control",
-    icon: <IoHammer />,
-  },
-  {
     title: "Check-In / Check-Out",
     path: "/user-database",
     icon: <IoHammer />,
@@ -124,6 +119,18 @@ export default async function Sidebar() {
               return <MenuLink item={item} key={item.path} />;
             })}
           </div>
+        ) : (
+          <></>
+        )}
+        {userSession.security ? (
+          <>
+            <div className="w-full border-t-1"></div>
+            <div className="w-full p-3 space-y-2">
+              {securityMenuItems.map((item) => {
+                return <MenuLink item={item} key={item.path} />;
+              })}
+            </div>
+          </>
         ) : (
           <></>
         )}
