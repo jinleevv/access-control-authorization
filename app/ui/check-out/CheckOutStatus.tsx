@@ -1,0 +1,29 @@
+import { CheckOutStatusType, columns } from "./columns";
+import { DataTable } from "./data-table";
+import prisma from "@/lib/db";
+
+async function getData(): Promise<CheckOutStatusType[]> {
+  
+  const personnelEntryForm = await prisma.personnelEntryApplicationForm.findMany({
+    where: {
+      checkOut: null,
+    },
+    select: {
+        id: true,
+        visitorFirstName: true,
+        visitorLastName: true,
+        checkOut: true,
+    }
+  });
+  return personnelEntryForm
+}
+
+export default async function CheckOutPageStatus() {
+  const data = await getData();
+  console.log(data)
+  return (
+    <div className="container mx-auto py-10">
+      <DataTable columns={columns} data={data} />
+    </div>
+  );
+}

@@ -50,8 +50,8 @@ const ApprovalMenuItems = [
 
 const securityMenuItems = [
   {
-    title: "Check-In / Check-Out",
-    path: "/user-database",
+    title: "Check-Out",
+    path: "/check-out",
     icon: <IoHammer />,
   },
   {
