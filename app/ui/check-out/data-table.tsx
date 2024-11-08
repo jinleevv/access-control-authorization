@@ -24,7 +24,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -41,11 +43,29 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
   });
   const [isMounted, setIsMounted] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
+  async function processCheckOut(row: any) {
+    const response = await fetch("/api/check-out-visitor", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: row.original.id,
+      }),
+    });
+
+    if (response.ok) {
+      router.refresh();
+    } else {
+      toast("Unable to check out the visitor, please contact IT Department");
+    }
+  }
   return (
     <div className="rounded-md border h-full">
       <Table>
@@ -93,7 +113,9 @@ export function DataTable<TData, TValue>({
                             the visitor automatically.
                           </DialogDescription>
                         </DialogHeader>
-                        <Button>Finalize Check Out</Button>
+                        <Button onClick={() => processCheckOut(row)}>
+                          Finalize Check Out
+                        </Button>
                       </DialogContent>
                     </Dialog>
                   </div>
