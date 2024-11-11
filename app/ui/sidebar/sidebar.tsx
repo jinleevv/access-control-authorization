@@ -61,7 +61,7 @@ const securityMenuItems = [
   },
   {
     title: "Security Reports",
-    path: "/export-data",
+    path: "/security-reports",
     icon: <IoArrowDownCircleSharp />,
   },
 ];
@@ -100,7 +100,7 @@ export default async function Sidebar() {
   const myEmail = userSession.email;
 
   return (
-    <section className="sticky left-0 top-0 flex h-screen flex-col justify-between border-r border-gray-200 pt-8 max-md:hidden">
+    <section className="sticky left-0 top-0 flex h-screen flex-col justify-between border-r border-gray-200 pt-8 max-md:hidden overflow-auto">
       <nav>
         <div className="grid text-center">
           <Label className="text-black text-2xl font-bold">Ultium CAM</Label>
