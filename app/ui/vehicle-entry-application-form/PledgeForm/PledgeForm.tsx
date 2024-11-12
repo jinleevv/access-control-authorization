@@ -26,33 +26,7 @@ export function PledgeForm({ requester }: PledgeFormProps) {
 
   return (
     <div className="h-full w-full p-2 space-y-3">
-      {!signed ? (
-        <>
-          <ScrollArea className="border h-64 rounded-md overflow-auto p-2">
-            <div>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac
-              tellus eu tellus porta venenatis nec et velit...
-            </div>
-          </ScrollArea>
-          <ScrollArea className="border h-64 rounded-md overflow-auto p-2">
-            <div>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac
-              tellus eu tellus porta venenatis nec et velit...
-            </div>
-          </ScrollArea>
-          <div className="flex w-full justify-end space-x-1.5">
-            <Input
-              className="w-1/4"
-              placeholder="Sign your name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <Button onClick={handleButton}>Agree</Button>
-          </div>
-        </>
-      ) : (
-        <VehicleEntryApplication requester={requester} signed={signed} />
-      )}
+      <VehicleEntryApplication requester={requester} signed={signed} />
     </div>
   );
 }

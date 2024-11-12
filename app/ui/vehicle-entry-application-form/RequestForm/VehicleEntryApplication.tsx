@@ -176,7 +176,7 @@ export function VehicleEntryApplication({
   }
 
   return (
-    <div>
+    <div className="h-full w-full">
       <div className="border w-full h-full p-2 rounded-lg mb-4">
         <div className="grid">
           <Label className="flex text-md font-bold">
@@ -230,8 +230,9 @@ export function VehicleEntryApplication({
           </div>
         </div>
       </div>
-      <ScrollArea className="h-[520px]">
-        <div className="border w-full h-full p-2 rounded-lg">
+
+      <div className="border w-full h-full p-2 rounded-lg">
+        <ScrollArea className="h-[490px] 2xl:h-[620px]">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
               <div className="border p-4 space-y-2 rounded-lg">
@@ -460,8 +461,8 @@ export function VehicleEntryApplication({
               </div>
             </form>
           </Form>
-        </div>
-      </ScrollArea>
+        </ScrollArea>
+      </div>
     </div>
   );
 }

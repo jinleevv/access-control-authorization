@@ -1,6 +1,5 @@
 import { PledgeForm } from "./PledgeForm/PledgeForm";
 
-
 interface ApplicationFormProps {
   requester: any;
 }

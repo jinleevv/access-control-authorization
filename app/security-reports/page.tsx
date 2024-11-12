@@ -22,7 +22,7 @@ export default async function SecurityReportsPage() {
           </Label>
         </div>
         <div className="mt-3 ml-10 mr-10">
-          <Reports />
+          <Reports user={session.user} />
         </div>
       </div>
     </section>
