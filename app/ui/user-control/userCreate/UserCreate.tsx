@@ -89,6 +89,9 @@ export default function UserCreate() {
       if (!response) {
         throw new Error("Network response was not ok");
       }
+      // const data = await response.json();
+      // console.log(data);
+
       // Process response here
       form.reset({
         admin: false,
@@ -270,7 +273,7 @@ export default function UserCreate() {
                   name="department"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel>Department</FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}

@@ -35,9 +35,8 @@ export async function POST(request: Request) {
       },
     });
 
-    return NextResponse.json({ message: "success" });
+    return NextResponse.json({ message: "success", response: response });
   } catch (e) {
-    // console.log({ e });
-    return NextResponse.json({ message: "fail" });
+    return NextResponse.json({ message: "fail", response: e });
   }
 }

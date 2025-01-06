@@ -20,7 +20,6 @@ import { toast } from "sonner";
 import { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { SoftShadows } from "@react-three/drei";
-import { useControls } from "leva";
 
 const formSchema = z.object({
   email: z
@@ -85,13 +84,6 @@ export default function LoginPage() {
       </mesh>
     );
   }
-
-  //   const { enabled, ...config } = useControls({
-  //     enabled: true,
-  //     size: { value: 25, min: 0, max: 100 },
-  //     focus: { value: 0, min: 0, max: 2 },
-  //     samples: { value: 10, min: 1, max: 20, step: 1 },
-  //   });
 
   function Spheres({ number = 20 }) {
     const ref = useRef();
