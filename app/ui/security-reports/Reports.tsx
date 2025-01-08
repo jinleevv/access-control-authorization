@@ -1,7 +1,7 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -18,17 +17,14 @@ import {
 } from "@/components/ui/form";
 import {
   Command,
-  CommandDialog,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator,
-  CommandShortcut,
 } from "@/components/ui/command";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useEffect } from "react";
 
 interface ReportsProps {
   user: {
@@ -43,25 +39,85 @@ interface ReportsProps {
   };
 }
 
-let formSchema = z.object({
+const formSchema = z.object({
   security_report_title: z.string().min(1),
   security_report_to: z.string().min(1),
   security_report_message: z.string().min(1),
+  security_report_type: z.enum(["daily_report", "incident_report"], {
+    required_error: "You need to select a report type.",
+  }),
 });
 
 export default function Reports({ user }: ReportsProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      // security_report_type: "daily_report",
       security_report_to: "",
       security_report_title: "",
       security_report_message: "",
     },
   });
+
+  const reportType = form.watch("security_report_type");
+
+  useEffect(() => {
+    if (reportType === "daily_report") {
+      form.setValue(
+        "security_report_message",
+        `
+          **Daily Report**
+          Security Officier Name: ${user.firstName} ${user.lastName}
+          **Summary of the day’s activities**: _________________
+          **Tasks completed**: _________________
+          **Notes or observations**: _________________
+        `
+      );
+    } else if (reportType === "incident_report") {
+      form.setValue(
+        "security_report_message",
+        `
+        **Incident Report**
+        Security Officier Name: ${user.firstName} ${user.lastName}
+        **Date of Incident (Day, Month, Year):** _________________
+        **Time of Incident:** ________________
+
+        **Was external emergency personnel contacted (9-1-1 or others)?**
+        ☐ Yes ☐ No
+
+        **Was internal monitoring personnel contacted?**
+        ☐ Yes ☐ No
+
+        **If yes, provide the name of the internal personnel contacted:**
+        _________________________________________________
+
+        **What is the nature of the incident?**
+        _________________________________________________
+
+        **Exact location of the incident:**
+        _________________________________________________
+
+        **List of persons directly involved in the incident (with their phone numbers):**
+        _________________________________________________
+
+        **Witnesses of the incident (with their phone numbers):**
+        _________________________________________________
+
+        **Detailed description of the incident:**
+        → The security officer must report only facts / No opinions should be provided
+        _________________________________________________
+
+        **Security Officer Name:** ____________________________________
+        **BSP Permit Number:** GAR- ____________________________________
+        **Security Officer Signature:** ____________________________________
+      `
+      );
+    }
+  });
+
   const emails = [
-    { email: "security@ultiumcam.com", label: "Security Team" },
-    { email: "it@ultiumcam.com", label: "IT Department" },
-    { email: "hr@ultiumcam.com", label: "Human Resources" },
+    { email: "skjeong23@ultiumcam.net", label: "Soonki Jeong" },
+    { email: "andre.martel@ultiumcam.net", label: "André Martel" },
   ];
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -85,6 +141,42 @@ export default function Reports({ user }: ReportsProps) {
     <section>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+          <FormField
+            control={form.control}
+            name="security_report_type"
+            render={({ field }) => (
+              <FormItem className="flex mt-4 space-x-3">
+                <div>
+                  <FormLabel>Security Report Type:</FormLabel>
+                </div>
+                <FormControl>
+                  <RadioGroup
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    className="flex h-full space-x-1"
+                  >
+                    <FormItem className="flex items-center space-x-1 space-y-0">
+                      <FormControl>
+                        <RadioGroupItem value="daily_report" />
+                      </FormControl>
+                      <FormLabel className="font-normal">
+                        Daily Report
+                      </FormLabel>
+                    </FormItem>
+                    <FormItem className="flex items-center space-x-3 space-y-0">
+                      <FormControl>
+                        <RadioGroupItem value="incident_report" />
+                      </FormControl>
+                      <FormLabel className="font-normal">
+                        Incident Report
+                      </FormLabel>
+                    </FormItem>
+                  </RadioGroup>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="security_report_title"

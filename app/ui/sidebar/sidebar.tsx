@@ -55,11 +55,6 @@ const securityMenuItems = [
     icon: <IoHammer />,
   },
   {
-    title: "RPRM",
-    path: "/manage-approvals",
-    icon: <IoServer />,
-  },
-  {
     title: "Security Reports",
     path: "/security-reports",
     icon: <IoArrowDownCircleSharp />,
