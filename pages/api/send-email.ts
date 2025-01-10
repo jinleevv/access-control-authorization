@@ -22,7 +22,7 @@ export default async function handler(
     try {
       // Send mail
       let info = await transporter.sendMail({
-        from: '"Ultium CAM" <uc_visiting@ultiumcam.net>', // Sender address
+        from: '"Ultium CAM" <uc_visit@ultiumcam.net>', // Sender address
         to: emailTo, // List of recipients
         // subject: "[NO REPLY] Visit Information for the Company", // Subject line
         subject: subject,

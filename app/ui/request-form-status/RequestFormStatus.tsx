@@ -21,8 +21,6 @@ export async function RequestFormStatus({ requester }: RequestFormStatusProps) {
       where: {
         requesterFirstName: requesterInfo.firstName,
         requesterLastName: requesterInfo.lastName,
-        requesterPhoneNumber: requesterInfo.phoneNumber,
-        requesterCompany: requesterInfo.company,
         requesterEmail: requesterInfo.email,
       },
     });
@@ -36,14 +34,11 @@ export async function RequestFormStatus({ requester }: RequestFormStatusProps) {
   const dataVehicle = matchingVehicleRequesters.map((form) => ({
     id: form.id,
     status: form.status,
-    driverFullName: form.driverName,
+    driverFullName: form.driverFullName,
     driverCompany: form.driverCompany,
     driverPhoneNumber: form.driverPhoneNumber,
-    durationStart: form.durationOfVisitStart.toLocaleDateString(
-      "en-US",
-      options
-    ),
-    durationEnd: form.durationOfVistitEnd.toLocaleDateString("en-US", options),
+    durationStart: form.durationStart.toLocaleDateString("en-US", options),
+    durationEnd: form.durationEnd.toLocaleDateString("en-US", options),
     createdAt: form.createdAt.toLocaleDateString("en-US", options),
   }));
 

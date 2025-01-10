@@ -37,11 +37,8 @@ async function getData(): Promise<RequestFormStatus[]> {
     visitorFirstName: form.visitorFirstName,
     visitorCompany: form.visitorCompany,
     visitorPhoneNumber: form.visitorPhoneNumber,
-    durationStart: form.durationOfVisitStart.toLocaleDateString(
-      "en-US",
-      options
-    ),
-    durationEnd: form.durationOfVistitEnd.toLocaleDateString("en-US", options),
+    durationStart: form.durationStart.toLocaleDateString("en-US", options),
+    durationEnd: form.durationEnd.toLocaleDateString("en-US", options),
     purpose: form.purposeOfVisit,
     createdAt: form.createdAt.toLocaleDateString("en-US", options),
   }));

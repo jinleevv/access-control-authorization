@@ -43,7 +43,7 @@ const formSchema = z.object({
   security_report_title: z.string().min(1),
   security_report_to: z.string().min(1),
   security_report_message: z.string().min(1),
-  security_report_type: z.enum(["daily_report", "incident_report"], {
+  security_report_type: z.enum(["Daily Report", "Incident Report"], {
     required_error: "You need to select a report type.",
   }),
 });
@@ -52,7 +52,6 @@ export default function Reports({ user }: ReportsProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      // security_report_type: "daily_report",
       security_report_to: "",
       security_report_title: "",
       security_report_message: "",
@@ -62,7 +61,7 @@ export default function Reports({ user }: ReportsProps) {
   const reportType = form.watch("security_report_type");
 
   useEffect(() => {
-    if (reportType === "daily_report") {
+    if (reportType === "Daily Report") {
       form.setValue(
         "security_report_message",
         `
@@ -73,7 +72,7 @@ export default function Reports({ user }: ReportsProps) {
           **Notes or observations**: _________________
         `
       );
-    } else if (reportType === "incident_report") {
+    } else if (reportType === "Incident Report") {
       form.setValue(
         "security_report_message",
         `
@@ -113,11 +112,12 @@ export default function Reports({ user }: ReportsProps) {
       `
       );
     }
-  });
+  }, [reportType]);
 
   const emails = [
     { email: "skjeong23@ultiumcam.net", label: "Soonki Jeong" },
     { email: "andre.martel@ultiumcam.net", label: "André Martel" },
+    { email: "jinwon.lee@ultiumcam.net", label: "Jinwon Lee" },
   ];
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -128,7 +128,7 @@ export default function Reports({ user }: ReportsProps) {
       },
       body: JSON.stringify({
         emailTo: values.security_report_to,
-        subject: `[NO REPLY] [Access Control Authorization System] ${values.security_report_title}, ${user.firstName}`,
+        subject: `[NO REPLY] [Access Control Authorization System] ${values.security_report_type}: ${values.security_report_title}, ${user.firstName}`,
         text: `${values.security_report_message}`,
       }),
     });
@@ -157,7 +157,7 @@ export default function Reports({ user }: ReportsProps) {
                   >
                     <FormItem className="flex items-center space-x-1 space-y-0">
                       <FormControl>
-                        <RadioGroupItem value="daily_report" />
+                        <RadioGroupItem value="Daily Report" />
                       </FormControl>
                       <FormLabel className="font-normal">
                         Daily Report
@@ -165,7 +165,7 @@ export default function Reports({ user }: ReportsProps) {
                     </FormItem>
                     <FormItem className="flex items-center space-x-3 space-y-0">
                       <FormControl>
-                        <RadioGroupItem value="incident_report" />
+                        <RadioGroupItem value="Incident Report" />
                       </FormControl>
                       <FormLabel className="font-normal">
                         Incident Report

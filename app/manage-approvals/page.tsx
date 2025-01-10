@@ -19,7 +19,7 @@ export default async function ManageApprovalsPage() {
     status: form.status,
     requesterName: form.requesterFirstName + " " + form.requesterLastName,
     requesterEmail: form.requesterEmail,
-    approvalEmail: form.supervisor,
+    approvalEmail: form.supervisorEmail,
   }));
 
   return (
@@ -33,9 +33,7 @@ export default async function ManageApprovalsPage() {
           <Label className="pl-1">Review and manage the approvals</Label>
         </div>
         <div>
-          <ManageApprovalsData
-            vehicleData={VehicleApprovalsData}
-          />
+          <ManageApprovalsData vehicleData={VehicleApprovalsData} />
         </div>
       </div>
     </section>

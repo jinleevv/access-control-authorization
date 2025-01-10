@@ -48,7 +48,7 @@ export default async function handler(
           data.formInformation.vehicleInformationProvince,
         vehicleInformationNumber: data.formInformation.vehicleInformationNumber,
         vehicleInformationType: data.formInformation.vehicleInformationType,
-        numberOfCompanions: data.formInformation.vehicleInformationCompanion,
+        numberOfCompanions: data.formInformation.numberOfCompanions,
 
         driverInformationCompany: data.formInformation.driverInformationCompany,
         driverInformationFullName:
@@ -71,19 +71,21 @@ export default async function handler(
           vehicleProvince: formInformation.vehicleInformationProvince,
           vehicleNumber: formInformation.vehicleInformationNumber,
           vehicleType: formInformation.vehicleInformationType,
-          numberOfCompanions: formInformation.numberOfCompanions,
+          vehicleCompanions: formInformation.numberOfCompanions,
 
           driverCompany: formInformation.driverInformationCompany,
-          driverName: formInformation.driverInformationFullName,
+          driverFullName: formInformation.driverInformationFullName,
           driverEmail: formInformation.driverInformationEmail,
           driverPhoneNumber: formInformation.driverInformationPhoneNumber,
 
-          durationOfVisitStart: formInformation.durationStart,
-          durationOfVistitEnd: formInformation.durationEnd,
+          durationStart: formInformation.durationStart,
+          durationEnd: formInformation.durationEnd,
 
-          supervisor: requesterInfo.supervisor,
+          supervisorEmail: requesterInfo.supervisor,
 
           status: status,
+
+          pledgeSigned: data.pledgeSigned,
         },
       });
 

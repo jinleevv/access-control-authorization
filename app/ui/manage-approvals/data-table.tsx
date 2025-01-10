@@ -60,7 +60,7 @@ export function DataTable<TData, TValue>({
     sessionStorage.setItem("personnelId", ID);
 
     // Navigate without exposing the ID in the URL
-    router.push(`/pending-approvals/personnel/${todayString}`);
+    router.push(`/pending-approvals/vehicle/${todayString}`);
   };
 
   return (

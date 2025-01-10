@@ -69,16 +69,18 @@ export default async function handler(
           visitorFirstName: visitorInfo.firstName,
           visitorLastName: visitorInfo.lastName,
           visitorEmail: visitorInfo.email,
-          visitLocation: visitorInfo.visitLocation,
+          visitorVisitLocation: visitorInfo.visitLocation,
           visitorPhoneNumber: visitorInfo.phoneNumber,
           visitorCompany: visitorInfo.company,
 
-          durationOfVisitStart: visitInfo.durationStart,
-          durationOfVistitEnd: visitInfo.durationEnd,
+          durationStart: visitInfo.durationStart,
+          durationEnd: visitInfo.durationEnd,
           purposeOfVisit: visitInfo.purpose,
-          infoPersonVisitFullName: visitInfo.visitPersonName,
-          infoPersonVisitEmail: visitInfo.visitPersonEmail,
-          infoPersonVisitDepartment: visitInfo.visitPersonDepartment,
+          visitPersonName: visitInfo.visitPersonName,
+          visitPersonEmail: visitInfo.visitPersonEmail,
+          visitPersonDepartment: visitInfo.visitPersonDepartment,
+
+          precautionsAcknowledged: data.precautionsAcknowledged,
         },
       });
 

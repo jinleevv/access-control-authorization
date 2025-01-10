@@ -94,8 +94,4 @@ export const columns: ColumnDef<VehicleEntryApplicationFormStatus>[] = [
     accessorKey: "driverCompany",
     header: "Driver Company",
   },
-  {
-    accessorKey: "driverPhoneNumber",
-    header: "Driver Phone Number",
-  },
 ];

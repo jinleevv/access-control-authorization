@@ -9,33 +9,30 @@ import { toast } from "sonner";
 interface VehicleDetailInformation {
   id: string;
   pledgeSigned: boolean;
-  purpose: string;
+
   status: string;
   createdAt: string;
   updatedAt: string;
 
-  applicationType: string;
-
   driverCompany: string;
-  driverName: string;
+  driverFullName: string;
+  driverEmail: string;
   driverPhoneNumber: string;
-  driverPosition: string;
 
-  durationOfVisitStart: string;
-  durationOfVistitEnd: string;
+  durationStart: string;
+  durationEnd: string;
 
-  requesterCompany: string;
-  requesterDateOfBirth: string;
+  requesterDepartment: string;
   requesterFirstName: string;
   requesterLastName: string;
-  requesterPhoneNumber: string;
+  requesterEmail: string;
 
-  vehicleModel: string;
   vehicleNumber: string;
   vehicleProvince: string;
   vehicleType: string;
+  vehicleCompanions: string;
 
-  supervisor: string;
+  supervisorEmail: string;
 }
 
 const VehicleApprovalDetailPage = () => {
@@ -110,10 +107,7 @@ const VehicleApprovalDetailPage = () => {
       <div className="w-full space-y-5 p-3">
         <div className="flex w-full p-3 justify-between border rounded-lg">
           <Label className="font-bold">
-            Approver: <Label>{data.supervisor}</Label>
-          </Label>
-          <Label className="font-bold">
-            Application Type:<Label> {data.applicationType}</Label>
+            Approver: <Label>{data.supervisorEmail}</Label>
           </Label>
           <Label className="font-bold">
             Status: <Label>{data.status}</Label>
@@ -140,19 +134,7 @@ const VehicleApprovalDetailPage = () => {
               </Label>
             </Label>
             <Label className="font-bold">
-              Requester Date Of Birth:{" "}
-              <Label>{data.requesterDateOfBirth.split("T")[0]}</Label>
-            </Label>
-            <Label className="font-bold">
-              Requester Phone Number: <Label>{data.requesterPhoneNumber}</Label>
-            </Label>
-            <Label className="font-bold">
-              Requester Company: <Label>{data.requesterCompany}</Label>
-            </Label>
-          </div>
-          <div className="flex p-3 justify-between border rounded-lg">
-            <Label className="font-bold">
-              Purpose: <Label>{data.purpose}</Label>
+              Requester Email: <Label>{data.requesterEmail}</Label>
             </Label>
           </div>
           <div className="flex p-3 justify-between border rounded-lg">
@@ -166,18 +148,18 @@ const VehicleApprovalDetailPage = () => {
               Vehicle Type: <Label>{data.vehicleType}</Label>
             </Label>
             <Label className="font-bold">
-              Vehicle Model: <Label>{data.vehicleModel}</Label>
+              Number of Companions: <Label>{data.vehicleCompanions}</Label>
             </Label>
           </div>
           <div className="flex p-3 justify-between border rounded-lg">
             <Label className="font-bold">
-              Driver Name: <Label>{data.driverName}</Label>
+              Driver Full Name: <Label>{data.driverFullName}</Label>
             </Label>
             <Label className="font-bold">
               Driver Phone Number: <Label>{data.driverPhoneNumber}</Label>
             </Label>
             <Label className="font-bold">
-              Driver Position: <Label>{data.driverPosition}</Label>
+              Driver Email: <Label>{data.driverEmail}</Label>
             </Label>
             <Label className="font-bold">
               Driver Company: <Label>{data.driverCompany}</Label>
@@ -187,8 +169,8 @@ const VehicleApprovalDetailPage = () => {
             <Label className="font-bold">
               Duration:{" "}
               <Label>
-                {data.durationOfVisitStart.split("T")[0]} ~{" "}
-                {data.durationOfVistitEnd.split("T")[0]}
+                {data.durationStart.split("T")[0]} ~{" "}
+                {data.durationEnd.split("T")[0]}
               </Label>
             </Label>
           </div>

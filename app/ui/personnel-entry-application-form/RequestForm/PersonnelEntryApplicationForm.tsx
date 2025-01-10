@@ -99,7 +99,7 @@ export function RequestForm({ requester }: RequestFormProps) {
       ),
       purpose: values.purpose_of_visit,
       visitPersonName: values.info_person_visit_name,
-      infoPersonVisitEmail: values.info_person_email,
+      visitPersonEmail: values.info_person_email,
       visitPersonDepartment: values.info_person_department,
     };
 
@@ -112,6 +112,7 @@ export function RequestForm({ requester }: RequestFormProps) {
         requesterInfo: requesterInfo,
         visitorInfo: visitorInfo,
         visitInfo: visitInfo,
+        precautionsAcknowledged: values.sign,
       }),
     });
 
@@ -128,23 +129,23 @@ export function RequestForm({ requester }: RequestFormProps) {
         info_person_department: "",
       });
       toast("Successfully submitted the application");
-      // const emailResponse = await fetch("/api/send-email", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({
-      //     emailTo: visitInfo.infoPersonVisitEmail,
-      //     subject:
-      //       "[NO REPLY] [Access Control Authorization System] Visitor Notification",
-      //     text: `Hello,\n\nThis is to inform you that ${visitorInfo.firstName} ${visitorInfo.lastName}, from ${visitorInfo.company}, has arrived at the reception and is here for a scheduled visit.\nThank you, and have a great day!\n\nBest,\nUltium CAM`,
-      //   }),
-      // });
+      const emailResponse = await fetch("/api/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          emailTo: visitInfo.visitPersonEmail,
+          subject:
+            "[NO REPLY] [Access Control Authorization System] Visitor Notification",
+          text: `Hello,\n\nThis is to inform you that ${visitorInfo.firstName} ${visitorInfo.lastName}, from ${visitorInfo.company}, has arrived at the reception and is here for a scheduled visit.\nThank you, and have a great day!\n\nBest,\nUltium CAM`,
+        }),
+      });
 
-      // if (emailResponse.ok) {
-      // } else {
-      //   toast("Failed to send an email");
-      // }
+      if (emailResponse.ok) {
+      } else {
+        toast("Failed to send an email");
+      }
     } else {
       // console.error("Failed to submit form:", response.statusText);
       toast("Failed to submit the application");

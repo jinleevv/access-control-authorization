@@ -94,7 +94,7 @@ export function VehicleEntryApplication({
       vehicleInformationProvince: values.vehicle_information_province,
       vehicleInformationNumber: values.vehicle_information_number,
       vehicleInformationType: values.vehicle_information_type,
-      vehicleInformationCompanion: values.vehicle_information_companions,
+      numberOfCompanions: values.vehicle_information_companions,
 
       driverInformationCompany: values.driver_information_company,
       driverInformationFullName: values.driver_information_name,
@@ -138,19 +138,19 @@ export function VehicleEntryApplication({
     });
 
     if (response.ok) {
-      form.reset({
-        vehicle_information_province: "",
-        vehicle_information_number: "",
-        vehicle_information_type: "",
-        vehicle_information_companions: "",
+      // form.reset({
+      //   vehicle_information_province: "",
+      //   vehicle_information_number: "",
+      //   vehicle_information_type: "",
+      //   vehicle_information_companions: "",
 
-        driver_information_company: "",
-        driver_information_name: "",
-        driver_information_email: "",
-        driver_information_phone_number: "",
+      //   driver_information_company: "",
+      //   driver_information_name: "",
+      //   driver_information_email: "",
+      //   driver_information_phone_number: "",
 
-        approval_line: "",
-      });
+      //   approval_line: "",
+      // });
       toast("Successfully submitted the application");
       const emailResponse = await fetch("/api/send-email", {
         method: "POST",
