@@ -58,12 +58,12 @@ export default async function RequestStatusPage() {
   }));
 
   return (
-    <section className="flex w-full h-full">
+    <section className="flex w-full h-screen">
       <div className="w-3/12">
         <Sidebar />
       </div>
-      <div className="w-full p-4">
-        <HomeTopStatus />
+      <div className="w-full h-full p-4">
+        {/* <HomeTopStatus /> */}
         <HomeMainContents />
         <HomeFullStats data={result} />
       </div>

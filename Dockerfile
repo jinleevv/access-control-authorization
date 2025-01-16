@@ -12,6 +12,7 @@ RUN npm install -g prisma
 
 # Copy Prisma schema and generate the client
 COPY prisma ./prisma
+COPY prisma/migrations ./prisma/migrations
 COPY .env ./
 RUN npx prisma generate
 
@@ -36,4 +37,4 @@ COPY --from=builder /app/prisma ./prisma
 EXPOSE 3000
 
 # Start the application
-CMD ["sh", "-c", "npx prisma db push && npm run start"]
+CMD ["sh", "-c", "npx prisma migrate && npm run start"]

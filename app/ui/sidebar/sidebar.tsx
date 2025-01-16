@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { doLogout } from "@/app/actions";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 const employeeMenuItems = [
   {
@@ -144,7 +145,9 @@ export default async function Sidebar() {
       </nav>
       <div className="flex w-full border-t-1.5">
         <div className="m-auto">
-          <IoPersonCircle size={35} />
+          <Link href="/account-info">
+            <IoPersonCircle size={35} />
+          </Link>
         </div>
         <div className="grid space-y-1.5 mt-auto mb-auto">
           <Label className="font-bold">{myFullName},</Label>
