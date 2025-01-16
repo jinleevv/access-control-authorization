@@ -46,9 +46,6 @@ let formSchema = z.object({
 });
 
 export function RequestForm({ requester }: RequestFormProps) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-  });
   const currentDate = new Date();
   const timezone = "America/Montreal";
 
@@ -61,6 +58,16 @@ export function RequestForm({ requester }: RequestFormProps) {
 
   // Create the formatted string in the format you need
   const formattedCurrentTime = `${year}-${month}-${day}T${hours}:${minutes}[${timezone}]`;
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      duration_of_visit: {
+        start: parseZonedDateTime(formattedCurrentTime),
+        end: parseZonedDateTime(formattedCurrentTime),
+      },
+    },
+  });
 
   const [selectedLocation, setSelectedLocation] = useState<string>("");
   const [selectedID, setSelectedID] = useState<string>("");
@@ -158,20 +165,26 @@ export function RequestForm({ requester }: RequestFormProps) {
         <div className="grid">
           <Label className="flex text-md font-bold">
             <IoWarning className="mr-1 mt-1" />
-            사내 출입 시 주의사항
+            Important Notes for Entering the Company Premises
           </Label>
           <div className="grid space-y-1">
             <Label>
-              - 사업장 진입 전 휴대폰 카메라 봉인지 부착해 주시기 바랍니다.
+              - Please ensure that the seal is attached to your phone’s camera
+              before entering the premises.
             </Label>
             <Label>
-              - 각종 저장/촬영매체/IT기기는 사업장 내 반입이
-              제한됩니다.(안내센테 보관 또는 보안봉투에 담아 진입)
+              - Various storage/recording devices and IT equipment are
+              restricted from being brought into the premises. (Please store
+              them at the information center or place them in a security
+              envelope before entry.)
             </Label>
             <Label>
-              - 출입신청지역 외 출입시도 및 사내 배회를 자제해 주시기 바랍니다.
+              - Avoid attempting to enter areas outside of the approved access
+              zones or wandering around the company premises.
             </Label>
-            <Label>- 발급받은 방문카드는 당일 반납해주시기 바랍니다.</Label>
+            <Label>
+              - Please return the issued visitor card on the same day.
+            </Label>
           </div>
         </div>
       </div>
@@ -437,7 +450,7 @@ export function RequestForm({ requester }: RequestFormProps) {
                 <Label>Duration/Purpose of Visit *</Label>
               </div>
               <div className="flex w-full gap-3">
-                <div className="w-1/2">
+                <div className="w-full">
                   <FormField
                     control={form.control}
                     name="duration_of_visit"

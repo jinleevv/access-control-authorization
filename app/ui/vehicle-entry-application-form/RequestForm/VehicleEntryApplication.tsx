@@ -54,9 +54,6 @@ export function VehicleEntryApplication({
   requester,
   signed,
 }: RequestFormProps) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-  });
   const currentDate = new Date();
   const timezone = "America/Montreal";
 
@@ -70,16 +67,20 @@ export function VehicleEntryApplication({
   // Create the formatted string in the format you need
   const formattedCurrentTime = `${year}-${month}-${day}T${hours}:${minutes}[${timezone}]`;
 
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      duration_of_visit: {
+        start: parseZonedDateTime(formattedCurrentTime),
+        end: parseZonedDateTime(formattedCurrentTime),
+      },
+    },
+  });
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (values.sign === false) {
       toast("You must read and acknowledge the precautions");
       return;
-    }
-    if (values.duration_of_visit == null) {
-      values.duration_of_visit = {
-        start: parseZonedDateTime(formattedCurrentTime),
-        end: parseZonedDateTime(formattedCurrentTime),
-      };
     }
 
     const requesterInfo = {
@@ -138,19 +139,19 @@ export function VehicleEntryApplication({
     });
 
     if (response.ok) {
-      // form.reset({
-      //   vehicle_information_province: "",
-      //   vehicle_information_number: "",
-      //   vehicle_information_type: "",
-      //   vehicle_information_companions: "",
+      form.reset({
+        vehicle_information_province: "",
+        vehicle_information_number: "",
+        vehicle_information_type: "",
+        vehicle_information_companions: "",
 
-      //   driver_information_company: "",
-      //   driver_information_name: "",
-      //   driver_information_email: "",
-      //   driver_information_phone_number: "",
+        driver_information_company: "",
+        driver_information_name: "",
+        driver_information_email: "",
+        driver_information_phone_number: "",
 
-      //   approval_line: "",
-      // });
+        approval_line: "",
+      });
       toast("Successfully submitted the application");
       const emailResponse = await fetch("/api/send-email", {
         method: "POST",
@@ -181,51 +182,57 @@ export function VehicleEntryApplication({
         <div className="grid">
           <Label className="flex text-md font-bold">
             <IoWarning className="mr-1 mt-1" />
-            신청 전 주의사항
+            Important Notes Before Applying
           </Label>
           <div className="grid space-y-1">
             <Label>
-              - 신청서 작성 전에 신청서 옆에 안내사항(보안,안전 준수사항)을 꼭
-              필독 바랍니다.
+              - Please carefully read the instructions (security and safety
+              compliance) next to the application form before filling it out.
             </Label>
             <Label>
-              - 단기출입은 방문객이 1일에서 7일 이하의 업무로 차량이 사내로
-              진입하지 않으면 업무가 불가능한 경우 차량 출입 신청이 가능합니다.
+              - Short-term entry applications for vehicles are permitted only if
+              visitors need to perform work lasting between 1 to 7 days and
+              their work cannot proceed without vehicle access to the premises.
             </Label>
             <Label>
-              - 운전자 외 동승자는 별도의 &quot;일반방문신청&quot; 후 출입
-              가능합니다.
+              - Passengers other than the driver must separately apply for a
+              “Personnel Entry Application Form” to gain access.
             </Label>
             <Label>
-              - 승용차(7인승 이하)의 사내 출입은 통제됨에 따라 일반방문신청 후
-              사외 주차장을 이용 해주시기 바랍니다.
+              - Passenger cars (7 seats or fewer) are restricted from entering
+              the premises. Visitors should apply for a “Personnel Entry
+              Application Form” and use the external parking lot instead.
             </Label>
             <Label>
-              - 운전자가 건물 내 출입필요시 &quot;일반방문신청&quot; 또는
-              &quot;일일안전작업허가서&quot; 별도 신청 후 고객안내센터에서
-              방문카드를 발급해주시기 바랍니다.
+              - If the driver needs access to the building, they must apply for
+              a separate “Personnel Entry Application Form” and receive a
+              visitor card from the Customer Information Center.
             </Label>
           </div>
         </div>
         <div className="grid mt-2">
           <Label className="flex text-md font-bold">
             <IoWarning className="mr-1 mt-1" />
-            사내 출입 시 주의사항
+            Important Notes for Entering the Company Premises
           </Label>
           <div className="grid space-y-1">
             <Label>
-              - 각종 저장/촬영매체/IT기기는 사업장 내 반입 시 보안위반에
-              해당하여 불이익을 받음으로 안내센터 보관 또는 보안물품 봉투에 담아
-              진입하여 주시기 바랍니다.
+              - Various storage/recording devices and IT equipment are
+              considered a security violation if brought into the premises.
+              Please store them at the information center or place them in a
+              security envelope before entering.
             </Label>
             <Label>
-              - 출입신청지역 외 출입시도 및 사내 배회를 자제해 주시기 바랍니다.
+              - Please refrain from attempting to access areas outside the
+              approved access zones or wandering around the premises.
             </Label>
             <Label>
-              - 발급받은 방문카드는 당일 출문 시 반납하여 주시기 바랍니다.
+              - Return the issued visitor card upon leaving the premises on the
+              same day.
             </Label>
             <Label>
-              - 보안요원의 안내 및 차량검색에 적극 협조하여 주시기 바랍니다.
+              - Actively cooperate with security personnel’s instructions and
+              vehicle inspections.
             </Label>
           </div>
         </div>
@@ -289,12 +296,9 @@ export function VehicleEntryApplication({
                       name="vehicle_information_companions"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Number of Companions</FormLabel>
+                          <FormLabel>Number of People</FormLabel>
                           <FormControl>
-                            <Input
-                              placeholder="Number of Companions"
-                              {...field}
-                            />
+                            <Input placeholder="Number of People" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -420,12 +424,6 @@ export function VehicleEntryApplication({
                           </SelectItem>
                           <SelectItem value="andre.martel@ultiumcam.net">
                             André Martel
-                          </SelectItem>
-                          <SelectItem value="reza.mokari@ultiumcam.net">
-                            Mohammad Reza Mokari
-                          </SelectItem>
-                          <SelectItem value="jinwon.lee@ultiumcam.net">
-                            Test
                           </SelectItem>
                         </SelectContent>
                       </Select>

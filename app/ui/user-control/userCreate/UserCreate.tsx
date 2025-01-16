@@ -27,7 +27,6 @@ import {
 const formSchema = z.object({
   admin: z.boolean().optional().default(false),
   security: z.boolean().optional().default(false),
-  department_IT: z.boolean().optional().default(false),
   first_name: z
     .string({ required_error: "First name is required" })
     .min(1, "First name is required"),
@@ -78,7 +77,6 @@ export default function UserCreate() {
         body: JSON.stringify({
           admin: values.admin,
           security: values.security,
-          departmentIT: values.department_IT,
           email: values.email,
           password: values.password,
           firstName: values.first_name.toUpperCase(),
@@ -89,14 +87,11 @@ export default function UserCreate() {
       if (!response) {
         throw new Error("Network response was not ok");
       }
-      // const data = await response.json();
-      // console.log(data);
 
       // Process response here
       form.reset({
         admin: false,
         security: false,
-        department_IT: false,
         first_name: "",
         last_name: "",
         email: "",
@@ -133,24 +128,6 @@ export default function UserCreate() {
                     </FormControl>
                     <FormLabel className="w-full h-full ml-1 -mt-3">
                       Admin
-                    </FormLabel>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="department_IT"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormLabel className="w-full h-full ml-1 -mt-3">
-                      IT department
                     </FormLabel>
                     <FormMessage />
                   </FormItem>
@@ -298,6 +275,7 @@ export default function UserCreate() {
                           <SelectItem value="construction">
                             Construction & Operation Division
                           </SelectItem>
+                          <SelectItem value="other">Other</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />

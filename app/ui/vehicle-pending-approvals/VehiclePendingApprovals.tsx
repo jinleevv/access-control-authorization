@@ -7,28 +7,13 @@ interface VehiclePendingApprovalsProps {
   data: any;
 }
 
-export function VehiclePendingApprovals({
+export async function VehiclePendingApprovals({
   data,
 }: VehiclePendingApprovalsProps) {
-  // async function handleEmail() {
-  //   const response = await fetch("/api/send-email", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   });
-
-  //   if (response.ok) {
-  //     // const data = await response.json();
-  //   } else {
-  //     console.error("Failed to submit form:", response.statusText);
-  //   }
-  // }
 
   return (
     <section className="h-full p-2 border rounded-lg overflow-auto">
-      {/* <div><Button onClick={handleEmail}>Send Email</Button></div> */}
-      <DataTable columns={columns} data={data} />
+      <DataTable columns={columns} data={data}/>
     </section>
   );
 }

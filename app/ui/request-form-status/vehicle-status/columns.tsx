@@ -6,30 +6,23 @@ import { ArrowUpDown } from "lucide-react";
 
 export type VehicleEntryApplicationFormStatus = {
   id: string;
+  requesterFirstName: string;
+  requesterLastName: string;
+  requesterDepartment: string;
+  requesterEmail: string;
   status: string;
-  driverFullName: string;
-  driverCompany: string;
-  driverPhoneNumber: string;
+  driverFullName: string | null;
+  driverCompany: string | null;
+  vehicleNumber: string | null;
+  vehicleProvince: string | null;
+  vehicleType: string | null;
+  vehicleCompanions: string | null;
   durationStart: string;
   durationEnd: string;
   createdAt: string;
 };
 
 export const columns: ColumnDef<VehicleEntryApplicationFormStatus>[] = [
-  {
-    accessorKey: "createdAt",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Requested Date
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
   {
     accessorKey: "status",
     header: ({ column }) => {
@@ -79,13 +72,20 @@ export const columns: ColumnDef<VehicleEntryApplicationFormStatus>[] = [
     },
   },
   {
-    accessorKey: "durationStart",
-    header: "From",
+    accessorKey: "createdAt",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Requested Date
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
   },
-  {
-    accessorKey: "durationEnd",
-    header: "To",
-  },
+  { accessorKey: "requesterEmail", header: "Requester Email" },
   {
     accessorKey: "driverFullName",
     header: "Driver Name",
@@ -94,4 +94,16 @@ export const columns: ColumnDef<VehicleEntryApplicationFormStatus>[] = [
     accessorKey: "driverCompany",
     header: "Driver Company",
   },
+  {
+    accessorKey: "durationStart",
+    header: "From",
+  },
+  {
+    accessorKey: "durationEnd",
+    header: "To",
+  },
+  { accessorKey: "vehicleNumber", header: "Vehicle Number" },
+  { accessorKey: "vehicleProvince", header: "Vehicle Province" },
+  { accessorKey: "vehicleType", header: "Vehicle Type" },
+  { accessorKey: "vehicleCompanions", header: "# of People" },
 ];

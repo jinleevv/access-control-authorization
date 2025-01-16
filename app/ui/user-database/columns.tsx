@@ -6,7 +6,7 @@ export type UserData = {
   firstName: string;
   lastName: string;
   email: string;
-  department: string;
+  department: string | null;
   admin: boolean;
 };
 

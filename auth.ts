@@ -41,7 +41,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             department: user.department,
             admin: user.admin,
             security: user.security,
-            departmentIT: user.departmentIT,
           };
         } else {
           return null;
@@ -67,7 +66,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.department = user.department;
         token.admin = user.admin;
         token.security = user.security;
-        token.departmentIT = user.departmentIT;
       }
       return token;
     },
@@ -80,9 +78,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       session.user.department = token.department;
       session.user.admin = token.admin;
       session.user.security = token.security;
-      session.user.departmentIT = token.departmentIT;
 
       return session;
     },
   },
+  trustHost: true,
 });

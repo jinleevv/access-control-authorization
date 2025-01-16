@@ -10,7 +10,6 @@ export async function POST(request: Request) {
     const {
       admin,
       security,
-      departmentIT,
       email,
       password,
       firstName,
@@ -26,7 +25,6 @@ export async function POST(request: Request) {
       data: {
         admin: admin,
         security: security,
-        departmentIT: departmentIT,
         email: email,
         password: hashedPassword,
         firstName: firstName,

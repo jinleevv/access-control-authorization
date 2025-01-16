@@ -16,12 +16,10 @@ export default async function RequestStatusPage() {
       </div>
       <div className="w-full p-4">
         <div className="pl-10 pr-10">
-          <Label className="grid text-2xl font-bold">
-            My Request Form Status
-          </Label>
+          <Label className="grid text-2xl font-bold">Request Form Status</Label>
           <Label className="pl-1">Review the status of your forms</Label>
         </div>
-        <div className="h-5/6 mt-3 2xl:mt-5 ml-10 mr-10">
+        <div className="h-5/6 w-5/6 mt-3 2xl:mt-5 ml-10 mr-10">
           <RequestFormStatus requester={session.user} />
         </div>
       </div>

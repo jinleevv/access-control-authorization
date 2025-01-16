@@ -169,6 +169,7 @@ export default function UserDelete() {
                           <SelectItem value="construction">
                             Construction & Operation Division
                           </SelectItem>
+                          <SelectItem value="other">Other</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />

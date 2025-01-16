@@ -11,8 +11,6 @@ declare module "next-auth" {
     department: string;
     admin: boolean;
     security: boolean;
-    departmentIT: boolean;
-    department: string;
   }
 
   interface Session {
@@ -24,8 +22,6 @@ declare module "next-auth" {
       department: string;
       admin: boolean;
       security: boolean;
-      departmentIT: boolean;
-      department: string;
     };
   }
 }
@@ -39,7 +35,5 @@ declare module "next-auth/jwt" {
     department: string;
     admin: boolean;
     security: boolean;
-    departmentIT: boolean;
-    department: string;
   }
 }

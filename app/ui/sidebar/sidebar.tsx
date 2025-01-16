@@ -89,10 +89,10 @@ export default async function Sidebar() {
 
   if (!session?.user) redirect("/login");
 
-  const userSession = session.user;
+  const userSession = session?.user;
 
-  const myFullName = userSession.firstName + " " + userSession.lastName;
-  const myEmail = userSession.email;
+  const myFullName = userSession?.firstName + " " + userSession?.lastName;
+  const myEmail = userSession?.email;
 
   return (
     <section className="sticky left-0 top-0 flex h-screen flex-col justify-between border-r border-gray-200 pt-8 max-md:hidden overflow-auto">
@@ -108,16 +108,16 @@ export default async function Sidebar() {
             return <MenuLink item={item} key={item.path} />;
           })}
         </div>
-        {userSession.departmentIT ? (
-          <div className="border-t-1 w-full p-3 space-y-2">
-            {ApprovalMenuItems.map((item) => {
-              return <MenuLink item={item} key={item.path} />;
-            })}
-          </div>
-        ) : (
-          <></>
-        )}
-        {userSession.security ? (
+
+        <div className="border-t-1 w-full p-3 space-y-2">
+          {ApprovalMenuItems.map((item) => {
+            return <MenuLink item={item} key={item.path} />;
+          })}
+        </div>
+
+        {userSession.security ||
+        userSession.admin ||
+        userSession.department === "IT" ? (
           <>
             <div className="w-full border-t-1"></div>
             <div className="w-full p-3 space-y-2">
@@ -129,7 +129,7 @@ export default async function Sidebar() {
         ) : (
           <></>
         )}
-        {userSession.admin ? (
+        {userSession.admin || userSession.department === "IT" ? (
           <>
             <div className="w-full border-t-1"></div>
             <div className="w-full p-3 space-y-2">

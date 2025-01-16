@@ -7,9 +7,15 @@ import { ExportVehicleData } from "../ui/export-data/ExportVehicleData";
 
 export default async function ExportDataPage() {
   const session = await auth();
+  const userSession = session?.user;
 
-  if (!session?.user) redirect("/login");
-  if (session.user.admin === false) redirect("/home");
+  if (!userSession) redirect("/login");
+
+  if (userSession.department !== "IT") {
+    if (!userSession.admin) {
+      redirect("/home");
+    }
+  }
 
   return (
     <section className="flex w-full h-full">

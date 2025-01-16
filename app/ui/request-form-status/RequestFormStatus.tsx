@@ -1,5 +1,8 @@
 import { Label } from "@/components/ui/label";
-import { columns as VehicleColumns } from "./vehicle-status/columns";
+import {
+  columns as VehicleColumns,
+  VehicleEntryApplicationFormStatus,
+} from "./vehicle-status/columns";
 import prisma from "@/lib/db";
 import { DataTable as VehicleDataTable } from "./vehicle-status/data-table";
 
@@ -17,13 +20,7 @@ export async function RequestFormStatus({ requester }: RequestFormStatusProps) {
   };
 
   const matchingVehicleRequesters =
-    await prisma.vehicleEntryApplicationForm.findMany({
-      where: {
-        requesterFirstName: requesterInfo.firstName,
-        requesterLastName: requesterInfo.lastName,
-        requesterEmail: requesterInfo.email,
-      },
-    });
+    await prisma.vehicleEntryApplicationForm.findMany();
 
   const options: Intl.DateTimeFormatOptions = {
     year: "numeric",
@@ -31,16 +28,24 @@ export async function RequestFormStatus({ requester }: RequestFormStatusProps) {
     day: "numeric",
   };
 
-  const dataVehicle = matchingVehicleRequesters.map((form) => ({
-    id: form.id,
-    status: form.status,
-    driverFullName: form.driverFullName,
-    driverCompany: form.driverCompany,
-    driverPhoneNumber: form.driverPhoneNumber,
-    durationStart: form.durationStart.toLocaleDateString("en-US", options),
-    durationEnd: form.durationEnd.toLocaleDateString("en-US", options),
-    createdAt: form.createdAt.toLocaleDateString("en-US", options),
-  }));
+  const dataVehicle: VehicleEntryApplicationFormStatus[] =
+    matchingVehicleRequesters.map((form) => ({
+      id: form.id,
+      requesterFirstName: form.requesterFirstName,
+      requesterLastName: form.requesterLastName,
+      requesterDepartment: form.requesterDepartment,
+      requesterEmail: form.requesterEmail,
+      status: form.status,
+      driverFullName: form.driverFullName,
+      driverCompany: form.driverCompany,
+      vehicleNumber: form.vehicleNumber,
+      vehicleProvince: form.vehicleProvince,
+      vehicleType: form.vehicleType,
+      vehicleCompanions: form.vehicleCompanions,
+      durationStart: form.durationStart.toLocaleDateString("en-US", options),
+      durationEnd: form.durationEnd.toLocaleDateString("en-US", options),
+      createdAt: form.createdAt.toLocaleDateString("en-US", options),
+    }));
 
   return (
     <section className="w-full h-full space-y-12">

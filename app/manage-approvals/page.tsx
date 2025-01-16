@@ -7,9 +7,15 @@ import ManageApprovalsData from "../ui/manage-approvals/ManageApprovals";
 
 export default async function ManageApprovalsPage() {
   const session = await auth();
+  const userSession = session?.user;
 
-  if (!session?.user) redirect("/login");
-  if (session.user.admin === false) redirect("/home");
+  if (!userSession) redirect("/login");
+
+  if (userSession.department !== "IT") {
+    if (!userSession.admin) {
+      redirect("/home");
+    }
+  }
 
   const VehicleApprovalForms =
     await prisma.vehicleEntryApplicationForm.findMany();

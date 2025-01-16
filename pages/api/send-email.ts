@@ -6,7 +6,11 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    const { emailTo, subject, text} = req.body;
+    const { emailTo, subject, text } = req.body;
+
+    if (!emailTo.endswith("@ultiumcam.net")) {
+      res.status(400).json({ message: "Please provide Ultium CAM email" });
+    }
 
     // Create a transporter object
     let transporter = nodemailer.createTransport({

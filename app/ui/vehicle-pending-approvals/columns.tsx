@@ -44,7 +44,7 @@ export const columns: ColumnDef<VehiclePendingApprovals>[] = [
     header: "Requester Last Name",
   },
   {
-    accessorKey: "requesterPhoneNumber",
-    header: "Requester Phone Number",
+    accessorKey: "requesterEmail",
+    header: "Requester Email",
   },
 ];

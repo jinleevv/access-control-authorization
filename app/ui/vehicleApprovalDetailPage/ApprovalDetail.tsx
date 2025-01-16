@@ -35,7 +35,7 @@ interface VehicleDetailInformation {
   supervisorEmail: string;
 }
 
-const VehicleApprovalDetailPage = () => {
+const VehicleApprovalDetailPage = ({ userSession }: any) => {
   const router = useRouter();
   const [data, setData] = useState<VehicleDetailInformation | null>(null);
   const id = sessionStorage.getItem("vehicleId");
@@ -175,12 +175,16 @@ const VehicleApprovalDetailPage = () => {
             </Label>
           </div>
         </div>
-        <div className="flex w-full justify-end space-x-2">
-          <Button onClick={handleApprove}>Approve</Button>
-          <Button variant={"destructive"} onClick={handleReject}>
-            Reject
-          </Button>
-        </div>
+        {userSession.admin ? (
+          <div className="flex w-full justify-end space-x-2">
+            <Button onClick={handleApprove}>Approve</Button>
+            <Button variant={"destructive"} onClick={handleReject}>
+              Reject
+            </Button>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

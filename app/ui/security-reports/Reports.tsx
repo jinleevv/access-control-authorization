@@ -35,7 +35,6 @@ interface ReportsProps {
     department: string;
     admin: boolean;
     security: boolean;
-    departmentIT: boolean;
   };
 }
 
@@ -117,10 +116,13 @@ export default function Reports({ user }: ReportsProps) {
   const emails = [
     { email: "skjeong23@ultiumcam.net", label: "Soonki Jeong" },
     { email: "andre.martel@ultiumcam.net", label: "André Martel" },
-    { email: "jinwon.lee@ultiumcam.net", label: "Jinwon Lee" },
   ];
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!values.security_report_to.endsWith("@ultiumcam.net")) {
+      toast.error("Only Ultium CAM email is allowed");
+      return;
+    }
     const emailResponse = await fetch("/api/send-email", {
       method: "POST",
       headers: {
