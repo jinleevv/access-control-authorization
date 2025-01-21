@@ -21,7 +21,6 @@ async function getData(): Promise<CheckOutStatusType[]> {
 
 export default async function CheckOutPageStatus() {
   const data = await getData();
-  console.log(data);
   return (
     <div className="container mx-auto py-10 h-[800px] 2xl:h-[950px]">
       <DataTable columns={columns} data={data} />

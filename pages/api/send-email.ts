@@ -8,7 +8,7 @@ export default async function handler(
   if (req.method === "POST") {
     const { emailTo, subject, text } = req.body;
 
-    if (!emailTo.endswith("@ultiumcam.net")) {
+    if (emailTo.slice(-14) !== "@ultiumcam.net") {
       res.status(400).json({ message: "Please provide Ultium CAM email" });
     }
 
