@@ -144,7 +144,7 @@ export default function UserDelete() {
                   name="department"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel>Department</FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}

@@ -57,7 +57,7 @@ export function DataTable<TData, TValue>({
     const ID = selectedRow.id.toString();
 
     // Save ID to session storage
-    sessionStorage.setItem("personnelId", ID);
+    sessionStorage.setItem("vehicleId", ID);
 
     // Navigate without exposing the ID in the URL
     router.push(`/pending-approvals/vehicle/${todayString}`);
