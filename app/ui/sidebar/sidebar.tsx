@@ -34,16 +34,16 @@ const employeeMenuItems = [
     path: "/vehicle-entry-application-form",
     icon: <IoCar />,
   },
+  {
+    title: "Vehicle Form Status",
+    path: "/request-status",
+    icon: <IoLibrary />,
+  },
 ];
 
 const ApprovalMenuItems = [
   {
-    title: "Application Form Status",
-    path: "/request-status",
-    icon: <IoLibrary />,
-  },
-  {
-    title: "Pending Approvals",
+    title: "Pending Vehicle Approvals",
     path: "/pending-approvals",
     icon: <IoReload />,
   },

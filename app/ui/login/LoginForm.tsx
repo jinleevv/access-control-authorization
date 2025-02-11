@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { SoftShadows } from "@react-three/drei";
+import { useTranslations } from "next-intl";
 
 const formSchema = z.object({
   email: z
@@ -35,6 +36,7 @@ const formSchema = z.object({
 
 export default function LoginPage() {
   const router = useRouter();
+  const t = useTranslations("LoginPage");
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -113,9 +115,7 @@ export default function LoginPage() {
   return (
     <section className="p-4 w-full h-full">
       <div className="ml-3 mb-10">
-        <Label className="grid text-3xl font-bold ">
-          Ultium CAM Access Control System
-        </Label>
+        <Label className="grid text-3xl font-bold ">{t("title")}</Label>
       </div>
       <div className="ml-10 mr-10">
         <Label className="grid text-2xl font-bold">Login</Label>

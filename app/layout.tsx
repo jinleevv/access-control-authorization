@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./ui/globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { NextUIProvider } from "@nextui-org/react";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,18 +13,23 @@ export const metadata: Metadata = {
   description: "Access Control System",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body className={inter.className}>
         <div className="flex w-full">
-          <NextUIProvider className="w-full h-screen">
-            <div className="w-full h-full">{children}</div>
-          </NextUIProvider>
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            <NextUIProvider className="w-full h-screen">
+              <div className="w-full h-full">{children}</div>
+            </NextUIProvider>
+          </NextIntlClientProvider>
         </div>
         <Toaster />
       </body>

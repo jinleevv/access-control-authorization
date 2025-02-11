@@ -17,6 +17,7 @@ export default async function PendingApprovalsPage() {
     await prisma.vehicleEntryApplicationForm.findMany({
       where: {
         status: "In Progress",
+        supervisorEmail: myEmail,
       },
     });
 

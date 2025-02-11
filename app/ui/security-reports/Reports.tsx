@@ -135,6 +135,8 @@ export default function Reports({ user }: ReportsProps) {
       }),
     });
     if (emailResponse.ok) {
+      form.reset();
+      toast("Successfully sent the report");
     } else {
       toast("Failed to send an email");
     }
